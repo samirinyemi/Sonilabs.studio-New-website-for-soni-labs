@@ -39,7 +39,7 @@ export default function WorkShowcase() {
               {/* Bento grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
                 {/* Video placeholder */}
-                <div className="md:col-span-2 bg-gray-200 rounded-[6px] relative overflow-hidden min-h-[530px] flex items-center justify-center">
+                <div className="md:col-span-2 bg-gray-200 rounded-[6px] relative overflow-hidden flex items-center justify-center" style={{ aspectRatio: '4 / 3' }}>
                   <div className="absolute inset-0 bg-gradient-to-b from-gray-200/30 to-gray-300/30"></div>
                   <div className="relative z-10 w-14 h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-base-dark ml-1">
@@ -77,14 +77,14 @@ export default function WorkShowcase() {
                     <div className="absolute inset-0 bg-gradient-to-b from-gray-200/50 to-gray-300/50"></div>
                   </div>
 
-                  <div className="bg-accent-orange rounded-[6px] p-6 py-10 flex flex-col justify-center relative overflow-hidden">
+                  <div className="bg-accent-orange rounded-[6px] p-4 py-6 flex flex-col justify-center relative overflow-hidden">
                     <h4 className="font-display text-lg font-bold text-white mb-1">Fixed monthly rate</h4>
                     <p className="text-white/70 text-xs leading-relaxed">No surprises, enjoy a consistent, fixed price every month.</p>
                   </div>
                 </div>
 
                 {/* Right — Video placeholder spanning 2 cols */}
-                <div className="md:col-span-2 bg-gray-200 rounded-[6px] overflow-hidden relative min-h-[600px]">
+                <div className="md:col-span-2 bg-gray-200 rounded-[6px] overflow-hidden relative" style={{ aspectRatio: '4 / 3' }}>
                   <div className="absolute inset-0 bg-gradient-to-b from-gray-300/30 to-gray-400/30 flex items-center justify-center">
                     <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-base-dark ml-1">
@@ -102,41 +102,24 @@ export default function WorkShowcase() {
             <div className="bg-white rounded-[12px] border border-base-border overflow-hidden p-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 rounded-[6px] overflow-hidden">
                 {/* Card Left */}
-                <div className="p-8 md:p-10 bg-base-light rounded-[6px] flex flex-col justify-between min-h-[530px]">
-                  <div>
-                    <div className="w-12 h-12 mb-6">
-                      <div className="dot-text text-5xl leading-none">W.</div>
-                    </div>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-6">Turning today's ambitions into tomorrow's realities through innovation, vision, and technology.</p>
+                <div className="bg-base-light rounded-[6px] flex flex-col justify-between min-h-[530px] overflow-hidden">
+                  <div className="p-4 md:p-6 flex-shrink-0">
+                    <h4 className="font-display text-lg font-bold text-base-dark mb-2">Our Vision</h4>
+                    <p className="text-gray-600 text-sm leading-relaxed">Turning today's ambitions into tomorrow's realities through innovation, vision, and technology.</p>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="bg-base-light border border-base-border rounded-[6px] px-4 py-2">
-                      <span className="font-mono text-xs text-gray-500 uppercase tracking-wider">START</span>
-                    </div>
-                    <div className="bg-base-light border border-base-border rounded-[6px] px-4 py-2">
-                      <span className="font-mono text-xs text-gray-500 uppercase tracking-wider">V.01</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex justify-end">
-                    <div className="w-10 h-10 rounded-[6px] bg-accent-orange flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                    </div>
+                  <div className="bg-gray-200 rounded-[6px] flex-1 min-h-[200px] relative mx-2 mb-2">
+                    <div className="absolute inset-0 bg-gradient-to-b from-gray-200/50 to-gray-300/50 rounded-[6px]"></div>
                   </div>
                 </div>
 
-                {/* Card Center — Video Placeholder */}
-                <div className="bg-gray-300 rounded-[6px] flex items-center justify-center min-h-[400px] relative overflow-hidden">
+                {/* Card Right — Video Placeholder */}
+                <div className="md:col-span-2 bg-gray-300 rounded-[6px] flex items-center justify-center relative overflow-hidden" style={{ aspectRatio: '4 / 3' }}>
                   <div className="absolute inset-0 bg-gradient-to-b from-gray-200/50 to-gray-400/50"></div>
                   <div className="relative z-10 w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-base-dark ml-1">
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
                   </div>
-                </div>
-
-                {/* Card Right — Image Placeholder */}
-                <div className="min-h-[400px] relative overflow-hidden bg-gray-300 rounded-[6px]">
-                  <div className="absolute inset-0 bg-gradient-to-b from-gray-200/50 to-gray-400/50"></div>
                 </div>
               </div>
             </div>

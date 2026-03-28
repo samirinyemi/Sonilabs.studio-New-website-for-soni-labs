@@ -292,7 +292,7 @@ export default function Navbar() {
       {/* ── Floating bottom nav (visible after scrolling past hero) ── */}
       <div
         ref={floatingNavRef}
-        className="fixed bottom-11 md:bottom-1 z-50 opacity-0 flex flex-col items-center gap-3 w-[340px]"
+        className="fixed bottom-6 z-50 opacity-0 flex flex-col items-center gap-3 w-[340px]"
         style={{ left: 'calc(50vw - 170px)', pointerEvents: isFloating ? 'auto' : 'none' }}
       >
         {/* Menu panel — expands upward above the pill */}
