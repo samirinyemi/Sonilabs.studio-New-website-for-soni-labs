@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import logoImg from '/LOGO.png'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -177,9 +178,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <a href="#" className="nav-logo flex items-center gap-2" style={{ opacity: 0 }}>
-            <div className="w-8 h-8 bg-base-dark flex items-center justify-center rounded">
-              <span className="font-mono text-white text-xs font-bold tracking-tighter">SL</span>
-            </div>
+            <img src={logoImg} alt="Soni Labs Studio" className="w-8 h-8 rounded object-cover" />
             <span className="font-display font-bold text-xl tracking-tight">Soni Labs.</span>
           </a>
 
@@ -223,9 +222,7 @@ export default function Navbar() {
         {/* Top bar with logo and close button */}
         <div className="flex items-center justify-between px-6 h-20">
           <a href="#" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white flex items-center justify-center rounded">
-              <span className="font-mono text-black text-xs font-bold tracking-tighter">SL</span>
-            </div>
+            <img src={logoImg} alt="Soni Labs Studio" className="w-8 h-8 rounded object-cover" />
             <span className="font-display font-bold text-xl tracking-tight text-white">Soni Labs.</span>
           </a>
           <button className="text-white" onClick={() => setMobileMenuOpen(false)}>
@@ -347,14 +344,12 @@ export default function Navbar() {
           <div className="flex items-center gap-1.5">
             {/* Logo */}
             <a href="#" className="flex items-center shrink-0" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-              <div className="w-10 h-10 bg-base-dark flex items-center justify-center rounded-full">
-                <span className="font-mono text-white text-xs font-bold tracking-tighter">SL</span>
-              </div>
+              <img src={logoImg} alt="Soni Labs Studio" className="w-10 h-10 rounded-full object-cover" />
             </a>
 
             {/* Menu pill button */}
             <button
-              className="flex items-center gap-2 px-3 py-2.5 rounded-full bg-base-dark hover:bg-gray-800 transition-colors shrink-0"
+              className="flex items-center gap-2 px-4 py-3 rounded-full bg-base-dark hover:bg-gray-800 transition-colors shrink-0"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
               aria-expanded={menuOpen}

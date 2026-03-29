@@ -119,15 +119,22 @@ body {
   animation: reveal-label 0.8s ease-out 2.6s forwards;
 }
 
-.accordion-content {
-  transition: max-height 0.3s ease-out, padding 0.3s ease;
-  max-height: 0;
-  overflow: hidden;
-}
 
-.accordion-content.active {
-  max-height: 500px;
+/* Custom cursor zones — hide default cursor on desktop */
+/* Uncomment when CustomCursor component is enabled
+@media (hover: hover) and (pointer: fine) {
+  [data-cursor-zone] {
+    cursor: none;
+  }
+  [data-cursor-zone] a,
+  [data-cursor-zone] button,
+  [data-cursor-zone] input,
+  [data-cursor-zone] textarea,
+  [data-cursor-zone] select {
+    cursor: none;
+  }
 }
+*/
 
 html {
   scrollbar-width: none;

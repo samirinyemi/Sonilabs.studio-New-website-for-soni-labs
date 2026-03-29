@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import CustomCursor from './components/CustomCursor'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ValueProps from './components/ValueProps'
@@ -18,17 +19,24 @@ gsap.registerPlugin(ScrollTrigger)
 export default function App() {
   return (
     <>
+      {/* <CustomCursor /> */}
       <Navbar />
       <main className="w-full h-full pt-20">
-        <Hero />
+        <div data-cursor-zone>
+          <Hero />
+        </div>
         <ValueProps />
         <Services />
         <ProcessAlt />
-        <WorkShowcase />
+        <div data-cursor-zone>
+          <WorkShowcase />
+        </div>
         <About />
         <Testimonials />
         <FAQ />
-        <Contact />
+        <div data-cursor-zone>
+          <Contact />
+        </div>
       </main>
     </>
   )
