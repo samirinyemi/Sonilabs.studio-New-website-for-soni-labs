@@ -136,6 +136,14 @@ body {
 }
 */
 
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: initial;
+}
+
 html {
   scrollbar-width: none;
 }
