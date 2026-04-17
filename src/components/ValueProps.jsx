@@ -59,7 +59,7 @@ export default function ValueProps() {
             <h2 className="vp-heading font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-tight">Your website should bring you clients, not just look good.</h2>
           </div>
           <div className="flex items-center">
-            <p className="vp-body text-gray-600 text-lg leading-relaxed">Most businesses hire a designer for the visuals, a developer to build it, and an automation specialist to connect everything. That means multiple handoffs, miscommunication, inflated costs, and timelines that stretch for months. Soni Labs is different. One studio handles your design, development, and AI automation together so your website doesn't just sit there looking pretty. It qualifies leads, answers customer questions, books calls, and follows up with prospects automatically. Your site works for your business 24/7, even while you sleep.</p>
+            <p className="vp-body text-gray-600 text-lg leading-relaxed">Most businesses hire a designer for the visuals, then a separate developer to build it. That means multiple handoffs, miscommunication, inflated costs, and timelines that stretch for months. Soni Labs is different — one person handles your design and development together, so your website is built exactly as designed, without anything getting lost in translation.</p>
           </div>
         </div>
 
@@ -89,8 +89,8 @@ export default function ValueProps() {
                 <path d="M10 11V5.732A2 2 0 0 1 9 4a2 2 0 0 1 2-2" />
               </svg>
             </div>
-            <h3 className="font-display text-xl font-bold text-base-dark mb-3">AI Built In, Not Bolted On</h3>
-            <p className="text-gray-600 text-sm leading-relaxed flex-grow">Every site comes with intelligent features: chatbots, smart forms, automated follow-ups, baked into the design from day one.</p>
+            <h3 className="font-display text-xl font-bold text-base-dark mb-3">Designed and built by the same person</h3>
+            <p className="text-gray-600 text-sm leading-relaxed flex-grow">The designer is the developer. Design intent is preserved all the way through to the final build — no translation required.</p>
           </div>
 
           {/* Card 3 */}
@@ -100,8 +100,8 @@ export default function ValueProps() {
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
               </svg>
             </div>
-            <h3 className="font-display text-xl font-bold text-base-dark mb-3">Looks Premium, Converts Like Crazy</h3>
-            <p className="text-gray-600 text-sm leading-relaxed flex-grow">A trained design eye means your site stands out from every generic AI-generated template your competitors are using.</p>
+            <h3 className="font-display text-xl font-bold text-base-dark mb-3">Looks premium, works even harder</h3>
+            <p className="text-gray-600 text-sm leading-relaxed flex-grow">A trained design eye means your site looks sharp and earns trust — while smart structure and clear messaging do the heavy lifting.</p>
           </div>
         </div>
       </div>

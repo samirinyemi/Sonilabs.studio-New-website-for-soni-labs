@@ -8,7 +8,7 @@ const fallbackFaqData = [
   { question: "What's the typical timeline?", answer: 'Most projects go from first call to live site in 2–4 weeks depending on scope.' },
   { question: 'Do you work with international clients?', answer: 'Yes, most clients are based in the US, Australia, UK, and Europe. We work fully remote and async-friendly.' },
   { question: 'What if I need changes after launch?', answer: 'Every project includes one round of revisions. Additional changes can be scoped separately or covered under a retainer.' },
-  { question: 'What tech stack do you use?', answer: 'Figma, No-code tools (Framer and Wix Studio), Next.js, React, Tailwind CSS, Claude Code, Cursor for AI-assisted development, and n8n for automations.' },
+  { question: 'What tech stack do you use?', answer: 'Figma for design. Framer, Webflow, or Wix Studio for development. AI-assisted development for faster delivery.' },
   { question: 'Can you help with ongoing design work?', answer: 'Yes, the Embedded Design Partner retainer is built for exactly that.' },
 ]
 

@@ -53,7 +53,7 @@ export default function App() {
           <WorkShowcase />
         </div>
         <About />
-        <Testimonials />
+        {/* <Testimonials /> — hidden until real client testimonials are ready */}
         <FAQ />
         <div data-cursor-zone>
           <Contact />

@@ -240,7 +240,7 @@ export default function Navbar() {
             ref={el => mobileMenuItemsRef.current[0] = el}
             className="text-gray-400 text-xs leading-relaxed mb-8 font-mono"
           >
-            Premium design, AI-powered development, and lead generation automation from one specialised studio.
+            Brand strategy, web design, and development — all from one studio. No handoffs, no delays.
           </p>
 
           {/* Menu links */}
@@ -303,7 +303,7 @@ export default function Navbar() {
             ref={el => menuItemsRef.current[0] = el}
             className="text-gray-400 text-xs leading-relaxed mb-5 font-mono"
           >
-            Premium design, AI-powered development, and lead generation automation from one specialised studio.
+            Brand strategy, web design, and development — all from one studio. No handoffs, no delays.
           </p>
 
           {/* Menu links */}

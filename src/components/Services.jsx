@@ -24,11 +24,11 @@ export default function Services() {
             <h2 className="font-mono text-accent-orange text-sm font-bold uppercase tracking-widest mb-4">// Capabilities</h2>
             <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark">Services</h3>
           </div>
-          <p className="text-gray-500 max-w-md font-medium">Everything you need to launch, scale, and automate your digital presence without managing multiple freelancers.</p>
+          <p className="text-gray-500 max-w-md font-medium">Everything you need to launch and grow your digital presence — designed and built from one studio.</p>
         </div>
 
         <div className="svc-grid grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Flagship card */}
+          {/* Flagship card — Website Design & Build */}
           <div className="svc-card lg:col-span-2 bg-base-dark text-white p-10 md:p-12 rounded-[12px] flex flex-col justify-between relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 blur-[100px] rounded-full transform translate-x-1/3 -translate-y-1/3 group-hover:scale-110 transition-transform duration-700"></div>
 
@@ -44,22 +44,24 @@ export default function Services() {
                 <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">Flagship Service</span>
               </div>
 
-              <h4 className="font-display text-3xl md:text-4xl font-bold mb-4">AI-Powered Website<br />Design & Build</h4>
-              <p className="text-gray-400 text-lg max-w-md mb-8">End-to-end creation of premium, conversion-optimized websites utilizing modern AI development workflows for unprecedented speed and quality.</p>
+              <h4 className="font-display text-3xl md:text-4xl font-bold mb-4">Website Design<br />&amp; Build</h4>
+              <p className="text-gray-400 text-lg max-w-md mb-8">Custom website design and development — from concept to launch. Designed and built by the same person, so nothing gets lost in translation.</p>
 
               <ul className="space-y-3 mb-12">
-                <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="text-accent-orange w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                  Custom visual design & UX
-                </li>
-                <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="text-accent-orange w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                  Production-ready clean code
-                </li>
-                <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="text-accent-orange w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                  AI chatbot or smart feature integration
-                </li>
+                {[
+                  'Custom website design (UI/UX)',
+                  'No-code development & AI-assisted development',
+                  'Responsive across all devices',
+                  'Motion & interactions',
+                  'Performance optimisation',
+                  'Basic form setup & integrations',
+                  'One round of revisions',
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-3 text-gray-300">
+                    <svg className="text-accent-orange w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -76,30 +78,44 @@ export default function Services() {
           </div>
 
           <div className="svc-card flex flex-col gap-6 lg:col-span-1">
-            {/* Lead Gen card */}
+            {/* Brand Identity & Strategy card */}
             <div className="bg-base-light border border-base-border p-8 rounded-[12px] flex flex-col h-full hover:shadow-lg transition-shadow">
               <div className="w-10 h-10 rounded-xl bg-white border border-base-border flex items-center justify-center mb-6 shadow-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                  <line x1="12" y1="22.08" x2="12" y2="12" />
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                  <path d="M2 12h20" />
                 </svg>
               </div>
-              <h4 className="font-display text-2xl font-bold mb-3 text-base-dark">Lead Gen Automation</h4>
-              <p className="text-gray-600 mb-6 flex-grow">Automated systems that turn traffic into qualified leads. Stop losing prospects to broken forms.</p>
+              <h4 className="font-display text-2xl font-bold mb-3 text-base-dark">Brand Identity &amp; Strategy</h4>
+              <p className="text-gray-600 mb-6 flex-grow">Brand positioning, visual identity, and guidelines — built to communicate what makes you different before you say a word.</p>
+
+              <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                {[
+                  'Brand positioning & naming',
+                  'Visual identity (logo, colour, typography)',
+                  'Brand guidelines document',
+                  'Marketing materials design',
+                ].map(item => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-orange shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
               <div className="pt-6 border-t border-base-border">
                 <div className="flex justify-between items-end">
                   <div>
-                    <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Starts at</p>
-                    <p className="font-medium text-lg">$1,500</p>
+                    <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Price</p>
+                    <p className="font-medium text-lg">$2,000 – $5,000</p>
                   </div>
-                  <p className="text-sm font-medium text-gray-500">1-2 weeks</p>
+                  <p className="text-sm font-medium text-gray-500">2–3 weeks</p>
                 </div>
               </div>
             </div>
 
-            {/* Retainer card */}
+            {/* Embedded Design Partner retainer card */}
             <div className="bg-accent-lime p-8 rounded-[12px] flex flex-col h-full relative overflow-hidden text-base-dark hover:scale-[1.02] transition-transform origin-bottom">
               <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cGF0aCBkPSJNMCAwbDR2NE0wIDRsNC00IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMC41Ii8+Cjwvc3ZnPg==')]"></div>
 
@@ -110,14 +126,15 @@ export default function Services() {
                   </svg>
                 </div>
                 <h4 className="font-display text-2xl font-bold mb-3">Embedded Design Partner</h4>
-                <p className="text-base-dark/80 mb-6 font-medium flex-grow">Ongoing design and development support. Like having an in-house team, without the overhead.</p>
+                <p className="text-base-dark/80 mb-6 font-medium flex-grow">Ongoing UI/UX design, website updates, and brand consistency. Like having an in-house designer, without the overhead.</p>
 
-                <div className="pt-6 border-t border-base-border">
+                <div className="pt-6 border-t border-base-border/40">
                   <div className="flex justify-between items-end">
                     <div>
                       <p className="text-xs text-base-dark/60 font-mono uppercase tracking-wider mb-1">Retainer</p>
                       <p className="font-bold text-lg">$2k–$4k/mo</p>
                     </div>
+                    <p className="text-sm font-medium text-base-dark/60">Monthly rolling</p>
                   </div>
                 </div>
               </div>

@@ -50,8 +50,8 @@ export default function About() {
                   <circle cx="11" cy="11" r="2" />
                 </svg>
               </div>
-              <h4 className="font-display text-xl font-bold text-base-dark mb-2">Product Design</h4>
-              <p className="text-gray-600 text-sm leading-relaxed">UI/UX, visual systems, and brand identity crafted for conversion.</p>
+              <h4 className="font-display text-xl font-bold text-base-dark mb-2">Brand &amp; Product Design</h4>
+              <p className="text-gray-600 text-sm leading-relaxed">UI/UX, visual systems, and brand identity — crafted to communicate before you say a word.</p>
             </div>
 
             <div className="about-discipline flex flex-col items-center text-center p-6 border-y md:border-y-0 md:border-x border-base-border">
@@ -61,8 +61,8 @@ export default function About() {
                   <polyline points="8 6 2 12 8 18" />
                 </svg>
               </div>
-              <h4 className="font-display text-xl font-bold text-base-dark mb-2">AI Development</h4>
-              <p className="text-gray-600 text-sm leading-relaxed">Next.js, React, Tailwind, shipped in weeks using modern AI tools.</p>
+              <h4 className="font-display text-xl font-bold text-base-dark mb-2">Web Development</h4>
+              <p className="text-gray-600 text-sm leading-relaxed">Framer, Webflow, Wix Studio — shipped in weeks, not months.</p>
             </div>
 
             <div className="about-discipline flex flex-col items-center text-center p-6">
@@ -73,8 +73,8 @@ export default function About() {
                   <line x1="12" y1="17" x2="12" y2="21" />
                 </svg>
               </div>
-              <h4 className="font-display text-xl font-bold text-base-dark mb-2">Automation</h4>
-              <p className="text-gray-600 text-sm leading-relaxed">Lead capture, CRM, and follow-up systems that run 24/7.</p>
+              <h4 className="font-display text-xl font-bold text-base-dark mb-2">Ongoing Design Partnership</h4>
+              <p className="text-gray-600 text-sm leading-relaxed">Retainer-based support for growing teams — design continuity without the in-house overhead.</p>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function About() {
             </div>
             <div className="lg:col-span-8">
               <p className="text-xl md:text-2xl font-display font-bold text-white leading-snug">
-                "Most AI-generated sites look exactly the same. A trained design eye is the difference between forgettable and unforgettable."
+                "Good design isn't decoration. It's how your business earns trust before you say a word."
               </p>
             </div>
             <div className="lg:col-span-3 flex items-center gap-4 lg:justify-end">

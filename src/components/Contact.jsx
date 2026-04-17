@@ -138,16 +138,16 @@ export default function Contact() {
                 </div>
                 <span className="font-display font-bold text-2xl tracking-tight text-white">Soni Labs.</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">Premium design, AI-powered development, and lead generation automation from one specialized studio.</p>
+              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">Brand strategy, web design, and development — all from one studio. No handoffs, no delays.</p>
             </div>
 
             <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
               <div>
                 <h4 className="font-mono text-xs text-white/60 uppercase tracking-widest mb-4">Services</h4>
                 <ul className="space-y-3">
-                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Website Design & Build</a></li>
-                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Lead Gen Automation</a></li>
-                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Embedded Partner</a></li>
+                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Website Design &amp; Build</a></li>
+                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Brand Identity &amp; Strategy</a></li>
+                  <li><a href="#services" className="text-gray-300 text-sm hover:text-white transition-colors">Embedded Design Partner</a></li>
                 </ul>
               </div>
               <div>

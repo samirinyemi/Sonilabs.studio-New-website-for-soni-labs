@@ -34,7 +34,7 @@ export default function ProcessAlt() {
             <div>
               <h4 className="font-display text-2xl font-bold text-base-dark mb-2">Discovery</h4>
               <p className="font-mono text-xs text-accent-orange uppercase tracking-wider mb-4">2–3 Days</p>
-              <p className="text-gray-600 text-sm leading-relaxed">We talk about your business goals, target audience, and what success looks like. We map out the product architecture and define the features needed to convert visitors.</p>
+              <p className="text-gray-600 text-sm leading-relaxed">Understand business goals, audience, and success metrics. Map out site architecture and requirements before a single pixel is drawn.</p>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ export default function ProcessAlt() {
             <div>
               <h4 className="font-display text-2xl font-bold text-white mb-2">Design</h4>
               <p className="font-mono text-xs text-accent-orange uppercase tracking-wider mb-4">3–5 Days</p>
-              <p className="text-gray-400 text-sm leading-relaxed">Visual concepts grounded in your brand identity. You review high-fidelity mockups of key pages, and we iterate until you approve the direction before building.</p>
+              <p className="text-gray-400 text-sm leading-relaxed">Visual concepts grounded in your brand. High-fidelity mockups of key pages — we iterate until you approve the direction before a line of code is written.</p>
             </div>
           </div>
 
@@ -56,7 +56,7 @@ export default function ProcessAlt() {
               <div>
                 <h4 className="font-display text-2xl font-bold text-white mb-2">Build</h4>
                 <p className="font-mono text-xs text-accent-orange uppercase tracking-wider mb-4">5–10 Days</p>
-                <p className="text-gray-400 text-sm leading-relaxed">Design becomes production code using Next.js and Tailwind, accelerated by AI tools. You get a staging link to review the fully functional, responsive website.</p>
+                <p className="text-gray-400 text-sm leading-relaxed">Design becomes a live site in Framer, Webflow, or Wix Studio. You get a staging link to review the fully responsive site before it goes live.</p>
               </div>
             </div>
           </div>
@@ -65,9 +65,9 @@ export default function ProcessAlt() {
           <div className="pa-card bg-white rounded-[12px] border border-base-border p-6 md:p-10 flex flex-col justify-between min-h-[280px] md:col-span-2">
             <div className="font-mono text-6xl leading-none font-normal text-base-dark">04</div>
             <div>
-              <h4 className="font-display text-2xl font-bold text-base-dark mb-2">Launch & Automate</h4>
+              <h4 className="font-display text-2xl font-bold text-base-dark mb-2">Launch</h4>
               <p className="font-mono text-xs text-accent-orange uppercase tracking-wider mb-4">2–3 Days</p>
-              <p className="text-gray-600 text-sm leading-relaxed">We deploy the site, set up your lead capture forms, configure automated email sequences and CRM integrations, ensure SEO basics are set, and hand you the keys.</p>
+              <p className="text-gray-600 text-sm leading-relaxed">Final polish, deploy, SEO basics, forms set up. Handover and training so you can manage your own site — then we hand you the keys.</p>
             </div>
           </div>
 
