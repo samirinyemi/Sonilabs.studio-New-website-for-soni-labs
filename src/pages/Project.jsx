@@ -523,6 +523,31 @@ export default function ProjectPage() {
         description={project.paragraphs?.introPractice || `${project.name} — a Soni Labs case study covering ${(project.services || []).join(', ').toLowerCase()}.`}
         ogType="article"
         ogImage={project.assets?.cover || project.assets?.hero1}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: project.name,
+            url: `https://sonilabs.studio/work/${slug}`,
+            description: project.paragraphs?.introPractice || `${project.name} case study by Soni Labs.`,
+            creator: {
+              '@type': 'Organization',
+              name: 'Soni Labs',
+              url: 'https://sonilabs.studio',
+            },
+            keywords: (project.services || []).join(', '),
+            image: project.assets?.cover ? `https://sonilabs.studio${project.assets.cover}` : undefined,
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sonilabs.studio/' },
+              { '@type': 'ListItem', position: 2, name: 'Projects', item: 'https://sonilabs.studio/projects' },
+              { '@type': 'ListItem', position: 3, name: project.name, item: `https://sonilabs.studio/work/${slug}` },
+            ],
+          },
+        ]}
       />
       {/* ── Top bar — back button only ───────────────────────────────── */}
       <div className="max-w-[1600px] mx-auto px-4 md:px-6 pt-8 md:pt-10">

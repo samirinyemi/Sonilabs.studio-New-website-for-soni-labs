@@ -15,7 +15,15 @@ export default function SEO({
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
   noIndex = false,
+  jsonLd = null,
 }) {
+  // jsonLd: one object or an array of schema.org JSON-LD objects to
+  // inject into <head> as additional structured data. Used by per-project
+  // pages to declare CreativeWork + Breadcrumb schemas on top of the
+  // Organization schema in index.html.
+  const jsonLdScripts = jsonLd
+    ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd])
+    : []
   const fullTitle = title
     ? (title.endsWith(SITE_NAME) ? title : `${title} — ${SITE_NAME}`)
     : `${SITE_NAME} — Brand, product, and websites, built under one roof.`
@@ -39,6 +47,12 @@ export default function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+
+      {jsonLdScripts.map((schema, i) => (
+        <script key={i} type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      ))}
     </Helmet>
   )
 }

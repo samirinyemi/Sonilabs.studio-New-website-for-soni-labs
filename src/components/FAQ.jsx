@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { Helmet } from 'react-helmet-async'
 import { useSanityData } from '../hooks/useSanityData'
 import { prefersReducedMotion } from '../utils/motion'
 
@@ -106,8 +107,23 @@ export default function FAQ() {
     }
   }, [activeIndex])
 
+  // FAQPage schema lets Google show these as a rich snippet directly
+  // in search results — high-value SEO addition for studio sites.
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqData.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
+
   return (
     <section ref={sectionRef} id="faq" className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
       <div className="faq-container max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
         {/* Left column — title + subtitle */}
         <div className="md:col-span-6">

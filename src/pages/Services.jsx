@@ -84,6 +84,54 @@ export default function ServicesPage() {
         title="Services & pricing"
         path="/services"
         description="Three ways to work with Soni Labs: Brand + Website, Product Design, and the Design Partner retainer. Pricing, timelines, and what's included."
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Brand + Website',
+            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
+            description: 'Brand identity + production website for founders launching or rebranding. Typically 4–6 weeks.',
+            serviceType: 'Brand and web design',
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'USD',
+              price: '2500',
+              description: 'Essential tier starts at $2,500. Enterprise tier $4,500.',
+            },
+            areaServed: 'Worldwide',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Product Design (UI/UX)',
+            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
+            description: 'UI/UX design for startups scaling a digital product. Hand-off to your engineering team. Typically 6–10 weeks.',
+            serviceType: 'Product design',
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'USD',
+              price: '3500',
+              description: 'Starting from $3,500, depending on scope.',
+            },
+            areaServed: 'Worldwide',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Design Partner (retainer)',
+            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
+            description: 'A dedicated senior designer embedded in your team across brand, web, and product. 3-month minimum.',
+            serviceType: 'Design partnership',
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'USD',
+              price: '3000',
+              priceSpecification: { '@type': 'UnitPriceSpecification', price: '3000', priceCurrency: 'USD', billingDuration: 'P1M' },
+              description: 'From $3,000/month, or $2,800/month with a 3+ month commitment.',
+            },
+            areaServed: 'Worldwide',
+          },
+        ]}
       />
       {/* ── Page hero with brand guideline video — native aspect 3654×2160 ─ */}
       <section className="w-full pt-2 md:pt-4 pb-0 px-4 md:px-6">
