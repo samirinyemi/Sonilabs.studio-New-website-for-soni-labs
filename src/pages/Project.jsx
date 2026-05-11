@@ -271,6 +271,7 @@ function Media({ src, alt, aspect = 'aspect-[16/9]', className = '', objectClass
       {isVideo ? (
         <video
           ref={elRef}
+          autoPlay
           muted
           loop
           playsInline

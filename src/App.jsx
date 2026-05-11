@@ -1,6 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from './components/Navbar'
@@ -117,23 +116,35 @@ function AppLayout() {
 export default function App() {
   useEffect(() => {
     if (prefersReducedMotion()) return
+    // Skip Lenis on touch / coarse-pointer devices. Native mobile scroll
+    // is already silky-smooth and adding a wheel-based smooth-scroll
+    // library on top fights iOS's momentum scrolling, eats battery, and
+    // costs ~20KB of JS we shouldn't ship to phones.
+    if (typeof window !== 'undefined' &&
+        window.matchMedia('(hover: none), (pointer: coarse)').matches) return
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
+    let lenis
+    let cleanedUp = false
+    // Defer the Lenis import until after first paint so it doesn't block
+    // hydration. Keeps the initial bundle ~20KB lighter.
+    import('lenis').then(({ default: Lenis }) => {
+      if (cleanedUp) return
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      })
+      lenis.on('scroll', ScrollTrigger.update)
+      gsap.ticker.add((time) => { lenis.raf(time * 1000) })
+      gsap.ticker.lagSmoothing(0)
     })
-
-    lenis.on('scroll', ScrollTrigger.update)
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-    gsap.ticker.lagSmoothing(0)
 
     return () => {
-      gsap.ticker.remove(lenis.raf)
-      lenis.destroy()
+      cleanedUp = true
+      if (lenis) {
+        gsap.ticker.remove(lenis.raf)
+        lenis.destroy()
+      }
     }
   }, [])
 
