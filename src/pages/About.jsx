@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { prefersReducedMotion } from '../utils/motion'
 import { isSlowOrMeteredConnection } from '../utils/network'
+import { VideoSources } from '../utils/videoSources'
 
 const CALENDLY_URL = 'https://calendly.com/madebysoni/30min'
 const FOUNDER_BASE = `${import.meta.env.BASE_URL}Founders%20images/`
@@ -203,7 +204,6 @@ export default function AboutPage() {
         <div className="max-w-[1600px] mx-auto">
           <div className="ap-hero-video relative w-full aspect-[3654/2160] overflow-hidden bg-base-dark">
             <video
-              src={`${import.meta.env.BASE_URL}SONI%20Guildline%20animate.mp4`}
               autoPlay={autoplay}
               muted
               loop
@@ -212,7 +212,9 @@ export default function AboutPage() {
               preload="metadata"
               aria-hidden={autoplay ? 'true' : undefined}
               className="absolute inset-0 w-full h-full object-cover"
-            />
+            >
+              <VideoSources src={`${import.meta.env.BASE_URL}SONI%20Guildline%20animate.mp4`} />
+            </video>
           </div>
         </div>
       </section>

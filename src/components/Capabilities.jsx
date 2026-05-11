@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { prefersReducedMotion } from '../utils/motion'
 import { isSlowOrMeteredConnection } from '../utils/network'
+import { VideoSources } from '../utils/videoSources'
 
 const whatWeDo = [
   'Web design',
@@ -100,7 +101,6 @@ export default function Capabilities() {
         {/* Launch showreel — 16:9 to match the source video (3840×2160) */}
         <div className="cap-showreel relative w-full aspect-video overflow-hidden bg-base-dark mb-20 md:mb-32">
           <video
-            src={`${import.meta.env.BASE_URL}shoreel%20for%20initial%20launch.mp4`}
             autoPlay={autoplay}
             muted
             loop
@@ -109,7 +109,9 @@ export default function Capabilities() {
             preload="metadata"
             aria-hidden={autoplay ? 'true' : undefined}
             className="absolute inset-0 w-full h-full object-cover"
-          />
+          >
+            <VideoSources src={`${import.meta.env.BASE_URL}shoreel%20for%20initial%20launch.mp4`} />
+          </video>
         </div>
 
         {/* How we do it — expanded disciplines */}

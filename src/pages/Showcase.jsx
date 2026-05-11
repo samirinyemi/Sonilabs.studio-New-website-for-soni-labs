@@ -7,6 +7,7 @@ import Lenis from 'lenis'
 import { LayoutGrid, LayoutList, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { prefersReducedMotion } from '../utils/motion'
 import { loadShowcaseState, saveShowcaseState } from '../utils/showcaseSession'
+import { VideoSources } from '../utils/videoSources'
 
 
 // Real media. Each item's `w`/`h` are the asset's native pixel dimensions —
@@ -129,13 +130,14 @@ function ItemMedia({ item }) {
     return (
       <video
         ref={videoRef}
-        src={mediaSrc(item.file)}
         loop
         muted
         playsInline
         preload="metadata"
         className="block w-full h-full object-cover pointer-events-none"
-      />
+      >
+        <VideoSources src={mediaSrc(item.file)} />
+      </video>
     )
   }
   return (
@@ -760,13 +762,14 @@ function Lightbox({ open, items, index, onClose, onPrev, onNext }) {
         {item.type === 'video' ? (
           <video
             key={item.id}
-            src={mediaSrc(item.file)}
             autoPlay
             muted
             loop
             playsInline
             className="block w-full h-full object-cover"
-          />
+          >
+            <VideoSources src={mediaSrc(item.file)} />
+          </video>
         ) : (
           <img
             src={mediaSrc(item.file)}

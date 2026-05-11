@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import ServicesSection from '../components/Services'
 import { prefersReducedMotion } from '../utils/motion'
 import { isSlowOrMeteredConnection } from '../utils/network'
+import { VideoSources } from '../utils/videoSources'
 
 const whatWeDo = [
   'Web design',
@@ -84,7 +85,6 @@ export default function ServicesPage() {
         <div className="max-w-[1600px] mx-auto">
           <div className="relative w-full aspect-[3654/2160] overflow-hidden bg-base-dark">
             <video
-              src={`${import.meta.env.BASE_URL}brand%20Guidline.mp4`}
               autoPlay={autoplay}
               muted
               loop
@@ -93,7 +93,9 @@ export default function ServicesPage() {
               preload="metadata"
               aria-hidden={autoplay ? 'true' : undefined}
               className="absolute inset-0 w-full h-full object-cover"
-            />
+            >
+              <VideoSources src={`${import.meta.env.BASE_URL}brand%20Guidline.mp4`} />
+            </video>
           </div>
         </div>
       </section>

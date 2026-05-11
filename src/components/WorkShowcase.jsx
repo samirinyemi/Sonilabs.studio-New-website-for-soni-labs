@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { VideoSources } from '../utils/videoSources'
 
 // Two rows, two cards each. Original proportional widths preserved via
 // grid-template-columns ratios (so cards fill the row width while keeping
@@ -57,7 +58,6 @@ function CardBody({ project }) {
       <div className={`relative w-full ${project.aspect || project.height} bg-card-soft overflow-hidden`}>
         {project.coverVideo ? (
           <video
-            src={project.coverVideo}
             autoPlay
             muted
             loop
@@ -65,7 +65,9 @@ function CardBody({ project }) {
             preload="metadata"
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
-          />
+          >
+            <VideoSources src={project.coverVideo} />
+          </video>
         ) : project.coverImage ? (
           <img
             src={project.coverImage}

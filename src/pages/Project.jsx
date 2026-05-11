@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChevronLeft, ArrowRight } from 'lucide-react'
 import { prefersReducedMotion } from '../utils/motion'
+import { VideoSources } from '../utils/videoSources'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -270,14 +271,15 @@ function Media({ src, alt, aspect = 'aspect-[16/9]', className = '', objectClass
       {isVideo ? (
         <video
           ref={elRef}
-          src={src}
           muted
           loop
           playsInline
           preload="metadata"
           aria-hidden="true"
           className={`absolute inset-0 w-full h-full ${objectClassName}`}
-        />
+        >
+          <VideoSources src={src} />
+        </video>
       ) : src ? (
         <img
           src={src}
@@ -874,7 +876,6 @@ export default function ProjectPage() {
                   <div className={`relative w-full ${p.cardAspect || p.cardHeight} bg-card-soft overflow-hidden transition-colors duration-300 group-hover:bg-base-light`}>
                     {p.assets?.coverV ? (
                       <video
-                        src={p.assets.coverV}
                         autoPlay
                         muted
                         loop
@@ -882,7 +883,9 @@ export default function ProjectPage() {
                         preload="metadata"
                         aria-hidden="true"
                         className="absolute inset-0 w-full h-full object-cover"
-                      />
+                      >
+                        <VideoSources src={p.assets.coverV} />
+                      </video>
                     ) : p.assets?.cover ? (
                       <img
                         src={p.assets.cover}
