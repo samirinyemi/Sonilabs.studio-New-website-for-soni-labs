@@ -138,7 +138,7 @@ export default function App() {
   }, [])
 
   return (
-    <BrowserRouter basename="/soni-labs-studio">
+    <BrowserRouter>
       <AppLayout />
     </BrowserRouter>
   )
