@@ -110,7 +110,7 @@ export default function Capabilities() {
             aria-hidden={autoplay ? 'true' : undefined}
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <VideoSources src={`${import.meta.env.BASE_URL}shoreel%20for%20initial%20launch.mp4`} />
+            <VideoSources src={`${import.meta.env.BASE_URL}showreel.mp4`} />
           </video>
         </div>
 
