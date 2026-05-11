@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { prefersReducedMotion } from '../utils/motion'
+import SEO from '../components/SEO'
 
 // Each engagement type has its own cadence. The home page renders only the
 // Brand + Website timeline (via <ProcessAlt />); the dedicated /process page
@@ -122,6 +123,11 @@ export default function ApproachPage() {
 
   return (
     <div ref={containerRef}>
+      <SEO
+        title="Our approach"
+        path="/approach"
+        description="How Soni Labs runs Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
+      />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
       {/* Hero image — Processes.png. Container aspect (40:11) matches the

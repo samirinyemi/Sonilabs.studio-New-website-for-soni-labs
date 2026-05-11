@@ -71,7 +71,7 @@ function CardBody({ project }) {
         ) : project.coverImage ? (
           <img
             src={project.coverImage}
-            alt={project.name}
+            alt={`${project.name} — brand and product design case study by Soni Labs`}
             loading="lazy"
             decoding="async"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] group-focus-within:scale-[1.03]"

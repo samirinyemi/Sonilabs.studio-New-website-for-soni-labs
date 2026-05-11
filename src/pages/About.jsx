@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { prefersReducedMotion } from '../utils/motion'
 import { isSlowOrMeteredConnection } from '../utils/network'
 import { VideoSources } from '../utils/videoSources'
+import SEO from '../components/SEO'
 
 const CALENDLY_URL = 'https://calendly.com/madebysoni/30min'
 const FOUNDER_BASE = `${import.meta.env.BASE_URL}Founders%20images/`
@@ -176,6 +177,11 @@ export default function AboutPage() {
 
   return (
     <div ref={containerRef}>
+      <SEO
+        title="About the studio"
+        path="/about"
+        description="Soni Labs is a senior design studio led by Samuel Irinyemi, based in Lagos and working with founders and product teams worldwide on brand, product, and web."
+      />
       <h1 className="sr-only">About — Soni Labs Studio</h1>
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}

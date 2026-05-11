@@ -5,6 +5,7 @@ import ServicesSection from '../components/Services'
 import { prefersReducedMotion } from '../utils/motion'
 import { isSlowOrMeteredConnection } from '../utils/network'
 import { VideoSources } from '../utils/videoSources'
+import SEO from '../components/SEO'
 
 const whatWeDo = [
   'Web design',
@@ -79,6 +80,11 @@ export default function ServicesPage() {
 
   return (
     <div ref={containerRef}>
+      <SEO
+        title="Services & pricing"
+        path="/services"
+        description="Three ways to work with Soni Labs: Brand + Website, Product Design, and the Design Partner retainer. Pricing, timelines, and what's included."
+      />
       {/* ── Page hero with brand guideline video — native aspect 3654×2160 ─ */}
       <section className="w-full pt-2 md:pt-4 pb-0 px-4 md:px-6">
         <h1 className="sr-only">Pricing &amp; Engagements — Soni Labs Studio</h1>

@@ -1,0 +1,9 @@
+# Allow all crawlers to index the site
+User-agent: *
+Allow: /
+
+# Disallow Vercel preview/internal paths if any
+Disallow: /api/
+
+# Point crawlers at the sitemap for efficient discovery
+Sitemap: https://sonilabs.studio/sitemap.xml

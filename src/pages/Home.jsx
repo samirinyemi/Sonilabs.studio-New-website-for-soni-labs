@@ -8,6 +8,7 @@ import ProcessAlt from '../components/ProcessAlt'
 import WorkShowcase from '../components/WorkShowcase'
 import Contact from '../components/Contact'
 import { schedulePrefetchOnIdle } from '../utils/showcasePrefetch'
+import SEO from '../components/SEO'
 
 // FAQ pulls in @sanity/client (~50KB gz). Code-split it so it only loads
 // when the homepage actually mounts the section.
@@ -33,6 +34,10 @@ export default function Home() {
 
   return (
     <>
+      <SEO
+        path="/"
+        description="Senior design studio for founders, startups, and product teams. Brand, product, and websites from one studio — no fragmented handoffs."
+      />
       <Hero />
       <Showreel />
       <WhatWeDo />

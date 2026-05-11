@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChevronLeft, ArrowRight } from 'lucide-react'
 import { prefersReducedMotion } from '../utils/motion'
 import { VideoSources } from '../utils/videoSources'
+import SEO from './../components/SEO'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -238,14 +239,33 @@ function manifestoWords(text, keyPrefix) {
 // Renders an <img> or <video> based on file extension. Videos pause when
 // off-screen via IntersectionObserver so a long page with many videos
 // stays light on CPU.
+// Maps slug → friendly project name so Media can auto-build meaningful
+// alt text from a src URL. Used as a fallback when the caller doesn't
+// supply an explicit alt prop. Names match the keys in `projects` below.
+const PROJECT_DISPLAY_NAMES = {
+  'julian-mercier': 'Julian Mercier Architectural Practice',
+  'australia-medical-association-victoria': 'Australia Medical Association Victoria',
+  'time-bmx': 'Time BMX',
+  'mecash': 'meCash',
+}
+
+function altFromSrc(src) {
+  if (!src) return 'Project image'
+  const m = src.match(/\/([^\/]+)\/([^\/.]+)/)
+  if (!m) return 'Project image'
+  const projectName = PROJECT_DISPLAY_NAMES[m[1]] || m[1].replace(/-/g, ' ')
+  return `${projectName} — case study visual`
+}
+
 function Media({ src, alt, aspect = 'aspect-[16/9]', className = '', objectClassName = 'object-cover' }) {
   const elRef = useRef(null)
   const isVideo = /\.(mp4|webm)$/i.test(src || '')
-  // Sensible default alt — for a portfolio page where the page heading
-  // already names the project, generic "Project image" is preferable to
-  // an empty alt (which marks an image as decorative and skips it).
+  // If the caller didn't pass alt, derive a project-aware fallback from
+  // the src URL (e.g., "Julian Mercier Architectural Practice — case
+  // study visual") so screen readers + Google get meaningful context
+  // instead of the generic "Project image" placeholder we used before.
   // Videos are aria-hidden so they don't need alt.
-  const a11yAlt = alt ?? 'Project image'
+  const a11yAlt = alt ?? altFromSrc(src)
 
   useEffect(() => {
     if (!isVideo) return
@@ -497,6 +517,13 @@ export default function ProjectPage() {
 
   return (
     <div ref={containerRef} className={`w-full overflow-x-hidden ${project.pageBg || 'bg-white'}`}>
+      <SEO
+        title={project.name}
+        path={`/work/${slug}`}
+        description={project.paragraphs?.introPractice || `${project.name} — a Soni Labs case study covering ${(project.services || []).join(', ').toLowerCase()}.`}
+        ogType="article"
+        ogImage={project.assets?.cover || project.assets?.hero1}
+      />
       {/* ── Top bar — back button only ───────────────────────────────── */}
       <div className="max-w-[1600px] mx-auto px-4 md:px-6 pt-8 md:pt-10">
         <BackButton />

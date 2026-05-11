@@ -8,6 +8,7 @@ import { LayoutGrid, LayoutList, X, ChevronLeft, ChevronRight } from 'lucide-rea
 import { prefersReducedMotion } from '../utils/motion'
 import { loadShowcaseState, saveShowcaseState } from '../utils/showcaseSession'
 import { VideoSources } from '../utils/videoSources'
+import SEO from '../components/SEO'
 
 
 // Real media. Each item's `w`/`h` are the asset's native pixel dimensions —
@@ -143,7 +144,7 @@ function ItemMedia({ item }) {
   return (
     <img
       src={mediaSrc(item.file)}
-      alt={`${item.id} ${item.name}`}
+      alt={`${item.name.charAt(0).toUpperCase() + item.name.slice(1)} — design concept by Soni Labs`}
       loading="lazy"
       decoding="async"
       className="block w-full h-full object-cover pointer-events-none"
@@ -773,7 +774,7 @@ function Lightbox({ open, items, index, onClose, onPrev, onNext }) {
         ) : (
           <img
             src={mediaSrc(item.file)}
-            alt={`${item.id} ${item.name}`}
+            alt={`${item.name.charAt(0).toUpperCase() + item.name.slice(1)} — design concept by Soni Labs`}
             className="block w-full h-full object-cover"
           />
         )}
@@ -834,6 +835,11 @@ export default function ShowcasePage() {
 
   return (
     <>
+      <SEO
+        title="Showcase"
+        path="/showcase"
+        description="Brand and product design from Soni Labs — case work and concept explorations across editorial, fintech, hospitality, and sport."
+      />
       <h1 className="sr-only">Showcase — Soni Labs Studio</h1>
 
       {/* Keyboard skip-link — lets keyboard users jump past the long pan
