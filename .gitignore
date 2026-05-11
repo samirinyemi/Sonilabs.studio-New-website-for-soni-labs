@@ -24,3 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 .claude/settings.local.json
+
+# Personal / work-in-progress files (not part of the shipped site)
+public/INVOICE*.pdf
+Changes/
+Video/
+.impeccable/
+**/.__capcut*

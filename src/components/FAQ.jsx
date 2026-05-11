@@ -1,21 +1,45 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useSanityData } from '../hooks/useSanityData'
+import { prefersReducedMotion } from '../utils/motion'
 
 const fallbackFaqData = [
-  { question: 'How do payments work?', answer: '50% upfront before work begins, 50% on delivery. We accept international transfers via Wise or direct bank transfer.' },
-  { question: "What's the typical timeline?", answer: 'Most projects go from first call to live site in 2–4 weeks depending on scope.' },
-  { question: 'Do you work with international clients?', answer: 'Yes, most clients are based in the US, Australia, UK, and Europe. We work fully remote and async-friendly.' },
-  { question: 'What if I need changes after launch?', answer: 'Every project includes one round of revisions. Additional changes can be scoped separately or covered under a retainer.' },
-  { question: 'What tech stack do you use?', answer: 'Figma for design. Framer, Webflow, or Wix Studio for development. AI-assisted development for faster delivery.' },
-  { question: 'Can you help with ongoing design work?', answer: 'Yes, the Embedded Design Partner retainer is built for exactly that.' },
+  {
+    question: 'Which package is right for me?',
+    answer: 'If you’re starting from scratch or rebranding, start with Brand + Website. If you already have a brand and need a digital product designed (UI/UX for your engineering team to build), that’s Product Design. If you have ongoing design needs and don’t want to hire full-time, the Design Partner retainer covers everything across brand, web, and product.',
+  },
+  {
+    question: 'What platforms do you build on?',
+    answer: 'Marketing sites: Framer, Webflow, or Wix Studio, depending on your CMS and team setup. For digital products, we design the UI/UX and hand off to your engineering team. We can work inside your existing stack and tooling.',
+  },
+  {
+    question: 'What does the Design Partner retainer include month to month?',
+    answer: 'A dedicated senior designer working as part of your team. Typically 30–40 hours of design output per week across product features, marketing pages, and brand assets. We use your tools, join your standups, and operate on your roadmap.',
+  },
+  {
+    question: 'Can you work with my existing brand guidelines?',
+    answer: 'Yes. If you already have a brand system, we work inside it. If your guidelines are thin, we extend them as we go.',
+  },
+  {
+    question: 'How do payments work?',
+    answer: 'Project work: 50% to start, 50% on delivery. Retainers: invoiced monthly in advance. We work in USD or NGN.',
+  },
+  {
+    question: 'Do you offer revisions?',
+    answer: 'Two rounds are built into project work. Retainer clients work iteratively, so revisions happen continuously rather than in formal rounds.',
+  },
+  {
+    question: 'How do we get started?',
+    answer: 'Book a strategy call. We’ll diagnose what you need (no pitch, no pressure) and either propose a package or recommend a different path.',
+  },
 ]
 
 const FAQ_QUERY = `*[_type == "faq"] | order(order asc) { question, answer }`
 
 export default function FAQ() {
-  const [activeIndex, setActiveIndex] = useState(null)
+  // First question is open by default — matches the layout in the spec.
+  const [activeIndex, setActiveIndex] = useState(0)
   const sectionRef = useRef(null)
   const contentRefs = useRef([])
   const iconRefs = useRef([])
@@ -23,11 +47,23 @@ export default function FAQ() {
   const { data: faqData } = useSanityData(FAQ_QUERY, fallbackFaqData)
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return
     gsap.from('.faq-container', {
       y: 60, opacity: 0, duration: 0.9, ease: 'power3.out',
       scrollTrigger: { trigger: '.faq-container', start: 'top 85%', toggleActions: 'play none none reverse' },
     })
   }, { scope: sectionRef })
+
+  // Open the first item's panel on mount so it matches the default
+  // active state (without this the height stays 0 from the inline style).
+  useEffect(() => {
+    if (activeIndex == null) return
+    const el = contentRefs.current[activeIndex]
+    const icon = iconRefs.current[activeIndex]
+    if (el) gsap.set(el, { height: 'auto', opacity: 1 })
+    if (icon) gsap.set(icon, { rotation: 180 })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const toggle = useCallback((i) => {
     if (isAnimating.current) return
@@ -38,114 +74,93 @@ export default function FAQ() {
     const isOpening = activeIndex !== i
 
     if (isOpening) {
-      // Close currently open item first
+      // Close the previously open item first.
       if (activeIndex !== null) {
         const prevContent = contentRefs.current[activeIndex]
         const prevIcon = iconRefs.current[activeIndex]
-
-        gsap.to(prevContent, {
-          height: 0,
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power3.inOut',
-        })
-        gsap.to(prevIcon, {
-          rotation: 0,
-          duration: 0.3,
-          ease: 'power2.inOut',
-        })
+        gsap.to(prevContent, { height: 0, opacity: 0, duration: 0.4, ease: 'power3.inOut' })
+        gsap.to(prevIcon, { rotation: 0, duration: 0.3, ease: 'power2.inOut' })
       }
 
-      // Open the new item
-      // Set height to auto to measure, then animate from 0
       gsap.set(contentEl, { height: 'auto', opacity: 1 })
       const fullHeight = contentEl.scrollHeight
       gsap.fromTo(contentEl,
         { height: 0, opacity: 0 },
         {
-          height: fullHeight,
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power3.out',
+          height: fullHeight, opacity: 1, duration: 0.5, ease: 'power3.out',
           onComplete: () => {
             gsap.set(contentEl, { height: 'auto' })
             isAnimating.current = false
           },
         }
       )
-      gsap.to(iconEl, {
-        rotation: 180,
-        duration: 0.4,
-        ease: 'back.out(1.7)',
-      })
-
+      gsap.to(iconEl, { rotation: 180, duration: 0.4, ease: 'power2.out' })
       setActiveIndex(i)
     } else {
-      // Close the current item
       gsap.to(contentEl, {
-        height: 0,
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power3.inOut',
-        onComplete: () => {
-          isAnimating.current = false
-        },
+        height: 0, opacity: 0, duration: 0.4, ease: 'power3.inOut',
+        onComplete: () => { isAnimating.current = false },
       })
-      gsap.to(iconEl, {
-        rotation: 0,
-        duration: 0.3,
-        ease: 'power2.inOut',
-      })
-
+      gsap.to(iconEl, { rotation: 0, duration: 0.3, ease: 'power2.inOut' })
       setActiveIndex(null)
     }
   }, [activeIndex])
 
   return (
-    <section ref={sectionRef} id="faq" className="w-full py-20 md:py-40 px-4 md:px-6 bg-[#FAFAFA] border-t border-base-border">
-      <div className="faq-container max-w-7xl mx-auto border border-base-border rounded-[12px] overflow-hidden">
-        <div className="flex flex-col">
-          {/* Header */}
-          <div className="p-8 border-b border-base-border flex flex-col justify-center bg-[#FAFAFA]">
-            <p className="font-mono text-sm font-bold uppercase tracking-widest text-base-dark mb-2">
-              <span className="text-accent-orange mr-2">&#9642;</span>Most Common Questions
-            </p>
-            <p className="text-gray-500 text-sm font-mono lowercase">No worries, here you can find all the answers</p>
-          </div>
+    <section ref={sectionRef} id="faq" className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <div className="faq-container max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
+        {/* Left column — title + subtitle */}
+        <div className="md:col-span-6">
+          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight mb-5">
+            FAQs
+          </h2>
+          <p className="text-gray-500 text-base leading-relaxed max-w-xs">
+            Quick answers about our process, timelines, and how we typically work with new clients.
+          </p>
+        </div>
 
-          {/* Accordion */}
-          <div className="flex flex-col w-full bg-[#FAFAFA]">
+        {/* Right column — list of questions. Half-width to match the
+            Design Partner card on the pricing layout. */}
+        <div className="md:col-span-6">
+          <ul className="border-t border-base-border">
             {faqData.map((item, i) => (
-              <div key={i} className={`${i < faqData.length - 1 ? 'border-b border-base-border' : ''} w-full`}>
-                <button
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#E0E0E0] transition-colors duration-200 focus:outline-none"
-                  onClick={() => toggle(i)}
-                  aria-expanded={activeIndex === i}
-                  aria-controls={`faq-answer-${i}`}
-                >
-                  <span className="font-mono text-sm font-medium text-base-dark w-11/12">{item.question}</span>
-                  <div
-                    ref={(el) => (iconRefs.current[i] = el)}
-                    className="w-8 h-8 bg-accent-orange text-white flex items-center justify-center rounded-sm shrink-0"
+              <li key={i} className="border-b border-base-border">
+                <h3 className="m-0">
+                  <button
+                    type="button"
+                    onClick={() => toggle(i)}
+                    aria-expanded={activeIndex === i}
+                    aria-controls={`faq-answer-${i}`}
+                    className="w-full flex items-center justify-between gap-6 py-5 md:py-6 text-left text-base-dark hover:text-base-dark/80 transition-colors"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="12" y1="5" x2="12" y2="19" className="faq-plus-vertical" style={{ transformOrigin: 'center', opacity: activeIndex === i ? 0 : 1 }} />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                  </div>
-                </button>
+                    <span className="font-display text-base md:text-lg font-medium leading-snug">
+                      {item.question}
+                    </span>
+                    <span
+                      ref={(el) => (iconRefs.current[i] = el)}
+                      className="shrink-0 inline-flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </button>
+                </h3>
                 <div
                   ref={(el) => (contentRefs.current[i] = el)}
                   id={`faq-answer-${i}`}
                   role="region"
-                  className="overflow-hidden px-6 text-sm text-gray-600 font-sans max-w-3xl"
+                  className="overflow-hidden"
                   style={{ height: 0, opacity: 0 }}
                 >
-                  <p className="pb-6">{item.answer}</p>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed pb-6 max-w-2xl">
+                    {item.answer}
+                  </p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

@@ -1,144 +1,954 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect, useLayoutEffect, useId } from 'react'
+import { createPortal } from 'react-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { prefersReducedMotion } from '../utils/motion'
 
-export default function Services() {
+const CALENDLY_URL = 'https://calendly.com/madebysoni/30min'
+
+// ── Popover (used for "What's included") ───────────────────────────────
+// Renders via React portal into document.body so it can layer above any
+// stacking context. Position is computed from the trigger's bounding rect
+// at open time and on resize. Horizontally clamped to viewport.
+function CardPopover({ triggerLabel, triggerIcon, children, variant }) {
+  const [open, setOpen] = useState(false)
+  const [coords, setCoords] = useState({ top: 0, left: 0 })
+  const triggerRef = useRef(null)
+  const popoverRef = useRef(null)
+
+  const updatePosition = () => {
+    if (!triggerRef.current) return
+    const triggerRect = triggerRef.current.getBoundingClientRect()
+    const margin = 16
+    const popoverWidth = popoverRef.current?.offsetWidth ?? 0
+    const minLeft = margin
+    const maxLeft = window.innerWidth - popoverWidth - margin
+    const clampedLeft = Math.max(minLeft, Math.min(triggerRect.left, maxLeft))
+    setCoords({
+      top: triggerRect.bottom + window.scrollY + 12,
+      left: clampedLeft + window.scrollX,
+    })
+  }
+
+  useEffect(() => {
+    if (!open) return
+    updatePosition()
+
+    const handleClick = (e) => {
+      const inTrigger = triggerRef.current && triggerRef.current.contains(e.target)
+      const inPopover = popoverRef.current && popoverRef.current.contains(e.target)
+      if (!inTrigger && !inPopover) setOpen(false)
+    }
+    // Esc closes; Tab cycles focus inside the popover so keyboard users
+    // can read its contents without escaping back to the underlying page.
+    const handleKey = (e) => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        triggerRef.current?.focus()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const popover = popoverRef.current
+      if (!popover) return
+      const focusables = popover.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])')
+      // Whether or not the popover has interactive descendants, keep Tab
+      // looping by anchoring focus to the trigger button (always reachable).
+      const cycle = [triggerRef.current, ...focusables].filter(Boolean)
+      if (cycle.length <= 1) return
+      const first = cycle[0]
+      const last = cycle[cycle.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    const handleResize = () => updatePosition()
+
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (popoverRef.current) {
+      gsap.set(popoverRef.current, { opacity: 0, y: -6, scale: 0.97, pointerEvents: 'none' })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!popoverRef.current) return
+    if (open) {
+      gsap.to(popoverRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: 'power2.out', pointerEvents: 'auto' })
+    } else {
+      gsap.to(popoverRef.current, { opacity: 0, y: -6, scale: 0.97, duration: 0.16, ease: 'power2.in', pointerEvents: 'none' })
+    }
+  }, [open])
+
+  const triggerColors = {
+    dark:  'border-white/20 text-white hover:border-accent-red hover:text-accent-red',
+    light: 'border-base-border text-base-dark hover:border-accent-red hover:text-accent-red',
+  }[variant]
+
+  const popoverSurface = variant === 'dark'
+    ? 'bg-white border-white text-base-dark'
+    : 'bg-base-dark border-base-dark text-gray-100'
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-mono uppercase tracking-wider transition-colors ${triggerColors}`}
+      >
+        {triggerIcon}
+        {triggerLabel}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12" height="12" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {createPortal(
+        <div
+          ref={popoverRef}
+          role="dialog"
+          aria-label={triggerLabel}
+          className={`absolute z-[60] w-80 sm:w-[26rem] max-w-[calc(100vw-2.5rem)] max-h-[70vh] overflow-y-auto p-6 rounded-[12px] border ${popoverSurface}`}
+          style={{ opacity: 0, top: `${coords.top}px`, left: `${coords.left}px` }}
+        >
+          {children}
+        </div>,
+        document.body
+      )}
+    </>
+  )
+}
+
+// ── Inline accordion (full-width row at the bottom of each card) ───────
+// Sits inside the card's content padding — the divider, click target, and
+// expanded content all align with the rest of the card's content.
+//
+// While hovered with a mouse, the native cursor is hidden and a small
+// "Show" / "Hide" label follows the pointer. Touch devices skip this and
+// fall back to the default pointer cursor.
+function CardAccordion({ triggerLabel, openLabel, triggerIcon, children, variant }) {
+  const [open, setOpen] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const contentRef = useRef(null)
+  const labelRef = useRef(null)
+  const isAnimating = useRef(false)
+  // Stable id ties the trigger to the panel via aria-controls / id so
+  // assistive tech can navigate between them.
+  const panelId = useId()
+
+  // Track mouse position only while hovered. Updates the label's transform
+  // imperatively (no re-render). The trailing translate(-50%, -50%) centers
+  // the label on the cursor position so it feels like the label *is* the
+  // cursor rather than something tagging along beside it.
+  useEffect(() => {
+    if (!hovered) return
+    const handle = (e) => {
+      if (!labelRef.current) return
+      labelRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`
+    }
+    window.addEventListener('mousemove', handle)
+    return () => window.removeEventListener('mousemove', handle)
+  }, [hovered])
+
+  const toggle = () => {
+    if (isAnimating.current) return
+    const el = contentRef.current
+    if (!el) return
+    isAnimating.current = true
+
+    if (!open) {
+      gsap.set(el, { height: 'auto', opacity: 1 })
+      const fullHeight = el.scrollHeight
+      gsap.fromTo(el,
+        { height: 0, opacity: 0 },
+        {
+          height: fullHeight, opacity: 1,
+          duration: 0.5, ease: 'power3.out',
+          onComplete: () => {
+            gsap.set(el, { height: 'auto' })
+            isAnimating.current = false
+          },
+        }
+      )
+    } else {
+      gsap.to(el, {
+        height: 0, opacity: 0,
+        duration: 0.4, ease: 'power3.inOut',
+        onComplete: () => {
+          // Clear the inline height so the next open re-measures fresh
+          // scrollHeight (handles content reflow between toggles).
+          gsap.set(el, { clearProps: 'height' })
+          isAnimating.current = false
+        },
+      })
+    }
+    setOpen(!open)
+  }
+
+  const styles = {
+    dark:  {
+      border:     'border-white/10',
+      text:       'text-white',
+      labelBg:    'bg-white',
+      labelText:  'text-base-dark',
+    },
+    light: {
+      border:     'border-base-dark/10',
+      text:       'text-base-dark',
+      labelBg:    'bg-base-dark',
+      labelText:  'text-white',
+    },
+  }[variant]
+
+  return (
+    <div className={`border-t ${styles.border}`}>
+      <button
+        type="button"
+        onClick={toggle}
+        onPointerEnter={(e) => {
+          if (e.pointerType === 'touch') return
+          // Snap the label to the entry point before fading in so it never
+          // appears in a stale position from the previous hover.
+          if (labelRef.current) {
+            labelRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`
+          }
+          setHovered(true)
+        }}
+        onPointerLeave={() => setHovered(false)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className={`w-full flex items-center justify-between py-5 md:py-6 text-left ${styles.text}`}
+      >
+        <span className="flex items-center gap-3">
+          <span className="opacity-60">{triggerIcon}</span>
+          <span className="font-mono text-xs uppercase tracking-wider">
+            {open ? (openLabel ?? 'Hide process') : triggerLabel}
+          </span>
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s ease' }}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      {/* Cursor-following label — portal so it floats above all stacking contexts */}
+      {createPortal(
+        <div
+          ref={labelRef}
+          aria-hidden="true"
+          className={`fixed top-0 left-0 pointer-events-none z-[100] px-4 py-2 rounded-full ${styles.labelBg} ${styles.labelText} text-[11px] font-mono uppercase tracking-wider whitespace-nowrap transition-opacity duration-150 ${hovered ? 'opacity-100' : 'opacity-0'}`}
+          style={{ transform: 'translate3d(-9999px, -9999px, 0)' }}
+        >
+          {open ? 'Hide' : 'Show'}
+        </div>,
+        document.body
+      )}
+
+      <div
+        ref={contentRef}
+        id={panelId}
+        role="region"
+        aria-label={triggerLabel}
+        className="overflow-hidden"
+        style={{ height: 0, opacity: 0 }}
+      >
+        <div className="pb-6 md:pb-8">{children}</div>
+      </div>
+    </div>
+  )
+}
+
+// ── Trigger icons ───────────────────────────────────────────────────────
+const InfoIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="16" x2="12" y2="12" />
+    <line x1="12" y1="8" x2="12.01" y2="8" />
+  </svg>
+)
+const ClockIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+)
+
+// ── Popover content blocks ──────────────────────────────────────────────
+function IncludesContent({ items, variant }) {
+  const labelColor = variant === 'dark' ? 'text-gray-500' : 'text-gray-400'
+  return (
+    <>
+      <p className={`font-mono text-xs uppercase tracking-wider mb-4 ${labelColor}`}>Includes</p>
+      <ul className="space-y-3">
+        {items.map((item) => (
+          <li key={item} className="flex items-start gap-3 text-sm leading-relaxed">
+            <svg className="text-accent-red w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+// Two surfaces for ProcessContent:
+//  - 'card-dark' / 'card-light' — content sits on the card's own bg (accordion)
+//  - 'dark' / 'light' — content sits on an inverted surface (popover, legacy)
+function ProcessContent({ rows, title, variant, noDividers = false }) {
+  const styles = {
+    'card-dark':  { labelColor: 'text-white/50',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
+    'card-light': { labelColor: 'text-gray-500',   textColor: 'text-gray-700', borderColor: 'border-base-border' },
+    dark:         { labelColor: 'text-gray-500',   textColor: 'text-gray-700', borderColor: 'border-base-border' },
+    light:        { labelColor: 'text-gray-400',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
+  }
+  const s = styles[variant] ?? styles['card-light']
+  // When dividers are off (expanded pricing-page layout), the phase label
+  // sits inline next to the description — same tight rhythm as the
+  // includes-list check + item. With dividers on (homepage accordion),
+  // the original 120px column keeps the week labels in a clean stack.
+  const liClass = noDividers
+    ? 'flex items-baseline gap-3 leading-relaxed'
+    : `grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-1 sm:gap-6 pb-3 border-b ${s.borderColor} last:border-b-0 last:pb-0`
+
+  return (
+    <>
+      <p className={`font-mono text-xs uppercase tracking-wider mb-4 ${s.labelColor}`}>{title}</p>
+      <ul className={noDividers ? 'space-y-4' : 'space-y-3'}>
+        {rows.map(([phase, what]) => (
+          <li key={phase} className={liClass}>
+            <span className={`font-mono text-[11px] uppercase tracking-wider text-accent-red ${noDividers ? 'shrink-0' : ''}`}>
+              {phase.split('\n').map((line, i, arr) => (
+                <span key={i} className={i < arr.length - 1 ? 'block' : 'inline'}>{line}</span>
+              ))}
+            </span>
+            <span className={`text-sm leading-relaxed ${s.textColor}`}>{what}</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+// ── DARK CARD — Brand + Website (Essential / Enterprise toggle) ────────
+function BrandWebsiteCard({ expanded = false }) {
+  const [tier, setTier] = useState('essential')
+  const priceRef = useRef(null)
+  const priceValueRef = useRef(2500)
+
+  // Sliding pill background for the tier toggle. The highlight is an
+  // absolutely-positioned span; its x and width animate to match the
+  // active button on every tier change.
+  const essentialBtnRef = useRef(null)
+  const enterpriseBtnRef = useRef(null)
+  const highlightRef = useRef(null)
+  const isFirstToggleRender = useRef(true)
+
+  useLayoutEffect(() => {
+    const target = tier === 'essential' ? essentialBtnRef.current : enterpriseBtnRef.current
+    const highlight = highlightRef.current
+    if (!target || !highlight) return
+
+    const params = { x: target.offsetLeft, width: target.offsetWidth }
+
+    if (isFirstToggleRender.current || prefersReducedMotion()) {
+      isFirstToggleRender.current = false
+      gsap.set(highlight, params)
+      return
+    }
+    gsap.to(highlight, { ...params, duration: 0.4, ease: 'power3.out' })
+  }, [tier])
+
+  useEffect(() => {
+    const target = tier === 'essential' ? 2500 : 4500
+    const node = priceRef.current
+    if (!node) return
+
+    if (prefersReducedMotion()) {
+      priceValueRef.current = target
+      node.textContent = `$${target.toLocaleString()}`
+      return
+    }
+
+    const obj = { val: priceValueRef.current }
+    const tween = gsap.to(obj, {
+      val: target,
+      duration: 0.6,
+      ease: 'power2.out',
+      onUpdate: () => {
+        const v = Math.round(obj.val)
+        priceValueRef.current = v
+        node.textContent = `$${v.toLocaleString()}`
+      },
+    })
+    return () => tween.kill()
+  }, [tier])
+
+  const tiers = {
+    essential: {
+      timeline: '4 weeks',
+      includes: [
+        'Brand strategy + verbal identity',
+        'Logo, type, and colour systems',
+        'Brand guidelines document',
+        'Web design for up to 10 pages',
+        'No-code build in Framer or Wix Studio, AI-assisted',
+        'Copywriting and content structure',
+        'CMS, analytics, SEO basics, deployment',
+        '2 rounds of revisions',
+        '1-week post-launch support',
+      ],
+      process: [
+        ['Week 1', 'Discovery: strategy, audience, site map, content plan.'],
+        ['Week 2', 'Direction: visual concepts, logo, type and colour. Locked.'],
+        ['Week 3', 'System build: final identity and web design.'],
+        ['Week 4', 'Build & launch: Framer / Webflow / Wix Studio, CMS, SEO, go live.'],
+      ],
+    },
+    enterprise: {
+      timeline: '6 weeks',
+      includes: [
+        'Brand strategy + verbal identity',
+        'Logo, type, and colour systems',
+        'Brand guidelines document',
+        'Web design for up to 25 pages',
+        'No-code build in Framer, Webflow, or Wix Studio, AI-assisted',
+        'Copywriting and content structure',
+        'CMS, analytics, SEO basics, deployment',
+        'AI-assisted custom interactions and motion accents',
+        '3 rounds of revisions',
+        '2-week post-launch support',
+      ],
+      process: [
+        ['Week 1',     'Discovery: strategy, audience, site map, content plan across 25 pages.'],
+        ['Week 2',     'Direction: visual concepts, logo, type and colour. Locked.'],
+        ['Weeks\n3–4', 'System build: final identity and full web design.'],
+        ['Week 5',     'Build: Framer / Webflow / Wix Studio, CMS, AI-assisted custom interactions and motion.'],
+        ['Week 6',     'Launch: QA, deployment, 2-week post-launch support.'],
+      ],
+    },
+  }
+
+  const current = tiers[tier]
+  const process = current.process
+
+  // Pitch block — used in both expanded and collapsed renders.
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+            <polyline points="2 17 12 22 22 17" />
+            <polyline points="2 12 12 17 22 12" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">Project &middot; Flagship</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">01</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
+
+      <p className="text-gray-400 text-base md:text-lg mb-3 leading-relaxed">
+        For founders launching or rebranding a business who need identity and a live marketing site.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+        Brand design &middot; Web design &middot; No-code development &middot; AI-assisted development
+      </p>
+    </>
+  )
+
+  // Tier toggle — used by both layouts.
+  const TierToggle = (
+    <div role="tablist" aria-label="Engagement tier" className="relative inline-flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-full">
+      <span
+        ref={highlightRef}
+        aria-hidden="true"
+        className="absolute top-1 bottom-1 left-0 rounded-full bg-white pointer-events-none"
+        style={{ width: 0, willChange: 'transform, width' }}
+      />
+      <button
+        ref={essentialBtnRef}
+        type="button"
+        role="tab"
+        aria-selected={tier === 'essential'}
+        onClick={() => setTier('essential')}
+        className={`relative z-10 px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-colors duration-300 ${tier === 'essential' ? 'text-base-dark' : 'text-gray-400 hover:text-white'}`}
+      >
+        Essential
+      </button>
+      <button
+        ref={enterpriseBtnRef}
+        type="button"
+        role="tab"
+        aria-selected={tier === 'enterprise'}
+        onClick={() => setTier('enterprise')}
+        className={`relative z-10 px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-colors duration-300 ${tier === 'enterprise' ? 'text-base-dark' : 'text-gray-400 hover:text-white'}`}
+      >
+        Enterprise
+      </button>
+    </div>
+  )
+
+  const PriceBlock = (
+    <div>
+      <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Starting from</p>
+      <p ref={priceRef} className="text-3xl font-medium tabular-nums">$2,500</p>
+    </div>
+  )
+
+  const TimelineBlock = (
+    <div>
+      <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium">{current.timeline}</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-base-dark rounded-full font-medium text-sm hover:bg-base-light w-fit"
+    >
+      Book a call
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  // ── Expanded layout (pricing page) ───────────────────────────────────
+  if (expanded) {
+    return (
+      <div className="svc-card bg-base-dark text-white pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+        {Pitch}
+
+        {/* Includes (left) + Process (right) — side-by-side, equal columns.
+            Each component is wrapped in its own <div> because they return
+            fragments; without the wrappers their internal label and list
+            elements would flow into separate grid cells. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+          <div>
+            <IncludesContent items={current.includes} variant="dark" />
+          </div>
+          <div>
+            <ProcessContent rows={process} title="Brand + Website process" variant="card-dark" noDividers />
+          </div>
+        </div>
+
+        {/* Price strip — full-width horizontal row beneath the includes/process */}
+        <div className="border-t border-white/10 pt-8 md:pt-10 mt-10 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
+            {TierToggle}
+            {PriceBlock}
+            {TimelineBlock}
+          </div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Collapsed layout (homepage) ──────────────────────────────────────
+  return (
+    <div className="svc-card bg-base-dark text-white pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+        {/* Left: pitch */}
+        <div className="lg:col-span-7">
+          {Pitch}
+          <CardPopover key={tier} triggerLabel="What's included" triggerIcon={InfoIcon} variant="dark">
+            <IncludesContent items={current.includes} variant="dark" />
+          </CardPopover>
+        </div>
+
+        {/* Right: tier toggle + price + CTA */}
+        <div className="lg:col-span-5 flex flex-col justify-between gap-8 lg:border-l lg:border-white/10 lg:pl-12">
+          <div className="space-y-6">
+            {TierToggle}
+            {PriceBlock}
+            {TimelineBlock}
+          </div>
+          {BookCallButton}
+        </div>
+      </div>
+
+      {/* Bottom: process accordion */}
+      <div className="mt-8 md:mt-10">
+        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="dark">
+          <ProcessContent rows={process} title="Brand + Website process" variant="card-dark" />
+        </CardAccordion>
+      </div>
+    </div>
+  )
+}
+
+// ── PRODUCT DESIGN — bg #F3F3F3 ────────────────────────────────────────
+function ProductDesignCard({ expanded = false }) {
+  const includes = [
+    'Product discovery + UX strategy',
+    'End-to-end UI/UX across web and mobile',
+    'Design system and component library',
+    'Interactive prototypes and interaction specs',
+    'Design QA and engineering handoff',
+  ]
+  const process = [
+    ['Weeks\n1–2', 'Discovery: product audit, user flows, IA, scope locked.'],
+    ['Weeks\n3–4', 'Design: end-to-end UI/UX, design system, prototype.'],
+    ['Week\n5',    'Polish & handoff: design QA, engineering documentation, walkthrough.'],
+  ]
+
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-white border border-base-dark/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-gray-700 bg-white px-3 py-1 rounded-full">Project &middot; UI / UX</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
+
+      <p className="text-gray-600 text-base md:text-lg mb-3 leading-relaxed">
+        Ship a specific product or surface, dashboard, web app, or mobile UI, with scope locked at kickoff and a fixed timeline.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+        Project engagement &middot; end-to-end UI/UX, design system, engineering handoff.
+      </p>
+    </>
+  )
+
+  const PriceBlock = (
+    <div>
+      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Starting from</p>
+      <p className="text-3xl font-medium text-base-dark">$3,500</p>
+    </div>
+  )
+
+  const TimelineBlock = (
+    <div>
+      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium text-base-dark">5 weeks</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+    >
+      Book a call
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  // ── Expanded layout (pricing page) ───────────────────────────────────
+  if (expanded) {
+    return (
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
+          <div>
+            <IncludesContent items={includes} variant="light" />
+          </div>
+          <div>
+            <ProcessContent rows={process} title="Product Design process" variant="card-light" noDividers />
+          </div>
+        </div>
+
+        {/* Price strip pinned to the bottom (mt-auto). When this card sits
+            beside Design Partner in a 2-column grid, the outer grid's
+            stretch alignment + h-full + mt-auto put both strips at the
+            same vertical position. */}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
+            {PriceBlock}
+            {TimelineBlock}
+          </div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Collapsed layout (homepage) ──────────────────────────────────────
+  return (
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div>
+        {Pitch}
+        <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
+          <IncludesContent items={includes} variant="light" />
+        </CardPopover>
+      </div>
+
+      {/* Price strip — full-width horizontal row beneath the pitch. Same
+          shape as the pricing page so both surfaces read consistently. */}
+      <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
+          {PriceBlock}
+          {TimelineBlock}
+        </div>
+        {BookCallButton}
+      </div>
+
+      <div className="mt-8 md:mt-10">
+        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
+          <ProcessContent rows={process} title="Product Design process" variant="card-light" />
+        </CardAccordion>
+      </div>
+    </div>
+  )
+}
+
+// ── DESIGN PARTNER — bg #F3F3F3 (same as Product Design) ───────────────
+function DesignPartnerCard({ expanded = false }) {
+  const includes = [
+    'A dedicated senior designer embedded in your team',
+    'Weekly delivery: features, marketing pages, brand assets',
+    'Full studio capability set (brand, web, product, AI dev)',
+    'Slack-first communication, your tools, your rituals',
+    'Standups up to twice a week',
+    'Weekly strategy review',
+  ]
+  const process = [
+    ['Week 1', 'Sprint planning, priority lock, first deliverables shipped.'],
+    ['Week 2', 'Active design and iteration in your tools and standups.'],
+    ['Week 3', 'Ship and refine: features, pages, assets, whatever ships next.'],
+    ['Week 4', 'Strategy review, next-month roadmap, retro.'],
+  ]
+
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-white border border-base-dark/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
+            <path d="M12 20v-6M6 20V10M18 20V4" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full">Monthly retainer</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
+
+      <p className="text-gray-600 text-base md:text-lg mb-3 leading-relaxed">
+        Ongoing capacity, not a project. A senior designer embedded in your standups, Slack, and Figma, designing whatever ships that month.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+        Monthly retainer &middot; senior design seat on your team, no hiring overhead.
+      </p>
+    </>
+  )
+
+  const PriceBlock = (
+    <div>
+      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Monthly rate</p>
+      <p className="text-3xl font-medium text-base-dark">$3,000<span className="text-gray-500">/mo</span></p>
+      <p className="text-xs text-gray-500 mt-2 leading-snug">3+ month commitment: $2,800/mo</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+    >
+      Book a call
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  // ── Expanded layout (pricing page) ───────────────────────────────────
+  if (expanded) {
+    return (
+      <div className="svc-card bg-white border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
+          <div>
+            <IncludesContent items={includes} variant="light" />
+          </div>
+          <div>
+            <ProcessContent rows={process} title="A typical month" variant="card-light" noDividers />
+          </div>
+        </div>
+
+        {/* Price strip pinned to the bottom (mt-auto) so its divider line
+            aligns with the equivalent strip in Product Design when the two
+            cards sit side-by-side in the 2-column outer grid. */}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex-1">
+            {PriceBlock}
+          </div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Collapsed layout (homepage) ──────────────────────────────────────
+  return (
+    <div className="svc-card bg-white border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div>
+        {Pitch}
+        <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
+          <IncludesContent items={includes} variant="light" />
+        </CardPopover>
+      </div>
+
+      {/* Price strip — full-width horizontal row beneath the pitch. Same
+          shape as the pricing page so both surfaces read consistently. */}
+      <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex-1">
+          {PriceBlock}
+        </div>
+        {BookCallButton}
+      </div>
+
+      <div className="mt-8 md:mt-10">
+        <CardAccordion triggerLabel="A typical month" openLabel="Hide month" triggerIcon={ClockIcon} variant="light">
+          <ProcessContent rows={process} title="A typical month" variant="card-light" />
+        </CardAccordion>
+      </div>
+    </div>
+  )
+}
+
+export default function Services({ expanded = false }) {
   const container = useRef(null)
+  const productRef = useRef(null)
+  const partnerRef = useRef(null)
+  const [restMinHeight, setRestMinHeight] = useState(0)
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return
     gsap.from('.svc-header', {
       y: 50, opacity: 0, duration: 0.8, ease: 'power3.out',
       scrollTrigger: { trigger: '.svc-header', start: 'top 85%', toggleActions: 'play none none reverse' },
     })
     gsap.from('.svc-card', {
-      y: 80, opacity: 0, duration: 0.9, stagger: 0.2, ease: 'power3.out',
-      scrollTrigger: { trigger: '.svc-grid', start: 'top 80%', toggleActions: 'play none none reverse' },
+      y: 80, opacity: 0, duration: 0.9, stagger: 0.18, ease: 'power3.out',
+      scrollTrigger: { trigger: '.svc-grid', start: 'top 85%', toggleActions: 'play none none reverse' },
     })
   }, { scope: container })
 
+  // Equalize Product Design + Design Partner heights at rest. Measured
+  // synchronously after layout so both cards are pinned to the larger
+  // rest height via min-height. Combined with `items-start` on the grid,
+  // this gives same-height cards at rest AND independent expansion: no
+  // sibling stretch when one card's accordion opens, no snap when it
+  // closes (the alignment never changes). Skipped on the pricing page
+  // (expanded) — that layout uses default grid stretch instead.
+  // Re-measures on resize: remove min-height for one frame, measure
+  // natural heights, re-apply max.
+  useLayoutEffect(() => {
+    if (expanded) {
+      setRestMinHeight(0)
+      return
+    }
+    const measureNow = () => {
+      const p = productRef.current?.offsetHeight ?? 0
+      const d = partnerRef.current?.offsetHeight ?? 0
+      const max = Math.max(p, d)
+      if (max > 0) setRestMinHeight(max)
+    }
+    // Initial measurement: minHeight starts at 0, so wrappers reflect
+    // natural rest heights.
+    measureNow()
+
+    const handleResize = () => {
+      // Drop min-height for one frame so the next measurement sees
+      // natural heights again, then re-apply the new max.
+      setRestMinHeight(0)
+      requestAnimationFrame(measureNow)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [expanded])
+
   return (
-    <section ref={container} id="services" className="w-full py-20 md:py-40 px-4 md:px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="svc-header mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <section
+      ref={container}
+      id="services"
+      className="w-full py-16 md:py-20 px-4 md:px-6 bg-white"
+    >
+      <div className="max-w-[1600px] w-full mx-auto">
+        <div className="svc-header mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h2 className="font-mono text-accent-orange text-sm font-bold uppercase tracking-widest mb-4">// Capabilities</h2>
-            <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark">Services</h3>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// Pricing &amp; Engagements</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
+              Three ways to work together.
+            </h2>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mt-4">
+              Two project engagements &middot; one monthly retainer.
+            </p>
           </div>
-          <p className="text-gray-500 max-w-md font-medium">Everything you need to launch and grow your digital presence — designed and built from one studio.</p>
+          <p className="text-gray-600 text-base md:text-lg max-w-md leading-relaxed">
+            Pick the engagement that matches where you are: launching, scaling a product, or shipping continuously with a partner embedded in your team.
+          </p>
         </div>
 
-        <div className="svc-grid grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Flagship card — Website Design & Build */}
-          <div className="svc-card lg:col-span-2 bg-base-dark text-white p-10 md:p-12 rounded-[12px] flex flex-col justify-between relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 blur-[100px] rounded-full transform translate-x-1/3 -translate-y-1/3 group-hover:scale-110 transition-transform duration-700"></div>
-
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/10">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                    <polyline points="2 17 12 22 22 17" />
-                    <polyline points="2 12 12 17 22 12" />
-                  </svg>
-                </div>
-                <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">Flagship Service</span>
-              </div>
-
-              <h4 className="font-display text-3xl md:text-4xl font-bold mb-4">Website Design<br />&amp; Build</h4>
-              <p className="text-gray-400 text-lg max-w-md mb-8">Custom website design and development — from concept to launch. Designed and built by the same person, so nothing gets lost in translation.</p>
-
-              <ul className="space-y-3 mb-12">
-                {[
-                  'Custom website design (UI/UX)',
-                  'No-code development & AI-assisted development',
-                  'Responsive across all devices',
-                  'Motion & interactions',
-                  'Performance optimisation',
-                  'Basic form setup & integrations',
-                  'One round of revisions',
-                ].map(item => (
-                  <li key={item} className="flex items-center gap-3 text-gray-300">
-                    <svg className="text-accent-orange w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between pt-8 border-t border-white/10 mt-auto">
-              <div>
-                <p className="text-sm text-gray-400 font-mono mb-1">Price</p>
-                <p className="text-xl font-medium">$3,000 – $7,000</p>
-              </div>
-              <div className="mt-4 sm:mt-0 text-left sm:text-right">
-                <p className="text-sm text-gray-400 font-mono mb-1">Timeline</p>
-                <p className="text-xl font-medium">2–4 weeks</p>
-              </div>
-            </div>
+        {/* Card 1 (flagship Brand + Website) spans both columns at xl;
+            Cards 2 + 3 sit side-by-side below it on xl, stacked below.
+            Pricing page uses default grid stretch so price strips align;
+            homepage uses items-start + measured min-height (see
+            `restMinHeight` above) so cards rest at equal heights but
+            expand independently when their accordions open. */}
+        <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
+          <div className="xl:col-span-2">
+            <BrandWebsiteCard expanded={expanded} />
           </div>
-
-          <div className="svc-card flex flex-col gap-6 lg:col-span-1">
-            {/* Brand Identity & Strategy card */}
-            <div className="bg-base-light border border-base-border p-8 rounded-[12px] flex flex-col h-full hover:shadow-lg transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-white border border-base-border flex items-center justify-center mb-6 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                  <path d="M2 12h20" />
-                </svg>
-              </div>
-              <h4 className="font-display text-2xl font-bold mb-3 text-base-dark">Brand Identity &amp; Strategy</h4>
-              <p className="text-gray-600 mb-6 flex-grow">Brand positioning, visual identity, and guidelines — built to communicate what makes you different before you say a word.</p>
-
-              <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                {[
-                  'Brand positioning & naming',
-                  'Visual identity (logo, colour, typography)',
-                  'Brand guidelines document',
-                  'Marketing materials design',
-                ].map(item => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-orange shrink-0"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="pt-6 border-t border-base-border">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Price</p>
-                    <p className="font-medium text-lg">$2,000 – $5,000</p>
-                  </div>
-                  <p className="text-sm font-medium text-gray-500">2–3 weeks</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Embedded Design Partner retainer card */}
-            <div className="bg-accent-lime p-8 rounded-[12px] flex flex-col h-full relative overflow-hidden text-base-dark hover:scale-[1.02] transition-transform origin-bottom">
-              <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cGF0aCBkPSJNMCAwbDR2NE0wIDRsNC00IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMC41Ii8+Cjwvc3ZnPg==')]"></div>
-
-              <div className="relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-base-dark text-accent-lime flex items-center justify-center mb-6">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 20v-6M6 20V10M18 20V4" />
-                  </svg>
-                </div>
-                <h4 className="font-display text-2xl font-bold mb-3">Embedded Design Partner</h4>
-                <p className="text-base-dark/80 mb-6 font-medium flex-grow">Ongoing UI/UX design, website updates, and brand consistency. Like having an in-house designer, without the overhead.</p>
-
-                <div className="pt-6 border-t border-base-border/40">
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <p className="text-xs text-base-dark/60 font-mono uppercase tracking-wider mb-1">Retainer</p>
-                      <p className="font-bold text-lg">$2k–$4k/mo</p>
-                    </div>
-                    <p className="text-sm font-medium text-base-dark/60">Monthly rolling</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div ref={productRef} className="[&>*]:h-full" style={!expanded && restMinHeight ? { minHeight: restMinHeight } : undefined}>
+            <ProductDesignCard expanded={expanded} />
+          </div>
+          <div ref={partnerRef} className="[&>*]:h-full" style={!expanded && restMinHeight ? { minHeight: restMinHeight } : undefined}>
+            <DesignPartnerCard expanded={expanded} />
           </div>
         </div>
       </div>

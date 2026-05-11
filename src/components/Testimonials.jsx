@@ -59,9 +59,12 @@ export default function Testimonials() {
   }, { scope: container })
 
   return (
-    <section ref={container} className="w-full py-20 md:py-40 px-4 md:px-6 bg-base-light">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="test-heading font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark text-center mb-12 md:mb-20">What clients say</h2>
+    <section ref={container} className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="text-center mb-12 md:mb-20">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Social proof</p>
+          <h2 className="test-heading font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark max-w-3xl mx-auto leading-tight">Trusted by teams building the next wave.</h2>
+        </div>
 
         <div className="test-grid grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => {
@@ -75,7 +78,7 @@ export default function Testimonials() {
                     : 'bg-white border border-base-border'
                 }`}
               >
-                <Stars color={isFeatured ? 'text-accent-lime' : 'text-accent-orange'} />
+                <Stars color={isFeatured ? 'text-accent-yellow' : 'text-accent-red'} />
                 <p className={`mb-8 flex-grow leading-relaxed ${isFeatured ? 'text-gray-300' : 'text-gray-700'}`}>{t.quote}</p>
                 <div className={`flex items-center gap-3 pt-6 border-t ${isFeatured ? 'border-gray-800' : 'border-base-border'}`}>
                   {t.avatarUrl ? (
