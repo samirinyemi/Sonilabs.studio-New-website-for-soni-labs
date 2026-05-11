@@ -23,7 +23,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.claude/settings.local.json
+.claude/
 
 # Personal / work-in-progress files (not part of the shipped site)
 public/INVOICE*.pdf
