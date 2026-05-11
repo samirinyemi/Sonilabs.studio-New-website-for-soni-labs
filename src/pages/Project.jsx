@@ -13,20 +13,20 @@ const BASE = import.meta.env.BASE_URL
 // can be re-used across projects without the JSX caring about which
 // project it's rendering.
 const ASSET_FILES = {
-  cover:  'cover.png',
+  cover:  'cover.webp',
   coverV: 'cover.mp4',
-  image1: 'image1.png',
-  image7: 'image7.png',
-  image8: 'image8.png',
-  image9: 'image9.png',
-  hero1:  'hero1.jpeg',
-  hero2:  'hero2.png',
-  p1:     '1.png',
-  p2:     '2.png',
-  p3:     '3.png',
-  p4:     '4.png',
-  p5:     '5.png',
-  p6:     '6.png',
+  image1: 'image1.webp',
+  image7: 'image7.webp',
+  image8: 'image8.webp',
+  image9: 'image9.webp',
+  hero1:  'hero1.webp',
+  hero2:  'hero2.webp',
+  p1:     '1.webp',
+  p2:     '2.webp',
+  p3:     '3.webp',
+  p4:     '4.webp',
+  p5:     '5.webp',
+  p6:     '6.webp',
   brand1: 'brand1.mp4',
   brand2: 'brand2.mp4',
   brand3: 'brand3.mp4',
@@ -82,7 +82,7 @@ const projects = {
       'australia-medical-association-victoria',
       ['cover', 'coverV', 'image1', 'image7', 'image8', 'image9', 'hero2',
        'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'video1', 'video2', 'logo'],
-      { logo: 'logo.png' }
+      { logo: 'logo.webp' }
     ),
     // Per-asset container aspects. Each one matches the source file's
     // native dimensions so object-cover doesn't crop the image. Slots not
@@ -125,7 +125,7 @@ const projects = {
       'time-bmx',
       ['cover', 'coverV', 'image1', 'image7', 'image8', 'image9', 'hero1', 'hero2',
        'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'video1', 'logo'],
-      { logo: 'logo.png', hero1: 'hero1.png' }
+      { logo: 'logo.webp', hero1: 'hero1.webp' }
     ),
     aspects: {
       cover:  'aspect-[13/9]',    // cover.png 2165×1490
@@ -179,18 +179,18 @@ const projects = {
       // `cover` is what the "More work" card on other detail pages reads
       // when picking a thumbnail; it also makes meCash discoverable to any
       // future code that expects the standard cover key.
-      cover: `${BASE}mecash/cover.png`,
-      '1':  `${BASE}mecash/cover.png`,
-      '2':  `${BASE}mecash/2.png`,
-      '3':  `${BASE}mecash/3.png`,
-      '4':  `${BASE}mecash/4.png`,
-      '5':  `${BASE}mecash/5.png`,
-      '6':  `${BASE}mecash/6.png`,
-      '7':  `${BASE}mecash/8.png`,
-      '8':  `${BASE}mecash/7.png`,
-      '9':  `${BASE}mecash/9.png`,
-      '10': `${BASE}mecash/10.png`,
-      '11': `${BASE}mecash/11.png`,
+      cover: `${BASE}mecash/cover.webp`,
+      '1':  `${BASE}mecash/cover.webp`,
+      '2':  `${BASE}mecash/2.webp`,
+      '3':  `${BASE}mecash/3.webp`,
+      '4':  `${BASE}mecash/4.webp`,
+      '5':  `${BASE}mecash/5.webp`,
+      '6':  `${BASE}mecash/6.webp`,
+      '7':  `${BASE}mecash/8.webp`,
+      '8':  `${BASE}mecash/7.webp`,
+      '9':  `${BASE}mecash/9.webp`,
+      '10': `${BASE}mecash/10.webp`,
+      '11': `${BASE}mecash/11.webp`,
     },
     aspects: {
       '1':  'aspect-[2072/1490]',   // cover.png 2072×1490

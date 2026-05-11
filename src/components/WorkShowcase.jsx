@@ -27,14 +27,14 @@ const projects = [
     coverVideo: `${import.meta.env.BASE_URL}australia-medical-association-victoria/cover.mp4`,
   },
   // Card 3 (smaller slot, row 2 left) — meCash. Detail page is live.
-  // Aspect matches cover.png's exact 2072×1490 so the image fills the
+  // Aspect matches cover.webp's exact 2072×1490 so the image fills the
   // card pixel-for-pixel with no crop.
   {
     name: 'meCash',
     slug: 'mecash',
     tags: ['Discovery', 'Strategy', 'Mobile app', 'Web app', 'Websites'],
     aspect: 'aspect-[2072/1490]',
-    coverImage: `${import.meta.env.BASE_URL}mecash/cover.png`,
+    coverImage: `${import.meta.env.BASE_URL}mecash/cover.webp`,
   },
   // Card 4 (bigger slot, row 2 right) — Time BMX. Detail page is live.
   // Aspect matches cover.mp4's native 2880×2160 = 4:3.

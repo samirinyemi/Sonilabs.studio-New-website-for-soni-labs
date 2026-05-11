@@ -26,7 +26,7 @@ function manifestoWords(text, keyPrefix) {
 }
 
 // Two portraits + the workspace shot used in the merged Led by section.
-const founderImg1 = `${FOUNDER_BASE}C3881T01.JPG`
+const founderImg1 = `${FOUNDER_BASE}C3881T01.webp`
 const founderImg5 = `${FOUNDER_BASE}kOG0G5Dxv85PTLpWc47mipLUFxI.webp`
 const workspaceImg = `${FOUNDER_BASE}Workspace.webp`
 
@@ -89,12 +89,12 @@ const founderStats = [
 // makes them look smaller in the tile — we boost those.
 const CLIENT_BASE = `${import.meta.env.BASE_URL}Client%20LOGO/`
 const clientLogos = [
-  { name: 'AMAVIC',        file: 'AMAVIC.png',    via: 'via Roadhouse', size: 'max-h-12 md:max-h-14' },
-  { name: 'APS Roadhouse', file: 'APS.png',       via: 'via Roadhouse', size: 'max-h-10 md:max-h-12' },
-  { name: 'AF',            file: 'AF.png',        via: 'via Roadhouse', size: 'max-h-16 md:max-h-20' },
-  { name: 'NEX Farm',      file: 'NEX Farm.png',  via: 'via Roadhouse', size: 'max-h-10 md:max-h-12' },
-  { name: 'Time BMX',      file: 'Time BMX.png',  via: 'via Roadhouse', size: 'max-h-14 md:max-h-16' },
-  { name: 'meCash',        file: 'meCash..png',   via: 'Independent',   size: 'max-h-10 md:max-h-12' },
+  { name: 'AMAVIC',        file: 'AMAVIC.webp',    via: 'via Roadhouse', size: 'max-h-12 md:max-h-14' },
+  { name: 'APS Roadhouse', file: 'APS.webp',       via: 'via Roadhouse', size: 'max-h-10 md:max-h-12' },
+  { name: 'AF',            file: 'AF.webp',        via: 'via Roadhouse', size: 'max-h-16 md:max-h-20' },
+  { name: 'NEX Farm',      file: 'NEX Farm.webp',  via: 'via Roadhouse', size: 'max-h-10 md:max-h-12' },
+  { name: 'Time BMX',      file: 'Time BMX.webp',  via: 'via Roadhouse', size: 'max-h-14 md:max-h-16' },
+  { name: 'meCash',        file: 'meCash..webp',   via: 'Independent',   size: 'max-h-10 md:max-h-12' },
 ]
 
 export default function AboutPage() {

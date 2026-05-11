@@ -10,7 +10,7 @@ import {
   prefetchShowcaseAll,
 } from '../utils/showcasePrefetch'
 const logoImg = `${import.meta.env.BASE_URL}Logo for website.svg`
-const logoMark = `${import.meta.env.BASE_URL}Button%20nav%20logo%20for%20website.png`
+const logoMark = `${import.meta.env.BASE_URL}Button%20nav%20logo%20for%20website.webp`
 
 export default function Navbar({ forceFloating = false }) {
   const [menuOpen, setMenuOpen] = useState(false)

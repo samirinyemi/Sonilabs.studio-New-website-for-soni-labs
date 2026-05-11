@@ -131,7 +131,7 @@ export default function ApproachPage() {
         <div className="proj-reveal max-w-[1600px] mx-auto">
           <div className="relative w-full aspect-[40/11] overflow-hidden bg-base-dark">
             <img
-              src={`${import.meta.env.BASE_URL}Processes.png`}
+              src={`${import.meta.env.BASE_URL}Processes.webp`}
               alt="Soni Labs process diagram"
               loading="eager"
               decoding="async"
