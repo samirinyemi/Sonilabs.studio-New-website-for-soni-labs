@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async'
 // tags all get sensible defaults from the props.
 const SITE_NAME = 'Soni Labs'
 const SITE_URL = 'https://sonilabs.studio'
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`
 
 export default function SEO({
   title,
