@@ -92,12 +92,22 @@
    white. Covers legacy text-gray-*/text-black/text-white as well as
    the migrated semantic tokens text-muted / text-subtle. */
 :root[data-theme="dark"] .bg-base-dark [class*="text-gray-"],
+:root[data-theme="dark"] .bg-base-dark [class*="text-white"],
 :root[data-theme="dark"] .bg-base-dark .text-black,
-:root[data-theme="dark"] .bg-base-dark .text-white,
+:root[data-theme="dark"] .bg-base-dark .text-base-pure,
 :root[data-theme="dark"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
 :root[data-theme="dark"] .bg-base-dark .text-muted,
 :root[data-theme="dark"] .bg-base-dark .text-subtle {
   color: #0A0A0A;
+}
+
+/* Re-inversion: a nested .bg-base-pure surface inside a .bg-base-dark
+   parent (e.g. the CTA button inside the mobile menu popup) flips
+   BACK to a light surface in dark theme — so its text-base-dark needs
+   to be light again instead of inheriting the parent's dark-text rule. */
+:root[data-theme="dark"] .bg-base-dark .bg-base-pure .text-base-dark,
+:root[data-theme="dark"] .bg-base-dark .bg-base-pure [class*="text-base-dark"] {
+  color: #FFFFFF;
 }
 
 /* ── RED theme ───────────────────────────────────────────────────────
@@ -139,13 +149,22 @@
    instead of red so they remain readable on the red card. Covers
    legacy text-gray-*/text-black/text-white and the migrated tokens. */
 :root[data-theme="red"] .bg-base-dark [class*="text-gray-"],
+:root[data-theme="red"] .bg-base-dark [class*="text-white"],
 :root[data-theme="red"] .bg-base-dark .text-black,
-:root[data-theme="red"] .bg-base-dark .text-white,
 :root[data-theme="red"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
 :root[data-theme="red"] .bg-base-dark .text-base-pure,
 :root[data-theme="red"] .bg-base-dark .text-muted,
 :root[data-theme="red"] .bg-base-dark .text-subtle {
   color: #FFFFFF;
+}
+
+/* Re-inversion: a nested .bg-base-pure surface inside a .bg-base-dark
+   parent (e.g. the CTA button inside the mobile menu popup) flips
+   BACK to a cream surface in red theme — so its text-base-dark needs
+   to be brand red again instead of inheriting the parent's white-text rule. */
+:root[data-theme="red"] .bg-base-dark .bg-base-pure .text-base-dark,
+:root[data-theme="red"] .bg-base-dark .bg-base-pure [class*="text-base-dark"] {
+  color: #DA241C;
 }
 
 /* Kinetic louver bars in red theme — the default 40% opacity reads as

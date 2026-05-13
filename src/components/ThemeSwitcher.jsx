@@ -45,10 +45,12 @@ export default function ThemeSwitcher() {
       // pointer takes over so the small dots feel like ordinary OS
       // controls rather than triggering the big "grow" cursor.
       data-cursor="hidden"
-      // Pinned to the bottom-right, stacked vertically. Order matches
-      // the THEMES array: light (top) → dark (middle) → red (bottom).
-      // z-[55] keeps it above the navbar/footer but below the Loader.
-      className="fixed bottom-5 right-2 md:bottom-6 md:right-3 z-[55] flex flex-col items-center gap-1.5"
+      // Mobile: top-center, horizontal — sits visually inside the
+      // navbar's empty center space.
+      // Desktop (md+): bottom-right, vertical. Order in both: light →
+      // dark → red. z-[55] keeps it above the navbar/footer but below
+      // the Loader.
+      className="fixed z-[55] top-7 left-1/2 -translate-x-1/2 flex flex-row items-center gap-1.5 md:top-auto md:left-auto md:translate-x-0 md:bottom-6 md:right-3 md:flex-col"
     >
       {THEMES.map((t) => {
         const active = theme === t.id
