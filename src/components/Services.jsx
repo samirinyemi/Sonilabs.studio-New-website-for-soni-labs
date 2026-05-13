@@ -564,7 +564,7 @@ function BrandWebsiteCard({ expanded = false }) {
   // ── Expanded layout (pricing page) ───────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
         {Pitch}
 
         {/* Includes (left) + Process (right) — side-by-side, equal columns.

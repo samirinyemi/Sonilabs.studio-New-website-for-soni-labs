@@ -86,27 +86,31 @@
   color: #FFFFFF;
 }
 
-/* Scope-exception: inside .bg-base-dark containers (e.g. the
-   Brand+Website flagship pricing card), the surface flips to white in
-   dark theme — so descendant text utilities need to be DARK, not
-   white. Covers legacy text-gray-*/text-black/text-white as well as
-   the migrated semantic tokens text-muted / text-subtle. */
-:root[data-theme="dark"] .bg-base-dark [class*="text-gray-"],
-:root[data-theme="dark"] .bg-base-dark [class*="text-white"],
-:root[data-theme="dark"] .bg-base-dark .text-black,
-:root[data-theme="dark"] .bg-base-dark .text-base-pure,
-:root[data-theme="dark"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
-:root[data-theme="dark"] .bg-base-dark .text-muted,
-:root[data-theme="dark"] .bg-base-dark .text-subtle {
+/* Scope-exception: inside .flagship-card (the Brand + Website pricing
+   card whose surface inverts via bg-base-dark), descendant text needs
+   to be DARK in dark theme. We can't write .bg-base-dark .text-X here
+   because Tailwind v4's compiler drops rules that compose two utility
+   classes in their own selectors. The .flagship-card marker class is
+   non-utility, so it survives. The trailing universal selector catches
+   children that inherit color (e.g. <li>, <span> without explicit color). */
+:root[data-theme="dark"] .flagship-card,
+:root[data-theme="dark"] .flagship-card * {
   color: #0A0A0A;
 }
 
-/* Re-inversion: a nested .bg-base-pure surface inside a .bg-base-dark
-   parent (e.g. the CTA button inside the mobile menu popup) flips
-   BACK to a light surface in dark theme — so its text-base-dark needs
-   to be light again instead of inheriting the parent's dark-text rule. */
-:root[data-theme="dark"] .bg-base-dark .bg-base-pure .text-base-dark,
-:root[data-theme="dark"] .bg-base-dark .bg-base-pure [class*="text-base-dark"] {
+/* Accents stay brand-red on the flipped card (the "01" eyebrow, week
+   labels in the process timeline, includes-list check icons). */
+:root[data-theme="dark"] .flagship-card .text-accent-red,
+:root[data-theme="dark"] .flagship-card [class*="text-accent-red"] {
+  color: #DA241C;
+}
+
+/* Re-inversion: nested .bg-base-pure pills inside .flagship-card (the
+   "Book a call" CTA, the active tier toggle highlight) flip back to a
+   light surface in dark theme — so their text-base-dark label needs
+   to be light again to remain readable on the dark pill. */
+:root[data-theme="dark"] .flagship-card .bg-base-pure,
+:root[data-theme="dark"] .flagship-card .bg-base-pure * {
   color: #FFFFFF;
 }
 
@@ -144,48 +148,60 @@
   color: #DA241C;
 }
 
-/* Scope-exception for red theme: inside .bg-base-dark containers (which
-   become red surfaces), descendant text utilities need to be light/cream
-   instead of red so they remain readable on the red card. Covers
-   legacy text-gray-*/text-black/text-white and the migrated tokens. */
-:root[data-theme="red"] .bg-base-dark [class*="text-gray-"],
-:root[data-theme="red"] .bg-base-dark [class*="text-white"],
-:root[data-theme="red"] .bg-base-dark .text-black,
-:root[data-theme="red"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
-:root[data-theme="red"] .bg-base-dark .text-base-pure,
-:root[data-theme="red"] .bg-base-dark .text-muted,
-:root[data-theme="red"] .bg-base-dark .text-subtle {
+/* Scope-exception for red theme: inside .flagship-card (the Brand +
+   Website pricing card whose surface becomes brand red), descendant
+   text needs to be WHITE so it reads on the red surface. Marker-class
+   based for the same Tailwind v4 reason as the dark scope-exception above. */
+:root[data-theme="red"] .flagship-card,
+:root[data-theme="red"] .flagship-card * {
   color: #FFFFFF;
 }
 
-/* Re-inversion: a nested .bg-base-pure surface inside a .bg-base-dark
-   parent (e.g. the CTA button inside the mobile menu popup) flips
-   BACK to a cream surface in red theme — so its text-base-dark needs
-   to be brand red again instead of inheriting the parent's white-text rule. */
-:root[data-theme="red"] .bg-base-dark .bg-base-pure .text-base-dark,
-:root[data-theme="red"] .bg-base-dark .bg-base-pure [class*="text-base-dark"] {
-  color: #DA241C;
-}
-
-/* Red theme — nav menu popup specifically: the popup uses bg-base-dark
-   (= brand red in red theme), and white text doesn't contrast strongly
-   enough against that red. Force ALL menu text to black so it reads
-   clearly. Scoped to .nav-popup so the flagship pricing card (also
-   bg-base-dark) keeps its white-on-red text. */
-:root[data-theme="red"] .nav-popup [class*="text-gray-"],
-:root[data-theme="red"] .nav-popup [class*="text-white"],
-:root[data-theme="red"] .nav-popup .text-black,
-:root[data-theme="red"] .nav-popup .text-base-pure,
-:root[data-theme="red"] .nav-popup .text-base-dark,
-:root[data-theme="red"] .nav-popup .text-muted,
-:root[data-theme="red"] .nav-popup .text-subtle {
+/* Accents stay brand-red on the red card — for the "01" eyebrow and
+   week labels in the process timeline. Slight tonal darken keeps them
+   distinguishable from the brand-red card surface. */
+:root[data-theme="red"] .flagship-card .text-accent-red,
+:root[data-theme="red"] .flagship-card [class*="text-accent-red"] {
   color: #0A0A0A;
 }
 
-/* Red theme — re-inversion for the CTA inside .nav-popup: it sits on a
-   cream (bg-base-pure) pill, so its label should be brand red, not the
-   black forced by the rule above. */
-:root[data-theme="red"] .nav-popup .bg-base-pure .text-base-dark {
+/* Re-inversion: nested .bg-base-pure pills inside .flagship-card (the
+   "Book a call" CTA, the active tier toggle highlight) flip back to a
+   cream surface in red theme — so their text-base-dark label needs to
+   be brand red again to remain readable on the cream pill. */
+:root[data-theme="red"] .flagship-card .bg-base-pure,
+:root[data-theme="red"] .flagship-card .bg-base-pure * {
+  color: #DA241C;
+}
+
+/* Dark theme — nav menu popup: bg-base-dark = white surface in dark
+   theme, so all menu text needs to be BLACK. Universal-selector
+   approach so inherited-color children are caught. */
+:root[data-theme="dark"] .nav-popup,
+:root[data-theme="dark"] .nav-popup * {
+  color: #0A0A0A;
+}
+
+/* Re-inversion: the CTA inside .nav-popup sits on a bg-base-pure pill
+   (= near-black in dark theme), so its label needs to be light again. */
+:root[data-theme="dark"] .nav-popup .bg-base-pure,
+:root[data-theme="dark"] .nav-popup .bg-base-pure * {
+  color: #FFFFFF;
+}
+
+/* Red theme — nav menu popup: bg-base-dark = brand red, force all
+   menu text to WHITE for legibility. Universal-selector approach so
+   children that inherit color (e.g. <span> without an explicit color
+   class) are caught as well. */
+:root[data-theme="red"] .nav-popup,
+:root[data-theme="red"] .nav-popup * {
+  color: #FFFFFF;
+}
+
+/* Re-inversion: the CTA inside .nav-popup sits on a cream
+   (bg-base-pure) pill, so its label needs to be brand red, not white. */
+:root[data-theme="red"] .nav-popup .bg-base-pure,
+:root[data-theme="red"] .nav-popup .bg-base-pure * {
   color: #DA241C;
 }
 
