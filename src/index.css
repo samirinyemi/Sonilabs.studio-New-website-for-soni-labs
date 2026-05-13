@@ -94,6 +94,7 @@
 :root[data-theme="dark"] .bg-base-dark [class*="text-gray-"],
 :root[data-theme="dark"] .bg-base-dark .text-black,
 :root[data-theme="dark"] .bg-base-dark .text-white,
+:root[data-theme="dark"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
 :root[data-theme="dark"] .bg-base-dark .text-muted,
 :root[data-theme="dark"] .bg-base-dark .text-subtle {
   color: #0A0A0A;
@@ -112,13 +113,17 @@
   --color-base-pure: #EDE3DD;
   --color-base-light: #E5DAD3;
   --color-base-dark: #DA241C;
-  --color-base-dark-soft: #C72018;
+  /* dark-soft (hover state) intentionally matches base-dark so the
+     entire red theme uses a single red — no darker variant. CTA scale
+     transform still provides press feedback on hover/active. */
+  --color-base-dark-soft: #DA241C;
   --color-base-border: #D8CCC4;
   --color-card-soft: #E3D7D0;
   --color-canvas: #EDE3DD;
 
-  --color-muted: #C72018;
-  --color-subtle: #A01D16;
+  /* muted + subtle both collapse to brand red in red theme. */
+  --color-muted: #DA241C;
+  --color-subtle: #DA241C;
 }
 
 /* Force every text-gray-* utility to a muted red in red theme so all
@@ -126,7 +131,7 @@
    dark theme override above. */
 :root[data-theme="red"] [class*="text-gray-"],
 :root[data-theme="red"] .text-black {
-  color: #C72018;
+  color: #DA241C;
 }
 
 /* Scope-exception for red theme: inside .bg-base-dark containers (which
@@ -136,9 +141,11 @@
 :root[data-theme="red"] .bg-base-dark [class*="text-gray-"],
 :root[data-theme="red"] .bg-base-dark .text-black,
 :root[data-theme="red"] .bg-base-dark .text-white,
+:root[data-theme="red"] .bg-base-dark .text-base-dark:not([aria-selected="true"]),
+:root[data-theme="red"] .bg-base-dark .text-base-pure,
 :root[data-theme="red"] .bg-base-dark .text-muted,
 :root[data-theme="red"] .bg-base-dark .text-subtle {
-  color: #EDE3DD;
+  color: #FFFFFF;
 }
 
 /* Kinetic louver bars in red theme — the default 40% opacity reads as
