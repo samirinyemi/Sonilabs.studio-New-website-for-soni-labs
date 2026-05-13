@@ -120,9 +120,9 @@ export default function Footer() {
             // 26cqw — calibrated so "Soni Labs" with Aeonik bold +
             // tracking-tighter spans the container edge-to-edge.
             // translateY uses em so the crop ratio stays consistent at
-            // every size; 0.15em clips only the bottom ~15% of the
-            // letterforms (less aggressive than the previous 0.28em).
-            style={{ fontSize: '23cqw', transform: 'translateY(0.15em)' }}
+            // every size; 0.3em clips roughly 20-25% of the visible
+            // letterforms (down to just above the cap-height midline).
+            style={{ fontSize: '23cqw', transform: 'translateY(0.3em)' }}
           >
             Soni Labs
           </span>
