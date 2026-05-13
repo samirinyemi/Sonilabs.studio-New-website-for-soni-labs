@@ -114,6 +114,13 @@
   color: #FFFFFF;
 }
 
+/* Active tier-toggle button is a sibling of the .bg-base-pure pill,
+   not a descendant — target it directly so its label reads on the
+   near-black pill in dark theme. */
+:root[data-theme="dark"] .flagship-card [aria-selected="true"] {
+  color: #FFFFFF;
+}
+
 /* ── RED theme ───────────────────────────────────────────────────────
    Warm cream page background (#EDE3DD) with brand red as the strong
    ink. Strong ink (was black) becomes brand red — text, dark surfaces
@@ -157,20 +164,20 @@
   color: #FFFFFF;
 }
 
-/* Accents stay brand-red on the red card — for the "01" eyebrow and
-   week labels in the process timeline. Slight tonal darken keeps them
-   distinguishable from the brand-red card surface. */
-:root[data-theme="red"] .flagship-card .text-accent-red,
-:root[data-theme="red"] .flagship-card [class*="text-accent-red"] {
-  color: #0A0A0A;
-}
-
 /* Re-inversion: nested .bg-base-pure pills inside .flagship-card (the
    "Book a call" CTA, the active tier toggle highlight) flip back to a
    cream surface in red theme — so their text-base-dark label needs to
    be brand red again to remain readable on the cream pill. */
 :root[data-theme="red"] .flagship-card .bg-base-pure,
 :root[data-theme="red"] .flagship-card .bg-base-pure * {
+  color: #DA241C;
+}
+
+/* The active tier-toggle button sits on top of the .bg-base-pure pill
+   (cream in red theme) as a sibling, not a descendant — the rule above
+   doesn't reach it. Target the selected button directly via
+   aria-selected so its label reads as brand red on the cream pill. */
+:root[data-theme="red"] .flagship-card [aria-selected="true"] {
   color: #DA241C;
 }
 
