@@ -30,15 +30,25 @@ const RIPPLE_SPEED = 1200    // px / sec — how fast the ripple travels outward
 const RIPPLE_PEAK_DUR = 0.2  // sec — time to reach peak
 const RIPPLE_RETURN_DUR = 0.5 // sec — time to settle back
 
-// First-load entry sweep — bars cascade from left to right
-const ENTRY_DELAY = 1.35     // sec — sync with hero-divider container fade-in (~1.4s)
-const ENTRY_DUR = 0.55       // sec — per-bar reveal duration
-const ENTRY_STAGGER = 0.004  // sec — gap between bar reveals (~0.8s total sweep)
+// First-load entry sweep — each bar peaks as the wavefront passes,
+// then settles to its resting state. Stagger between bars creates the
+// left-to-right travelling wave; each bar runs the same two-keyframe
+// peak→settle sequence on its turn.
+const ENTRY_DELAY = 1.35       // sec — default delay (synced with old Hero); overridable via prop
+const ENTRY_PEAK_DUR = 0.22    // sec — rise into peak per bar
+const ENTRY_SETTLE_DUR = 0.40  // sec — drop from peak to resting per bar
+const ENTRY_STAGGER = 0.006    // sec — gap between bar starts (~1.2s sweep at 200 bars)
 
-export default function KineticLouvers() {
+// Session-wide flag — persists across mounts of the KineticLouvers
+// component within the same page session. Once the entry sweep has
+// played once, subsequent mounts (e.g. user navigates away from /
+// and back to it) snap straight to the resting state. A per-instance
+// useRef would reset on each remount, replaying the entry every time.
+let didFirstEntry = false
+
+export default function KineticLouvers({ entryDelay = ENTRY_DELAY }) {
   const containerRef = useRef(null)
   const barsRef = useRef([])
-  const didEnterRef = useRef(false)
   const [numBars, setNumBars] = useState(getNumBars)
 
   useEffect(() => {
@@ -95,21 +105,41 @@ export default function KineticLouvers() {
     let lockUntil = 0
 
     // First-load entry sweep — bars start collapsed and cascade in from
-    // the left edge. Skip on resize-driven re-runs so a window drag
+    // the left edge. Each bar rises into its PEAK state (scaled + rotated
+    // + full opacity) as the wavefront reaches it, then settles into the
+    // resting BASE state. The stagger between bars creates the visible
+    // travelling wave. Skip on resize-driven re-runs so a window drag
     // doesn't replay the intro.
-    if (!didEnterRef.current) {
-      didEnterRef.current = true
+    //
+    // didFirstEntry is flipped INSIDE onComplete, not synchronously up
+    // here — otherwise in React StrictMode the first effect run flips
+    // it true and the gsap context cleanup kills the scheduled animation
+    // before it plays, so the re-mounted effect skips it entirely.
+    if (!didFirstEntry) {
       gsap.set(bars, { scaleY: 0, opacity: 0, rotateY: 0 })
       gsap.to(bars, {
-        scaleY: 1,
-        opacity: BASE_OPACITY,
-        duration: ENTRY_DUR,
-        ease: 'power3.out',
+        keyframes: [
+          {
+            scaleY: PEAK_SCALE,
+            opacity: PEAK_OPACITY,
+            rotateY: PEAK_ROTATE_Y,
+            duration: ENTRY_PEAK_DUR,
+            ease: 'power2.out',
+          },
+          {
+            scaleY: 1,
+            opacity: BASE_OPACITY,
+            rotateY: 0,
+            duration: ENTRY_SETTLE_DUR,
+            ease: 'power2.out',
+          },
+        ],
         stagger: ENTRY_STAGGER,
-        delay: ENTRY_DELAY,
+        delay: entryDelay,
+        onComplete: () => { didFirstEntry = true },
       })
       lockUntil = performance.now() +
-        (ENTRY_DELAY + (numBars - 1) * ENTRY_STAGGER + ENTRY_DUR) * 1000
+        (entryDelay + (numBars - 1) * ENTRY_STAGGER + ENTRY_PEAK_DUR + ENTRY_SETTLE_DUR) * 1000
     } else {
       gsap.set(bars, { scaleY: 1, opacity: BASE_OPACITY, rotateY: 0 })
     }
@@ -160,7 +190,15 @@ export default function KineticLouvers() {
     // Click ripple — the wave radiates outward from the click point.
     // Each bar fires a peak/return tween whose start is delayed by
     // distance / RIPPLE_SPEED, producing the visible wavefront.
+    //
+    // Gated by lockUntil so a second click during an active ripple is
+    // ignored (instead of stacking). This avoids using `overwrite: true`
+    // on the per-bar tweens, which would otherwise kill the persistent
+    // quickTo instances that drive the hover wave — once those are
+    // killed, hover stops working until a full remount.
     const handleClick = (e) => {
+      if (performance.now() < lockUntil) return
+
       const rect = container.getBoundingClientRect()
       const clickX = e.clientX - rect.left
 
@@ -195,7 +233,6 @@ export default function KineticLouvers() {
             },
           ],
           delay,
-          overwrite: true,
         })
       }
     }
@@ -224,7 +261,7 @@ export default function KineticLouvers() {
         <div
           key={i}
           ref={(el) => (barsRef.current[i] = el)}
-          className="bg-base-dark/40 shrink-0"
+          className="kinetic-bar bg-base-dark/40 shrink-0"
           style={{
             width: `${BAR_WIDTH}px`,
             height: `${BASE_HEIGHT}px`,

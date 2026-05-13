@@ -1,14 +1,33 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Hero from '../components/Hero'
+import HeroV2 from '../components/HeroV2'
 import Showreel from '../components/Showreel'
 import WhatWeDo from '../components/WhatWeDo'
 import Services from '../components/Services'
+import ServicesTeaser from '../components/ServicesTeaser'
 import ProcessAlt from '../components/ProcessAlt'
 import WorkShowcase from '../components/WorkShowcase'
 import Contact from '../components/Contact'
 import { schedulePrefetchOnIdle } from '../utils/showcasePrefetch'
 import SEO from '../components/SEO'
+
+// Home-page hero iteration toggle.
+//   true  → new wordmark/line/showreel layout (HeroV2; embeds its own
+//           showreel so the standalone <Showreel /> below is skipped).
+//   false → original Hero + standalone Showreel (the design that's been
+//           live until now).
+// Flip this single value to revert. Both Hero components remain in the
+// codebase so no destructive change is needed to switch back.
+const USE_V2_HERO = true
+
+// Home-page pricing toggle.
+//   true  → stripped-down ServicesTeaser (3-row tier strip + CTA to
+//           /services for the full breakdown).
+//   false → full Services component (same as the /services page).
+// /services page is unaffected by this flag — it always shows the full
+// pricing breakdown.
+const USE_PRICING_TEASER = true
 
 // FAQ pulls in @sanity/client (~50KB gz). Code-split it so it only loads
 // when the homepage actually mounts the section.
@@ -38,12 +57,18 @@ export default function Home() {
         path="/"
         description="Senior design studio for founders, startups, and product teams. Brand, product, and websites from one studio — no fragmented handoffs."
       />
-      <Hero />
-      <Showreel />
-      <WhatWeDo />
+      {USE_V2_HERO ? (
+        <HeroV2 />
+      ) : (
+        <>
+          <Hero />
+          <Showreel />
+        </>
+      )}
       <WorkShowcase />
+      <WhatWeDo />
       <ProcessAlt />
-      <Services />
+      {USE_PRICING_TEASER ? <ServicesTeaser /> : <Services />}
       <Suspense fallback={null}>
         <FAQ />
       </Suspense>

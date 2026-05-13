@@ -15,7 +15,7 @@ const showcaseIntent = () => {
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-white text-base-dark overflow-hidden" role="contentinfo">
+    <footer className="relative w-full bg-base-pure text-base-dark overflow-hidden" role="contentinfo">
       {/* Top divider — full-width black line that respects the site's
           horizontal padding (max-w-[1600px] + px-6 md:px-10), the same container
           every other footer row uses. */}
@@ -33,29 +33,29 @@ export default function Footer() {
 
           <div className="lg:col-span-8 flex flex-wrap justify-start lg:justify-end gap-x-12 lg:gap-x-16 gap-y-10">
             <div>
-              <h4 className="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">Pricing &amp; Engagements</h4>
+              <h4 className="font-mono text-xs text-muted uppercase tracking-widest mb-4">Pricing &amp; Engagements</h4>
               <ul className="space-y-3">
-                <li><Link to="/#services" className="text-gray-700 text-sm hover:text-base-dark transition-colors">Brand + Website</Link></li>
-                <li><Link to="/#services" className="text-gray-700 text-sm hover:text-base-dark transition-colors">Product Design (UI/UX)</Link></li>
-                <li><Link to="/#services" className="text-gray-700 text-sm hover:text-base-dark transition-colors">Design Partner</Link></li>
+                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Brand + Website</Link></li>
+                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Product Design (UI/UX)</Link></li>
+                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Design Partner</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">Company</h4>
+              <h4 className="font-mono text-xs text-muted uppercase tracking-widest mb-4">Company</h4>
               <ul className="space-y-3">
-                <li><Link to="/showcase" onMouseEnter={showcaseIntent} onFocus={showcaseIntent} onTouchStart={showcaseIntent} className="text-gray-700 text-sm hover:text-base-dark transition-colors">Showcase</Link></li>
-                <li><Link to="/approach" className="text-gray-700 text-sm hover:text-base-dark transition-colors">Approach</Link></li>
-                <li><Link to="/about" className="text-gray-700 text-sm hover:text-base-dark transition-colors">About</Link></li>
-                <li><Link to="/#faq" className="text-gray-700 text-sm hover:text-base-dark transition-colors">FAQ</Link></li>
+                <li><Link to="/showcase" onMouseEnter={showcaseIntent} onFocus={showcaseIntent} onTouchStart={showcaseIntent} className="text-subtle text-sm hover:text-base-dark transition-colors">Showcase</Link></li>
+                <li><Link to="/approach" className="text-subtle text-sm hover:text-base-dark transition-colors">Approach</Link></li>
+                <li><Link to="/about" className="text-subtle text-sm hover:text-base-dark transition-colors">About</Link></li>
+                <li><Link to="/#faq" className="text-subtle text-sm hover:text-base-dark transition-colors">FAQ</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-mono text-xs text-gray-500 uppercase tracking-widest mb-4">Contact</h4>
+              <h4 className="font-mono text-xs text-muted uppercase tracking-widest mb-4">Contact</h4>
               <a
                 href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft transition-colors"
               >
                 Book a call
               </a>
@@ -72,7 +72,7 @@ export default function Footer() {
           edge so its bottom third peeks below the footer. */}
       <div className="max-w-[1600px] mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-0">
-          <span className="font-mono text-xs text-gray-500 leading-snug">
+          <span className="font-mono text-xs text-muted leading-snug">
             &copy; 2026 Soni labs Studio.<br />All rights reserved.
           </span>
           <ul className="flex flex-wrap md:justify-end gap-x-5 md:gap-x-7 gap-y-2">
@@ -87,7 +87,7 @@ export default function Footer() {
                   href={href}
                   target={href.startsWith('mailto:') ? undefined : '_blank'}
                   rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                  className="group inline-flex items-baseline gap-1.5 font-mono text-xs md:text-sm uppercase tracking-[0.15em] text-gray-500 hover:text-base-dark transition-colors"
+                  className="group inline-flex items-baseline gap-1.5 font-mono text-xs md:text-sm uppercase tracking-[0.15em] text-muted hover:text-base-dark transition-colors"
                 >
                   {label}
                   <svg

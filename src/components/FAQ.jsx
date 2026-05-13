@@ -120,7 +120,7 @@ export default function FAQ() {
   }
 
   return (
-    <section ref={sectionRef} id="faq" className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+    <section ref={sectionRef} id="faq" className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
@@ -130,7 +130,7 @@ export default function FAQ() {
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight mb-5">
             FAQs
           </h2>
-          <p className="text-gray-500 text-base leading-relaxed max-w-xs">
+          <p className="text-muted text-base leading-relaxed max-w-xs">
             Quick answers about our process, timelines, and how we typically work with new clients.
           </p>
         </div>
@@ -170,7 +170,7 @@ export default function FAQ() {
                   className="overflow-hidden"
                   style={{ height: 0, opacity: 0 }}
                 >
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed pb-6 max-w-2xl">
+                  <p className="text-subtle text-sm md:text-base leading-relaxed pb-6 max-w-2xl">
                     {item.answer}
                   </p>
                 </div>

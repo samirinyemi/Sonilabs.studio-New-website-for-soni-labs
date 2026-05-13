@@ -97,11 +97,11 @@ function CardBody({ project }) {
           so it doesn't push the tag wrapping around. */}
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline justify-between gap-4">
-          <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-gray-500 leading-snug">
+          <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-muted leading-snug">
             {project.tags.join(' · ')}
           </span>
           {project.year && (
-            <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-gray-500 shrink-0">
+            <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-muted shrink-0">
               {project.year}
             </span>
           )}
@@ -148,18 +148,18 @@ function ProjectCard({ project }) {
 
 export default function WorkShowcase() {
   return (
-    <section id="work" className="w-full py-20 md:py-32 bg-white">
+    <section id="work" className="w-full py-20 md:py-32 bg-base-pure">
       <div className="max-w-[1600px] mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="ws-header mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Case studies</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Case studies</p>
             <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-base-dark leading-[1.05]">
               Selected work <span className="text-base-dark/50 text-2xl md:text-3xl align-top">(04)</span>
             </h2>
           </div>
 
-          <p className="text-gray-600 text-base md:text-lg max-w-sm leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-sm leading-relaxed">
             A selection of recent brand and digital projects, shaped through clarity, strategy, and craft.
           </p>
         </div>

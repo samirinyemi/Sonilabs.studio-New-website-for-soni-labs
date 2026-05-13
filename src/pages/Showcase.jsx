@@ -847,12 +847,12 @@ export default function ShowcasePage() {
           tabbing through every item. */}
       <a
         href="#showcase-controls"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[210] focus:px-4 focus:py-2 focus:bg-base-dark focus:text-white focus:rounded-full focus:font-mono focus:text-xs focus:uppercase focus:tracking-wider"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[210] focus:px-4 focus:py-2 focus:bg-base-dark focus:text-base-pure focus:rounded-full focus:font-mono focus:text-xs focus:uppercase focus:tracking-wider"
       >
         Skip to gallery controls
       </a>
 
-      <section id="showcase-controls" className="relative w-full h-screen overflow-hidden bg-[#F3F3F3]">
+      <section id="showcase-controls" className="relative w-full h-screen overflow-hidden bg-canvas">
         {/* Back button — top-left. Returns to the previous page in
             history, or falls back to home for direct landings. */}
         {!isMobile && (
@@ -860,7 +860,7 @@ export default function ShowcasePage() {
             type="button"
             onClick={handleBack}
             aria-label="Back to previous page"
-            className="absolute top-3 md:top-5 left-3 md:left-6 z-20 inline-flex items-center gap-2 h-10 px-4 bg-white rounded-full border border-base-border font-mono text-[10px] uppercase tracking-[0.15em] text-base-dark hover:bg-base-light transition-colors"
+            className="absolute top-3 md:top-5 left-3 md:left-6 z-20 inline-flex items-center gap-2 h-10 px-4 bg-base-pure rounded-full border border-base-border font-mono text-[10px] uppercase tracking-[0.15em] text-base-dark hover:bg-base-light transition-colors"
           >
             <ChevronLeft size={14} strokeWidth={1.75} />
             <span>Back</span>
@@ -872,7 +872,7 @@ export default function ShowcasePage() {
           <div
             role="tablist"
             aria-label="Gallery view"
-            className="absolute top-3 md:top-5 left-1/2 -translate-x-1/2 z-20 flex gap-0.5 p-0.5 bg-white rounded-full border border-base-border"
+            className="absolute top-3 md:top-5 left-1/2 -translate-x-1/2 z-20 flex gap-0.5 p-0.5 bg-base-pure rounded-full border border-base-border"
           >
             <button
               role="tab"
@@ -881,7 +881,7 @@ export default function ShowcasePage() {
               aria-selected={view === 'grid'}
               onClick={() => setView('grid')}
               className={`flex items-center justify-center h-11 w-11 rounded-full transition-colors ${
-                view === 'grid' ? 'bg-base-light text-base-dark' : 'text-gray-500 hover:text-base-dark'
+                view === 'grid' ? 'bg-base-light text-base-dark' : 'text-muted hover:text-base-dark'
               }`}
             >
               <LayoutGrid size={16} strokeWidth={1.75} />
@@ -893,7 +893,7 @@ export default function ShowcasePage() {
               aria-selected={view === 'list'}
               onClick={() => setView('list')}
               className={`flex items-center justify-center h-11 w-11 rounded-full transition-colors ${
-                view === 'list' ? 'bg-base-light text-base-dark' : 'text-gray-500 hover:text-base-dark'
+                view === 'list' ? 'bg-base-light text-base-dark' : 'text-muted hover:text-base-dark'
               }`}
             >
               <LayoutList size={16} strokeWidth={1.75} />

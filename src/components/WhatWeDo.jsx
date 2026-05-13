@@ -30,10 +30,10 @@ export default function WhatWeDo() {
   }, { scope: container })
 
   return (
-    <section ref={container} id="capabilities" className="w-full py-20 md:py-28 px-4 md:px-6 bg-white">
+    <section ref={container} id="capabilities" className="w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure">
       <div className="max-w-[1600px] mx-auto">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// What we do</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// What we do</p>
           <ul className="wwd-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-8 border-t border-base-border pt-6">
             {whatWeDo.map((item, i) => (
               <li

@@ -59,10 +59,10 @@ export default function Testimonials() {
   }, { scope: container })
 
   return (
-    <section ref={container} className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+    <section ref={container} className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
       <div className="max-w-[1600px] mx-auto">
         <div className="text-center mb-12 md:mb-20">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Social proof</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Social proof</p>
           <h2 className="test-heading font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark max-w-3xl mx-auto leading-tight">Trusted by teams building the next wave.</h2>
         </div>
 
@@ -74,23 +74,23 @@ export default function Testimonials() {
                 key={i}
                 className={`test-card p-8 rounded-[12px] flex flex-col ${
                   isFeatured
-                    ? 'bg-base-dark text-white border border-gray-800 transform md:-translate-y-4'
-                    : 'bg-white border border-base-border'
+                    ? 'bg-base-dark text-base-pure border border-gray-800 transform md:-translate-y-4'
+                    : 'bg-base-pure border border-base-border'
                 }`}
               >
                 <Stars color={isFeatured ? 'text-accent-yellow' : 'text-accent-red'} />
-                <p className={`mb-8 flex-grow leading-relaxed ${isFeatured ? 'text-gray-300' : 'text-gray-700'}`}>{t.quote}</p>
+                <p className={`mb-8 flex-grow leading-relaxed ${isFeatured ? 'text-gray-300' : 'text-subtle'}`}>{t.quote}</p>
                 <div className={`flex items-center gap-3 pt-6 border-t ${isFeatured ? 'border-gray-800' : 'border-base-border'}`}>
                   {t.avatarUrl ? (
-                    <img src={t.avatarUrl} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
+                    <img src={t.avatarUrl} alt={t.name} loading="lazy" decoding="async" className="w-10 h-10 rounded-full object-cover" />
                   ) : (
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${isFeatured ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${isFeatured ? 'bg-gray-700 text-white' : 'bg-gray-200 text-muted'}`}>
                       {t.name?.[0] || '?'}
                     </div>
                   )}
                   <div>
                     <p className={`font-bold text-sm ${isFeatured ? 'text-white' : 'text-base-dark'}`}>{t.name}</p>
-                    <p className={`text-xs ${isFeatured ? 'text-gray-400' : 'text-gray-500'}`}>{t.role}, {t.company}</p>
+                    <p className={`text-xs ${isFeatured ? 'text-gray-400' : 'text-muted'}`}>{t.role}, {t.company}</p>
                   </div>
                 </div>
               </div>

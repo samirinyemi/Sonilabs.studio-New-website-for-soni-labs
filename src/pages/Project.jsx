@@ -111,7 +111,7 @@ const projects = {
       introPractice: 'Australia Medical Association Victoria champions a united medical community, advancing a healthcare system in Victoria that empowers doctors and enriches patient care.',
       introBrief: 'A medical association sits at the intersection of policy, education, and practitioner support — and its digital surfaces have to read as authoritative without feeling stiff. The work spans a multi-site web platform, a member-facing portal, and the internal admin system staff use day-to-day. One system, one tone, one place every audience knows where to look.',
     },
-    pageBg: 'bg-[#F3F3F3]',
+    pageBg: 'bg-canvas',
     nextSlug: 'time-bmx',
     caseStudyReady: true,
     cardHeight: 'h-[45vh] md:h-[43vh]',
@@ -364,7 +364,7 @@ function StatNumber({ value }) {
 function MetaBlock({ label, children }) {
   return (
     <div>
-      <p className="font-mono text-xs uppercase tracking-[0.15em] text-gray-500 mb-2">{label}</p>
+      <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">{label}</p>
       <div className="text-base-dark text-base leading-snug">{children}</div>
     </div>
   )
@@ -380,7 +380,7 @@ function BackButton() {
     <button
       type="button"
       onClick={handleBack}
-      className="cta-press inline-flex items-center gap-2 h-10 px-4 bg-white rounded-full border border-base-border font-mono text-[10px] uppercase tracking-[0.15em] text-base-dark hover:bg-base-light"
+      className="cta-press inline-flex items-center gap-2 h-10 px-4 bg-base-pure rounded-full border border-base-border font-mono text-[10px] uppercase tracking-[0.15em] text-base-dark hover:bg-base-light"
     >
       <ChevronLeft size={14} strokeWidth={1.75} />
       <span>Back</span>
@@ -395,7 +395,10 @@ export default function ProjectPage() {
 
   useGSAP(() => {
     if (prefersReducedMotion()) {
-      gsap.set('.proj-manifesto-char', { color: '#000000' })
+      // Snap each char to its final colour via the same --p variable
+      // the scroll animation drives. CSS color-mix() turns this into
+      // the per-theme final colour (black / white / brand red).
+      gsap.set('.proj-manifesto-char', { '--p': 1 })
       return
     }
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
@@ -416,17 +419,21 @@ export default function ProjectPage() {
       })
     })
 
-    // Manifesto char sweep — gray → black, scroll-linked. Starts as soon
-    // as the text crosses the viewport edge (top 90%) and finishes well
-    // before it reaches the top, so the user sees the sweep happen while
-    // reading rather than just before scrolling past.
+    // Manifesto char sweep — drives the CSS variable --p from 0 → 1
+    // per char. CSS color-mix() interpolates between the theme's
+    // initial and final colours, so the sweep is fully theme-aware
+    // (gray → black in light, gray → white in dark, light-red → red
+    // in red theme).
     gsap.utils.toArray('.proj-manifesto-text').forEach((block) => {
       const chars = block.querySelectorAll('.proj-manifesto-char')
       if (chars.length === 0) return
-      gsap.to(chars, {
-        color: '#000000', ease: 'none', duration: 0.05, stagger: 0.05,
-        scrollTrigger: { trigger: block, start: 'top 70%', end: 'bottom 55%', scrub: true },
-      })
+      gsap.fromTo(chars,
+        { '--p': 0 },
+        {
+          '--p': 1, ease: 'none', duration: 0.05, stagger: 0.05,
+          scrollTrigger: { trigger: block, start: 'top 70%', end: 'bottom 55%', scrub: true },
+        }
+      )
     })
 
     // Recalculate parallax/manifesto trigger positions after the route
@@ -471,13 +478,13 @@ export default function ProjectPage() {
   if (!project) {
     return (
       <div className="min-h-[80vh] px-4 md:px-6 py-20 md:py-32 flex flex-col items-center justify-center text-center max-w-2xl mx-auto">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// Not found</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Not found</p>
         <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark mb-6">
           We couldn&rsquo;t find that project.
         </h1>
         <Link
           to="/showcase"
-          className="cta-press inline-flex items-center gap-2 px-6 py-3 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft"
+          className="cta-press inline-flex items-center gap-2 px-6 py-3 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft"
         >
           See the Showcase
           <ArrowRight size={16} strokeWidth={2} />
@@ -498,13 +505,13 @@ export default function ProjectPage() {
             {project.name}
           </h1>
           <div className="flex flex-col items-start gap-6 max-w-2xl">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500">// Case study in progress</p>
-            <p className="text-gray-600 text-lg leading-relaxed">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">// Case study in progress</p>
+            <p className="text-subtle text-lg leading-relaxed">
               We&rsquo;re still writing this one. The visual work lives on the Showcase; the full case study (problem, what shipped, outcome) will live here when it&rsquo;s ready.
             </p>
             <Link
               to="/showcase"
-              className="cta-press inline-flex items-center gap-2 px-6 py-3 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft"
+              className="cta-press inline-flex items-center gap-2 px-6 py-3 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft"
             >
               See the Showcase
               <ArrowRight size={16} strokeWidth={2} />
@@ -516,7 +523,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <div ref={containerRef} className={`w-full overflow-x-hidden ${project.pageBg || 'bg-white'}`}>
+    <div ref={containerRef} className={`w-full overflow-x-hidden ${project.pageBg || 'bg-base-pure'}`}>
       <SEO
         title={project.name}
         path={`/work/${slug}`}
@@ -795,7 +802,7 @@ export default function ProjectPage() {
                 <span className="font-display text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-base-dark leading-none">
                   <StatNumber value={stat.value} />
                 </span>
-                <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-gray-500">
+                <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-muted">
                   {stat.label}
                 </span>
               </div>
@@ -918,7 +925,7 @@ export default function ProjectPage() {
           non-interactive div so clicking them does nothing; a hover
           overlay shows the "Coming soon, very soon" message. ───────── */}
       <section className="max-w-[1600px] mx-auto px-4 md:px-6 pb-20 md:pb-32 border-t border-base-border pt-16 md:pt-20">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-10 md:mb-14">// More work</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-10 md:mb-14">// More work</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
           {Object.entries(projects)
             .filter(([projectSlug]) => projectSlug !== slug)
@@ -960,7 +967,7 @@ export default function ProjectPage() {
                       </div>
                     )}
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-gray-500 leading-snug">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted leading-snug">
                     {p.services.slice(0, 3).join(' · ')}
                   </span>
                   <h3 className="font-display text-2xl font-bold text-base-dark leading-tight">

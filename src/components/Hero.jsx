@@ -75,7 +75,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full min-h-screen bg-white px-6 md:px-10 pt-24 md:pt-32 pb-16 md:pb-20 flex flex-col"
+      className="relative w-full min-h-screen bg-base-pure px-6 md:px-10 pt-24 md:pt-32 pb-16 md:pb-20 flex flex-col"
     >
       <div className="max-w-[1600px] w-full mx-auto flex flex-col grow">
         <div className="grid grid-cols-12 gap-x-8 gap-y-10 lg:gap-x-12">
@@ -86,7 +86,7 @@ export default function Hero() {
               style={{ opacity: 0 }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent-red" aria-hidden="true"></span>
-              <span className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-gray-500">
+              <span className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted">
                 A design studio, under one roof
               </span>
             </div>
@@ -104,7 +104,7 @@ export default function Hero() {
             </h1>
 
             <p
-              className="hero-manifesto text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed mb-10 md:mb-12"
+              className="hero-manifesto text-lg md:text-xl text-subtle max-w-2xl leading-relaxed mb-10 md:mb-12"
               style={{ opacity: 0 }}
             >
               For founders, startups, and product teams. Senior strategy and<br className="hidden md:inline" /> design from one studio, no fragmented handoffs.
@@ -118,7 +118,7 @@ export default function Hero() {
                 href="https://calendly.com/madebysoni/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-press flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-7 py-3 sm:py-3.5 bg-base-dark text-white rounded-full font-medium text-sm sm:text-base hover:bg-base-dark-soft"
+                className="cta-press flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-7 py-3 sm:py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm sm:text-base hover:bg-base-dark-soft"
               >
                 <span className="sm:hidden">Book a call</span>
                 <span className="hidden sm:inline">Book a strategy call</span>
@@ -151,7 +151,7 @@ export default function Hero() {
                 <h2 className="font-display text-xl md:text-2xl font-bold text-base-dark leading-tight mb-3">
                   {p.title}
                 </h2>
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                <p className="text-subtle text-sm md:text-base leading-relaxed">
                   {p.body}
                 </p>
               </div>

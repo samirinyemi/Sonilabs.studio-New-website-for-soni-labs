@@ -65,24 +65,24 @@ export default function Capabilities() {
   }, { scope: container })
 
   return (
-    <section ref={container} id="capabilities" className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+    <section ref={container} id="capabilities" className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
       <div className="max-w-[1600px] mx-auto">
         {/* Section header */}
         <div className="cap-header mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// Capabilities</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Capabilities</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
               Everything under one roof.
             </h2>
           </div>
-          <p className="text-gray-600 text-base md:text-lg max-w-md leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
             A complete bench of disciplines, applied selectively to whatever your engagement actually needs.
           </p>
         </div>
 
         {/* What we do — flat list */}
         <div className="mb-20 md:mb-32">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// What we do</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// What we do</p>
           <ul className="cap-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-8 border-t border-base-border pt-6">
             {whatWeDo.map((item, i) => (
               <li
@@ -116,7 +116,7 @@ export default function Capabilities() {
 
         {/* How we do it — expanded disciplines */}
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// How we do it</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// How we do it</p>
           <div className="cap-rows border-t border-base-border">
             {howWeDoIt.map((d) => (
               <div
@@ -134,7 +134,7 @@ export default function Capabilities() {
                   </h3>
                 </div>
                 <div className="col-span-12 md:col-span-7">
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  <p className="text-subtle text-base md:text-lg leading-relaxed">
                     {d.body}
                   </p>
                 </div>

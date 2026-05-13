@@ -105,9 +105,11 @@ export default function AboutPage() {
 
   useGSAP(() => {
     if (prefersReducedMotion()) {
-      // Reduced motion: snap the manifesto to its final state (full black)
-      // so the message reads instantly without the scroll-driven reveal.
-      gsap.set('.manifesto-char', { color: '#000000' })
+      // Reduced motion: snap each char to its final colour via the
+      // same --p variable the scroll animation drives. CSS color-mix()
+      // turns this into the per-theme final colour (black / white /
+      // brand red).
+      gsap.set('.manifesto-char', { '--p': 1 })
       return
     }
 
@@ -121,24 +123,29 @@ export default function AboutPage() {
       scrollTrigger: { trigger: '.ap-hero-video', start: 'top 90%', toggleActions: 'play none none reverse' },
     })
 
-    // Manifesto — scroll-linked character color sweep. Each char starts at
-    // gray-300 and fills to base-dark in document order as the user scrolls
-    // through the section. scrub: true binds the playhead to scroll progress
-    // so it reverses on scroll-up and feels physically tied to the wheel.
+    // Manifesto — scroll-linked character colour sweep. Drives the CSS
+    // variable --p from 0 → 1 per char. CSS color-mix() interpolates
+    // between the theme's initial and final colours, so the sweep is
+    // fully theme-aware (gray → black in light, gray → white in dark,
+    // light-red → red in red theme). scrub: true binds the playhead
+    // to scroll progress so it reverses on scroll-up.
     const manifestoChars = gsap.utils.toArray('.manifesto-char')
     if (manifestoChars.length > 0) {
-      gsap.to(manifestoChars, {
-        color: '#000000',
-        ease: 'none',
-        duration: 0.05,
-        stagger: 0.05,
-        scrollTrigger: {
-          trigger: '.manifesto-text',
-          start: 'top 75%',
-          end: 'bottom 30%',
-          scrub: true,
-        },
-      })
+      gsap.fromTo(manifestoChars,
+        { '--p': 0 },
+        {
+          '--p': 1,
+          ease: 'none',
+          duration: 0.05,
+          stagger: 0.05,
+          scrollTrigger: {
+            trigger: '.manifesto-text',
+            start: 'top 75%',
+            end: 'bottom 30%',
+            scrub: true,
+          },
+        }
+      )
     }
 
     gsap.from('.ap-section-h', {
@@ -185,9 +192,9 @@ export default function AboutPage() {
       <h1 className="sr-only">About — Soni Labs Studio</h1>
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <section className="w-full pt-12 md:pt-20 pb-16 md:pb-24 px-4 md:px-6 bg-white">
+      <section className="w-full pt-12 md:pt-20 pb-16 md:pb-24 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
-          <p className="ap-eyebrow font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6" style={{ opacity: 0 }}>
+          <p className="ap-eyebrow font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6" style={{ opacity: 0 }}>
             // The studio
           </p>
 
@@ -226,7 +233,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Manifesto — scroll-driven char-by-char gray→black color reveal ── */}
-      <section className="w-full px-4 md:px-6 py-20 md:py-32 bg-white">
+      <section className="w-full px-4 md:px-6 py-20 md:py-32 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
           <p className="manifesto-text font-display font-bold text-4xl md:text-5xl tracking-tighter leading-[1.15] text-gray-300">
             {manifestoWords('Soni Labs is a design and digital experience studio led by ', 'pre')}
@@ -244,22 +251,22 @@ export default function AboutPage() {
       </section>
 
       {/* ── Founder (bio + stats + markets) — placed right after hero ─── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-8 md:mb-10">// Led by</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-8 md:mb-10">// Led by</p>
 
           {/* Name + role */}
           <div className="ap-bio mb-10 md:mb-14">
             <p className="font-display text-2xl md:text-3xl font-bold text-base-dark leading-tight mb-2">
               Samuel Irinyemi
             </p>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
               Founder &middot; Soni Labs
             </p>
           </div>
 
           {/* Bio — merged founder + studio narrative, two columns */}
-          <div className="ap-bio grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-6 mb-12 md:mb-16 text-gray-700 text-base md:text-lg leading-relaxed">
+          <div className="ap-bio grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-6 mb-12 md:mb-16 text-subtle text-base md:text-lg leading-relaxed">
             <div className="space-y-5">
               <p>
                 Samuel Irinyemi is a multidisciplinary designer with over 14 years of combined experience across brand, web, and digital product design. Across his career, he&rsquo;s worked with companies based in six countries, contributing to organisations whose combined valuations exceed $850&nbsp;million&nbsp;USD.
@@ -299,11 +306,11 @@ export default function AboutPage() {
               was direct. The "via X" caption is always visible so the
               attribution doesn't depend on hover. */}
           <div className="mb-16 md:mb-24">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Track record</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Track record</p>
             <h3 className="font-display text-2xl md:text-3xl font-bold text-base-dark leading-tight mb-3">
               Brands Samuel has shipped work for.
             </h3>
-            <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-10 md:mb-12 max-w-2xl">
+            <p className="text-subtle text-base md:text-lg leading-relaxed mb-10 md:mb-12 max-w-2xl">
               Across six countries, through prior studio engagements and independent work.
             </p>
             <ul className="ap-clients-grid grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
@@ -319,7 +326,7 @@ export default function AboutPage() {
                     decoding="async"
                     className={`${c.size} max-w-[60%] object-contain`}
                   />
-                  <span className="absolute bottom-3 left-0 right-0 text-center font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-gray-500">
+                  <span className="absolute bottom-3 left-0 right-0 text-center font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-muted">
                     {c.via}
                   </span>
                 </li>
@@ -342,13 +349,13 @@ export default function AboutPage() {
           <div className="ap-stats grid grid-cols-1 sm:grid-cols-3 gap-y-10 gap-x-8 mb-16 md:mb-24 pt-10 md:pt-12 border-t border-base-border">
             {founderStats.map((s) => (
               <div key={s.eyebrow} className="ap-stat flex flex-col gap-3">
-                <span className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
                   {s.eyebrow}
                 </span>
                 <span className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-base-dark leading-none tracking-tight">
                   {s.figure}
                 </span>
-                <span className="text-gray-600 text-sm md:text-base leading-snug">
+                <span className="text-subtle text-sm md:text-base leading-snug">
                   {s.description}
                 </span>
               </div>
@@ -359,10 +366,10 @@ export default function AboutPage() {
       </section>
 
       {/* ── Principles ────────────────────────────────────────────────── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-white border-t border-base-border">
+      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure border-t border-base-border">
         <div className="max-w-[1600px] mx-auto">
           <div className="ap-section-h mb-12 md:mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// How we work</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// How we work</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight max-w-3xl">
               Four principles. No exceptions.
             </h2>
@@ -375,7 +382,7 @@ export default function AboutPage() {
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-base-dark leading-tight mb-3">
                   {p.title}
                 </h3>
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-md">
+                <p className="text-subtle text-base md:text-lg leading-relaxed max-w-md">
                   {p.body}
                 </p>
               </div>
@@ -385,10 +392,10 @@ export default function AboutPage() {
       </section>
 
       {/* ── Who we work with ──────────────────────────────────────────── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
           <div className="ap-section-h mb-12 md:mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// Who we work with</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Who we work with</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight max-w-3xl">
               Four kinds of teams, one studio.
             </h2>
@@ -411,7 +418,7 @@ export default function AboutPage() {
                   </h3>
                 </div>
                 <div className="col-span-12 md:col-span-6">
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  <p className="text-subtle text-base md:text-lg leading-relaxed">
                     {c.body}
                   </p>
                 </div>
@@ -422,20 +429,20 @@ export default function AboutPage() {
       </section>
 
       {/* ── Closing CTA ───────────────────────────────────────────────── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
         <div className="ap-cta max-w-4xl mx-auto text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Let&rsquo;s talk</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Let&rsquo;s talk</p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark mb-8">
             Tell us where you&rsquo;re headed.
           </h2>
-          <p className="text-gray-600 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+          <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
             A 30-minute strategy call. We&rsquo;ll diagnose what you need, suggest a path, and decide together if we&rsquo;re a fit.
           </p>
           <a
             href={CALENDLY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-press inline-flex items-center gap-3 px-10 py-5 bg-base-dark text-white rounded-full font-medium text-lg hover:bg-base-dark-soft"
+            className="cta-press inline-flex items-center gap-3 px-10 py-5 bg-base-dark text-base-pure rounded-full font-medium text-lg hover:bg-base-dark-soft"
           >
             Book a call
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

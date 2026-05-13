@@ -1,12 +1,15 @@
-import { lazy, Suspense, useEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import Loader from './components/Loader'
+import ThemeSwitcher from './components/ThemeSwitcher'
 import Home from './pages/Home'
 import { prefersReducedMotion } from './utils/motion'
+import { LoaderContext } from './contexts/LoaderContext'
 
 // `/` is the default landing route, so keep it in the main bundle.
 // Other routes are lazy-loaded so each route's components only download
@@ -73,17 +76,20 @@ function AppLayout() {
     <div className="min-h-screen flex flex-col">
       <ScrollToTopOnNavigate />
       <CustomCursor />
+      <ThemeSwitcher />
       {/* Skip-to-content for keyboard users — visually hidden until focused */}
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-base-dark focus:text-white focus:rounded-full focus:font-mono focus:text-xs focus:uppercase focus:tracking-wider"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-base-dark focus:text-base-pure focus:rounded-full focus:font-mono focus:text-xs focus:uppercase focus:tracking-wider"
       >
         Skip to content
       </a>
 
       {/* Force the floating bottom-pill nav on full-screen routes so the
           user has navigation without the static top bar. */}
-      <Navbar forceFloating={isFullscreen} />
+      {/* v2={true} = home-page iteration nav (no wordmark, no border line,
+          menu+CTA grouped right). Flip to {false} to revert. */}
+      <Navbar v2={true} forceFloating={isFullscreen} />
 
       <main
         id="main"
@@ -114,6 +120,12 @@ function AppLayout() {
 }
 
 export default function App() {
+  // First-load Loader gate. `loaderDone` flips to true the moment the
+  // Loader begins its parallax exit, so the home page underneath can
+  // start its hero animations as the loader peels away. Reset on every
+  // App mount (hard refresh) — no localStorage persistence on purpose.
+  const [loaderDone, setLoaderDone] = useState(false)
+
   useEffect(() => {
     if (prefersReducedMotion()) return
     // Skip Lenis on touch / coarse-pointer devices. Native mobile scroll
@@ -149,8 +161,14 @@ export default function App() {
   }, [])
 
   return (
-    <BrowserRouter>
-      <AppLayout />
-    </BrowserRouter>
+    <LoaderContext.Provider value={{ loaderDone }}>
+      {/* Loader is always mounted on first App mount; it returns null
+          itself once its exit animation completes, so we don't need to
+          conditionally unmount it (that would cut off the parallax). */}
+      <Loader onExitStart={() => setLoaderDone(true)} />
+      <BrowserRouter>
+        <AppLayout />
+      </BrowserRouter>
+    </LoaderContext.Provider>
   )
 }

@@ -43,7 +43,7 @@ const processes = [
 
 function ProcessSection({ process }) {
   return (
-    <section className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-white border-t border-base-border">
+    <section className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure border-t border-base-border">
       <div className="max-w-[1600px] mx-auto">
         {/* Section header */}
         <div className="proj-reveal proc-section-header text-center mb-12 md:mb-20">
@@ -53,7 +53,7 @@ function ProcessSection({ process }) {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-base-dark max-w-2xl mx-auto leading-tight">
             {process.title}
           </h2>
-          <p className="text-gray-600 text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
             {process.body}
           </p>
         </div>
@@ -79,7 +79,7 @@ function ProcessSection({ process }) {
                 </h3>
               </div>
               <div className="col-span-12 md:col-span-7">
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                <p className="text-subtle text-base md:text-lg leading-relaxed">
                   {step.body}
                 </p>
               </div>
@@ -148,13 +148,13 @@ export default function ApproachPage() {
       </section>
 
       {/* Page hero copy */}
-      <section className="w-full pt-12 md:pt-16 pb-16 md:pb-24 px-4 md:px-6 bg-white">
+      <section className="w-full pt-12 md:pt-16 pb-16 md:pb-24 px-4 md:px-6 bg-base-pure">
         <div className="proj-reveal proc-page-hero max-w-[1600px] mx-auto">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-6">// Approach</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Approach</p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark mb-8 md:mb-10">
             Three engagements.
           </h2>
-          <p className="text-gray-600 text-lg md:text-xl leading-relaxed max-w-3xl">
+          <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-3xl">
             Each engagement follows its own process, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Brand + Website, Product Design, and Design Partner each move from brief to final product.
           </p>
         </div>

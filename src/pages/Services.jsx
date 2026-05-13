@@ -170,19 +170,19 @@ export default function ServicesPage() {
       </section>
 
       {/* ── What we do — part of the hero load (no scroll trigger) ────── */}
-      <section className="w-full pt-10 md:pt-14 pb-12 md:pb-20 px-4 md:px-6 bg-white">
+      <section className="w-full pt-10 md:pt-14 pb-12 md:pb-20 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
           <div
             className="sp-wd-header mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6"
             style={{ opacity: 0 }}
           >
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// What we do</p>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// What we do</p>
               <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
                 Every discipline, under one roof.
               </h2>
             </div>
-            <p className="text-gray-600 text-base md:text-lg max-w-md leading-relaxed">
+            <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
               A complete bench of practices, applied selectively to whatever your engagement actually needs.
             </p>
           </div>
@@ -209,10 +209,10 @@ export default function ServicesPage() {
       <ServicesSection expanded />
 
       {/* ── How we do it ──────────────────────────────────────────────── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-white">
+      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
           <div className="sp-header-h mb-12 md:mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// How we do it</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// How we do it</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight max-w-3xl">
               Four practices, applied to whatever your engagement needs.
             </h2>
@@ -235,7 +235,7 @@ export default function ServicesPage() {
                   </h4>
                 </div>
                 <div className="col-span-12 md:col-span-7">
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  <p className="text-subtle text-base md:text-lg leading-relaxed">
                     {d.body}
                   </p>
                 </div>

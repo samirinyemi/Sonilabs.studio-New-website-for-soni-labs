@@ -46,13 +46,13 @@ export default function ProcessAlt() {
   }, { scope: container })
 
   return (
-    <section ref={container} id="process" className="w-full py-20 md:py-24 px-4 md:px-6 bg-white">
+    <section ref={container} id="process" className="w-full py-20 md:py-24 px-4 md:px-6 bg-base-pure">
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <div className="pa-header text-center mb-12 md:mb-20">
           <p className="font-mono text-accent-red text-sm font-bold uppercase tracking-widest mb-4">// Brand + Website process</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark max-w-2xl mx-auto">From first call to launch in 4 weeks.</h2>
-          <p className="text-gray-600 text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
             How our flagship service moves from brief to live site. Other engagements follow a similar shape. See each service for its specific timeline.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function ProcessAlt() {
                 </h3>
               </div>
               <div className="col-span-12 md:col-span-6">
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                <p className="text-subtle text-base md:text-lg leading-relaxed">
                   {step.body}
                 </p>
               </div>

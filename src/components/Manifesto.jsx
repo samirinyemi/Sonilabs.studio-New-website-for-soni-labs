@@ -22,10 +22,10 @@ export default function Manifesto() {
   return (
     <section
       ref={ref}
-      className="w-full py-28 md:py-40 px-6 md:px-10 bg-white border-t border-b border-base-border"
+      className="w-full py-28 md:py-40 px-6 md:px-10 bg-base-pure border-t border-b border-base-border"
     >
       <div className="max-w-5xl mx-auto text-center">
-        <p className="manifesto-eyebrow font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-8 md:mb-10">
+        <p className="manifesto-eyebrow font-mono text-xs uppercase tracking-[0.2em] text-muted mb-8 md:mb-10">
           // How we work
         </p>
         <p className="manifesto-line font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-[1.1]">

@@ -30,24 +30,147 @@
   --font-display: 'Aeonik', system-ui, sans-serif;
   --font-mono: 'Fira Code', monospace;
 
-  /* Brand neutrals (from Soni Labs brand palette) */
-  --color-base-light: #F2F2F2;       /* Off-White (kept as token for card-level tinted surfaces) */
-  --color-base-dark: #000000;        /* Black */
-  --color-base-dark-soft: #1A1A1A;   /* Black hover state — neutral lift, no blue cast */
-  --color-base-pure: #FFFFFF;        /* White (page surface) */
-  --color-base-border: #E5E5E5;      /* Border (derived utility) */
-  --color-card-soft: #F3F3F3;        /* Soft card surface (Product Design + Design Partner) */
+  /* Brand neutrals (from Soni Labs brand palette).
+     These are the LIGHT theme defaults. Overridden per-theme below via
+     :root[data-theme="..."] blocks. Tailwind v4 generates utility
+     classes (bg-base-dark, text-base-dark, etc.) from these tokens,
+     and the var() lookup respects the cascade at runtime — so theme
+     overrides flow through every usage without touching JSX. */
+  --color-base-light: #F2F2F2;       /* Off-White (card-level tinted surfaces) */
+  --color-base-dark: #000000;        /* Strong ink — text, dark surfaces, accents */
+  --color-base-dark-soft: #1A1A1A;   /* Hover state for dark surfaces */
+  --color-base-pure: #FFFFFF;        /* Page surface */
+  --color-base-border: #E5E5E5;      /* Default border */
+  --color-card-soft: #F3F3F3;        /* Product Design / Design Partner card surface */
+  --color-canvas: #F3F3F3;           /* Showcase canvas / page-level off-white backdrop */
 
-  /* Brand accents */
+  /* Theme-aware text scale. text-muted is currently equivalent to
+     Tailwind's text-gray-500; text-subtle is text-gray-600. We swap
+     these per theme so body copy can follow the theme (especially in
+     the red theme, where Tailwind's gray-* would stay gray and break
+     the "all text reads red" intent). */
+  --color-muted: oklch(0.5520 0.0143 256.85);   /* ≈ Tailwind gray-500 */
+  --color-subtle: oklch(0.4460 0.0298 256.80);  /* ≈ Tailwind gray-600 */
+
+  /* Brand accents — same across all themes. */
   --color-accent-red: #DA241C;       /* Soni Orange-Red */
   --color-accent-red-deep: #C72018;  /* hover state — subtle darken, same hue */
   --color-accent-yellow: #FAFD3A;    /* Brand Yellow (gradient endpoint) */
+}
 
+/* ── DARK theme ──────────────────────────────────────────────────────
+   Strong ink (text, dark surfaces) becomes white. Page surface flips
+   to near-black. Light/card surfaces become deep dark gray so the
+   contrast hierarchy holds. All text — including Tailwind's text-gray-*
+   utility classes — is forced to white via the override below so the
+   page reads as "all text white" without re-tokenising every component. */
+:root[data-theme="dark"] {
+  --color-base-light: #1A1A1A;
+  --color-base-dark: #FFFFFF;
+  --color-base-dark-soft: #E5E5E5;
+  --color-base-pure: #0A0A0A;
+  --color-base-border: #2A2A2A;
+  --color-card-soft: #161616;
+  --color-canvas: #0A0A0A;
+
+  --color-muted: #FFFFFF;
+  --color-subtle: #FFFFFF;
+}
+
+/* Force every text-gray-* (and text-black) Tailwind utility to white
+   in dark theme — these classes hard-code colour values so the
+   per-theme tokens above don't reach them. The :root[data-theme]
+   ancestor gives this rule higher specificity than the utility class. */
+:root[data-theme="dark"] [class*="text-gray-"],
+:root[data-theme="dark"] .text-black {
+  color: #FFFFFF;
+}
+
+/* Scope-exception: inside .bg-base-dark containers (e.g. the
+   Brand+Website flagship pricing card), the surface flips to white in
+   dark theme — so descendant text utilities need to be DARK, not
+   white. Covers legacy text-gray-*/text-black/text-white as well as
+   the migrated semantic tokens text-muted / text-subtle. */
+:root[data-theme="dark"] .bg-base-dark [class*="text-gray-"],
+:root[data-theme="dark"] .bg-base-dark .text-black,
+:root[data-theme="dark"] .bg-base-dark .text-white,
+:root[data-theme="dark"] .bg-base-dark .text-muted,
+:root[data-theme="dark"] .bg-base-dark .text-subtle {
+  color: #0A0A0A;
+}
+
+/* ── RED theme ───────────────────────────────────────────────────────
+   Warm cream page background (#EDE3DD) with brand red as the strong
+   ink. Strong ink (was black) becomes brand red — text, dark surfaces
+   (flagship card, dark CTAs) all become red. White text on those red
+   surfaces stays legible. Tinted surfaces (base-light, card-soft) and
+   borders shift to warm tones so they harmonize with the cream bg
+   rather than clashing as cool grays on a warm bg. Muted body copy
+   becomes a darker red so it follows the theme without competing with
+   primary red headings. */
+:root[data-theme="red"] {
+  --color-base-pure: #EDE3DD;
+  --color-base-light: #E5DAD3;
+  --color-base-dark: #DA241C;
+  --color-base-dark-soft: #C72018;
+  --color-base-border: #D8CCC4;
+  --color-card-soft: #E3D7D0;
+  --color-canvas: #EDE3DD;
+
+  --color-muted: #C72018;
+  --color-subtle: #A01D16;
+}
+
+/* Force every text-gray-* utility to a muted red in red theme so all
+   text follows the theme instead of staying gray. Same approach as the
+   dark theme override above. */
+:root[data-theme="red"] [class*="text-gray-"],
+:root[data-theme="red"] .text-black {
+  color: #C72018;
+}
+
+/* Scope-exception for red theme: inside .bg-base-dark containers (which
+   become red surfaces), descendant text utilities need to be light/cream
+   instead of red so they remain readable on the red card. Covers
+   legacy text-gray-*/text-black/text-white and the migrated tokens. */
+:root[data-theme="red"] .bg-base-dark [class*="text-gray-"],
+:root[data-theme="red"] .bg-base-dark .text-black,
+:root[data-theme="red"] .bg-base-dark .text-white,
+:root[data-theme="red"] .bg-base-dark .text-muted,
+:root[data-theme="red"] .bg-base-dark .text-subtle {
+  color: #EDE3DD;
+}
+
+/* Kinetic louver bars in red theme — the default 40% opacity reads as
+   washed-out red on the warm cream bg. Force full opacity so each bar
+   is unmistakably the brand red. JS still controls element-level
+   opacity for the cursor proximity wave, so the rest of the
+   interactive behaviour is unchanged. */
+:root[data-theme="red"] .kinetic-bar {
+  background-color: var(--color-base-dark);
+}
+
+/* About-page client logo tiles in red theme — bg-card-soft becomes a
+   warm dusty rose that visually clashes with the brand logos on the
+   tiles. Force the same neutral light-gray surface light theme uses
+   so the logos read cleanly against a neutral chip. Dark theme's
+   bg-card-soft (deep neutral gray) is left alone. */
+:root[data-theme="red"] .ap-client-tile {
+  background-color: #F3F3F3;
+}
+:root[data-theme="red"] .ap-client-tile:hover {
+  background-color: #ECECEC;
 }
 
 body {
-  @apply bg-white text-base-dark font-sans antialiased;
+  @apply bg-base-pure text-base-dark font-sans antialiased;
   margin: 0;
+  /* Force a single root stacking context so the custom cursor's
+     mix-blend-mode: difference operates against a flattened backdrop
+     and renders above 3D-transformed elements like the KineticLouvers
+     bars (which can otherwise visually obscure the cursor due to
+     their rotateY transforms creating sibling stacking contexts). */
+  isolation: isolate;
 }
 
 /* Pointer cursor on every clickable element. <a href> has it by default,
@@ -89,14 +212,33 @@ button:disabled,
    too — white on light surfaces (against the black-blended circle) and
    black on dark surfaces (against the white-blended circle). */
 .custom-cursor {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   background: #ffffff;
   color: #000000;
   mix-blend-mode: difference;
   transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1),
               height 220ms cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 180ms ease;
+              opacity 180ms ease,
+              background 220ms ease;
+}
+
+/* Red theme: the default-state cursor is a small solid brand-red dot
+   (no blend). The bigger grow / view / drag states switch back to the
+   standard white-on-difference cursor so the content underneath stays
+   visible — a solid red 56-88px circle would otherwise blanket the
+   button/card you're hovering. */
+:root[data-theme="red"] .custom-cursor {
+  background: #DA241C;
+  color: #FFFFFF;
+  mix-blend-mode: normal;
+}
+:root[data-theme="red"] .custom-cursor[data-state="grow"],
+:root[data-theme="red"] .custom-cursor[data-state="view"],
+:root[data-theme="red"] .custom-cursor[data-state="drag"] {
+  background: #FFFFFF;
+  color: #000000;
+  mix-blend-mode: difference;
 }
 .custom-cursor-label {
   font-size: 11px;
@@ -133,6 +275,42 @@ button:disabled,
    visible at its centre — preserving OS-level pointer affordances and
    accommodating users who rely on system cursor customisations
    (high-contrast, large pointer, cursor trails). */
+
+/* Manifesto text reveal — used on About + project pages. Each char
+   animates from a muted initial colour to a confident final colour
+   as the user scrolls past. The actual interpolation happens in CSS
+   via color-mix(); GSAP just animates the `--p` variable from 0 → 1.
+   This makes the animation fully theme-aware: when the user toggles
+   theme mid-page, color-mix re-evaluates with the new initial/final
+   colors and the visible color shifts smoothly. */
+.proj-manifesto-text,
+.manifesto-text {
+  --m-init: rgb(209 213 219); /* gray-300 — light gray, the reading start */
+  --m-final: #000000;          /* black — the reading end */
+}
+:root[data-theme="dark"] .proj-manifesto-text,
+:root[data-theme="dark"] .manifesto-text {
+  --m-init: rgb(209 213 219); /* same light gray — still readable on dark bg */
+  --m-final: #FFFFFF;          /* white — the dark-theme reading end */
+}
+:root[data-theme="red"] .proj-manifesto-text,
+:root[data-theme="red"] .manifesto-text {
+  --m-init: #F5C5C1;            /* very light red — soft start that fits the warm bg */
+  --m-final: #DA241C;           /* brand red — the red-theme reading end */
+}
+.proj-manifesto-char,
+.manifesto-char {
+  --p: 0;
+  color: color-mix(
+    in srgb,
+    var(--m-init) calc((1 - var(--p)) * 100%),
+    var(--m-final) calc(var(--p) * 100%)
+  );
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj-manifesto-char,
+  .manifesto-char { --p: 1; }
+}
 
 /* Project page reveal — initial state + transition. JS adds the
    `proj-revealed` class via IntersectionObserver as each block enters

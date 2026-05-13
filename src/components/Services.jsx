@@ -98,7 +98,7 @@ function CardPopover({ triggerLabel, triggerIcon, children, variant }) {
   }[variant]
 
   const popoverSurface = variant === 'dark'
-    ? 'bg-white border-white text-base-dark'
+    ? 'bg-base-pure border-white text-base-dark'
     : 'bg-base-dark border-base-dark text-gray-100'
 
   return (
@@ -195,9 +195,12 @@ function CardAccordion({ triggerLabel, openLabel, triggerIcon, children, variant
         height: 0, opacity: 0,
         duration: 0.4, ease: 'power3.inOut',
         onComplete: () => {
-          // Clear the inline height so the next open re-measures fresh
-          // scrollHeight (handles content reflow between toggles).
-          gsap.set(el, { clearProps: 'height' })
+          // Keep height: 0 explicitly. clearProps would remove the inline
+          // height, snapping the element back to its natural content height
+          // and re-occupying layout space — the bug we hit when toggling
+          // closed used to look like "the accordion can't be closed."
+          // Fresh scrollHeight is still re-measured on next open because
+          // the open branch sets height to 'auto' before reading it.
           isAnimating.current = false
         },
       })
@@ -209,7 +212,7 @@ function CardAccordion({ triggerLabel, openLabel, triggerIcon, children, variant
     dark:  {
       border:     'border-white/10',
       text:       'text-white',
-      labelBg:    'bg-white',
+      labelBg:    'bg-base-pure',
       labelText:  'text-base-dark',
     },
     light: {
@@ -299,7 +302,7 @@ const ClockIcon = (
 
 // ── Popover content blocks ──────────────────────────────────────────────
 function IncludesContent({ items, variant }) {
-  const labelColor = variant === 'dark' ? 'text-gray-500' : 'text-gray-400'
+  const labelColor = variant === 'dark' ? 'text-muted' : 'text-gray-400'
   return (
     <>
       <p className={`font-mono text-xs uppercase tracking-wider mb-4 ${labelColor}`}>Includes</p>
@@ -323,8 +326,8 @@ function IncludesContent({ items, variant }) {
 function ProcessContent({ rows, title, variant, noDividers = false }) {
   const styles = {
     'card-dark':  { labelColor: 'text-white/50',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
-    'card-light': { labelColor: 'text-gray-500',   textColor: 'text-gray-700', borderColor: 'border-base-border' },
-    dark:         { labelColor: 'text-gray-500',   textColor: 'text-gray-700', borderColor: 'border-base-border' },
+    'card-light': { labelColor: 'text-muted',   textColor: 'text-subtle', borderColor: 'border-base-border' },
+    dark:         { labelColor: 'text-muted',   textColor: 'text-subtle', borderColor: 'border-base-border' },
     light:        { labelColor: 'text-gray-400',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
   }
   const s = styles[variant] ?? styles['card-light']
@@ -480,13 +483,20 @@ function BrandWebsiteCard({ expanded = false }) {
         Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 4 weeks.
       </p>
 
-      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+      <p className="text-muted text-sm mb-3 leading-relaxed">
         Brand design &middot; Web design &middot; No-code development
       </p>
 
-      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+      <p className="text-muted text-sm mb-6 leading-relaxed">
         Latest: <a href="/work/julian-mercier" className="underline underline-offset-4 decoration-gray-700 hover:decoration-accent-red hover:text-white transition-colors">Julian Mercier</a> &middot; concept brand identity + Framer build
       </p>
+
+      <div className="border-l-0 border-t border-white/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+          A brand and live website that hold up to investor scrutiny — plus a system your team can extend on its own, without coming back to us.
+        </p>
+      </div>
     </>
   )
 
@@ -496,7 +506,7 @@ function BrandWebsiteCard({ expanded = false }) {
       <span
         ref={highlightRef}
         aria-hidden="true"
-        className="absolute top-1 bottom-1 left-0 rounded-full bg-white pointer-events-none"
+        className="absolute top-1 bottom-1 left-0 rounded-full bg-base-pure pointer-events-none"
         style={{ width: 0, willChange: 'transform, width' }}
       />
       <button
@@ -541,7 +551,7 @@ function BrandWebsiteCard({ expanded = false }) {
       href={CALENDLY_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-base-dark rounded-full font-medium text-sm hover:bg-base-light w-fit"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-pure text-base-dark rounded-full font-medium text-sm hover:bg-base-light w-fit"
     >
       Book a call
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -554,7 +564,7 @@ function BrandWebsiteCard({ expanded = false }) {
   // ── Expanded layout (pricing page) ───────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-base-dark text-white pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div className="svc-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
         {Pitch}
 
         {/* Includes (left) + Process (right) — side-by-side, equal columns.
@@ -585,7 +595,7 @@ function BrandWebsiteCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-base-dark text-white pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
         {/* Left: pitch */}
         <div className="lg:col-span-7">
@@ -634,7 +644,7 @@ function ProductDesignCard({ expanded = false }) {
   const Pitch = (
     <>
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-white border border-base-dark/10 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
             <rect x="3" y="3" width="7" height="7" />
             <rect x="14" y="3" width="7" height="7" />
@@ -642,36 +652,43 @@ function ProductDesignCard({ expanded = false }) {
             <rect x="3" y="14" width="7" height="7" />
           </svg>
         </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-gray-700 bg-white px-3 py-1 rounded-full">Project &middot; UI / UX</span>
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; UI / UX</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
 
-      <p className="text-gray-700 text-base md:text-lg mb-3 leading-relaxed">
+      <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
         A focused engagement to design one product surface — dashboard, web app, or mobile UI — with locked scope and engineering-ready handoff. 5 weeks.
       </p>
 
-      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+      <p className="text-muted text-sm mb-3 leading-relaxed">
         Product design &middot; design system &middot; engineering handoff
       </p>
 
-      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+      <p className="text-muted text-sm mb-6 leading-relaxed">
         Latest: <a href="/work/mecash" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">meCash</a> &middot; cross-border fintech, mobile + web (16+ countries)
       </p>
+
+      <div className="border-t border-base-dark/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-subtle text-sm md:text-base leading-relaxed">
+          A production-ready product surface, a design system that prevents drift as you scale, and a handoff package your engineers can build against without guessing at intent.
+        </p>
+      </div>
     </>
   )
 
   const PriceBlock = (
     <div>
-      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Starting from</p>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Starting from</p>
       <p className="text-3xl font-medium text-base-dark">$7,000</p>
     </div>
   )
 
   const TimelineBlock = (
     <div>
-      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
       <p className="text-2xl font-medium text-base-dark">5 weeks</p>
     </div>
   )
@@ -681,7 +698,7 @@ function ProductDesignCard({ expanded = false }) {
       href={CALENDLY_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
     >
       Book a call
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -694,7 +711,7 @@ function ProductDesignCard({ expanded = false }) {
   // ── Expanded layout (pricing page) ───────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
@@ -723,7 +740,7 @@ function ProductDesignCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
@@ -770,7 +787,7 @@ function DesignPartnerCard({ expanded = false }) {
   const Pitch = (
     <>
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-white border border-base-dark/10 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
             <path d="M12 20v-6M6 20V10M18 20V4" />
           </svg>
@@ -781,25 +798,32 @@ function DesignPartnerCard({ expanded = false }) {
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
 
-      <p className="text-gray-700 text-base md:text-lg mb-3 leading-relaxed">
+      <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
         Ongoing capacity, not a project. A senior designer embedded in your team — designing brand, product, and marketing work week after week.
       </p>
 
-      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+      <p className="text-muted text-sm mb-3 leading-relaxed">
         Monthly retainer &middot; senior design seat, no hiring overhead
       </p>
 
-      <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+      <p className="text-muted text-sm mb-6 leading-relaxed">
         Trusted by: <a href="/work/australia-medical-association-victoria" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">AMA Victoria</a>, <a href="/work/time-bmx" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">Time BMX</a> &middot; via Roadhouse (Australia)
       </p>
+
+      <div className="border-t border-base-dark/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-subtle text-sm md:text-base leading-relaxed">
+          Senior design output shipping on your roadmap, brand consistency across every touchpoint, and strategic input on the decisions that shape how the company is seen.
+        </p>
+      </div>
     </>
   )
 
   const PriceBlock = (
     <div>
-      <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Monthly rate</p>
-      <p className="text-3xl font-medium text-base-dark">$5,000<span className="text-gray-500">/mo</span></p>
-      <p className="text-xs text-gray-500 mt-2 leading-snug">3+ month commitment: $4,500/mo</p>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Monthly rate</p>
+      <p className="text-3xl font-medium text-base-dark">$5,000<span className="text-muted">/mo</span></p>
+      <p className="text-xs text-muted mt-2 leading-snug">3+ month commitment: $4,500/mo</p>
     </div>
   )
 
@@ -808,7 +832,7 @@ function DesignPartnerCard({ expanded = false }) {
       href={CALENDLY_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
     >
       Book a call
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -818,10 +842,45 @@ function DesignPartnerCard({ expanded = false }) {
     </a>
   )
 
+  // Lower-friction entry for visitors who aren't ready for a 3-month
+  // retainer. Sits inside Design Partner specifically because that's the
+  // engagement with the biggest commitment ask. Visually quieter than
+  // the main price strip — no card chrome, just a dotted-divider header
+  // and an inline price + ghost button.
+  const AuditBlock = (
+    <div className="border-t border-dashed border-base-dark/20 pt-6 md:pt-8 mt-8 md:mt-10">
+      <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-3">// Not ready for a retainer?</p>
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+        <div className="flex-1 max-w-xl">
+          <p className="font-display text-lg md:text-xl font-bold text-base-dark mb-2 leading-tight">
+            Start with a 2-week design audit.
+          </p>
+          <p className="text-subtle text-sm leading-relaxed">
+            Paid review of your brand, product, or website. Written diagnosis + prioritized fixes. <span className="text-base-dark">$500 credit applied</span> if you book a full engagement within 30 days.
+          </p>
+        </div>
+        <div className="flex items-end gap-5 shrink-0">
+          <div>
+            <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">One-time</p>
+            <p className="text-2xl font-medium text-base-dark leading-none">$500</p>
+          </div>
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-press inline-flex items-center gap-2 px-5 py-2.5 border border-base-dark text-base-dark rounded-full font-medium text-sm hover:bg-base-dark hover:text-base-pure transition-colors w-fit"
+          >
+            Book the audit
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+
   // ── Expanded layout (pricing page) ───────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-white border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
@@ -842,13 +901,15 @@ function DesignPartnerCard({ expanded = false }) {
           </div>
           {BookCallButton}
         </div>
+
+        {AuditBlock}
       </div>
     )
   }
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-white border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-6 sm:pb-8 md:pb-12 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
@@ -865,6 +926,8 @@ function DesignPartnerCard({ expanded = false }) {
         {BookCallButton}
       </div>
 
+      {AuditBlock}
+
       <div className="mt-8 md:mt-10">
         <CardAccordion triggerLabel="A typical month" openLabel="Hide month" triggerIcon={ClockIcon} variant="light">
           <ProcessContent rows={process} title="A typical month" variant="card-light" />
@@ -876,9 +939,6 @@ function DesignPartnerCard({ expanded = false }) {
 
 export default function Services({ expanded = false }) {
   const container = useRef(null)
-  const productRef = useRef(null)
-  const partnerRef = useRef(null)
-  const [restMinHeight, setRestMinHeight] = useState(0)
 
   useGSAP(() => {
     if (prefersReducedMotion()) return
@@ -892,119 +952,41 @@ export default function Services({ expanded = false }) {
     })
   }, { scope: container })
 
-  // Equalize Product Design + Design Partner heights at rest. Measured
-  // synchronously after layout so both cards are pinned to the larger
-  // rest height via min-height. Combined with `items-start` on the grid,
-  // this gives same-height cards at rest AND independent expansion: no
-  // sibling stretch when one card's accordion opens, no snap when it
-  // closes (the alignment never changes). Skipped on the pricing page
-  // (expanded) — that layout uses default grid stretch instead.
-  // Re-measures on resize: remove min-height for one frame, measure
-  // natural heights, re-apply max.
-  useLayoutEffect(() => {
-    if (expanded) {
-      setRestMinHeight(0)
-      return
-    }
-    const measureNow = () => {
-      const p = productRef.current?.offsetHeight ?? 0
-      const d = partnerRef.current?.offsetHeight ?? 0
-      const max = Math.max(p, d)
-      if (max > 0) setRestMinHeight(max)
-    }
-    // Initial measurement: minHeight starts at 0, so wrappers reflect
-    // natural rest heights.
-    measureNow()
-
-    const handleResize = () => {
-      // Drop min-height for one frame so the next measurement sees
-      // natural heights again, then re-apply the new max.
-      setRestMinHeight(0)
-      requestAnimationFrame(measureNow)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [expanded])
-
   return (
     <section
       ref={container}
       id="services"
-      className="w-full py-16 md:py-20 px-4 md:px-6 bg-white"
+      className="w-full py-16 md:py-20 px-4 md:px-6 bg-base-pure"
     >
       <div className="max-w-[1600px] w-full mx-auto">
         <div className="svc-header mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">// Pricing &amp; Engagements</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Pricing &amp; Engagements</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
               Three ways to work together.
             </h2>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-500 mt-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-4">
               Two project engagements &middot; one monthly retainer.
             </p>
           </div>
-          <p className="text-gray-600 text-base md:text-lg max-w-md leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
             Pick the engagement that matches where you are: launching, scaling a product, or shipping continuously with a partner embedded in your team.
           </p>
         </div>
 
         {/* Card 1 (flagship Brand + Website) spans both columns at xl;
-            Cards 2 + 3 sit side-by-side below it on xl, stacked below.
-            Pricing page uses default grid stretch so price strips align;
-            homepage uses items-start + measured min-height (see
-            `restMinHeight` above) so cards rest at equal heights but
-            expand independently when their accordions open. */}
+            Cards 2 + 3 sit side-by-side below it. items-start lets each
+            card rest at its natural height so accordion toggles don't
+            tug the sibling card up or down. Pricing page (expanded)
+            uses default grid stretch so the inline price strips align. */}
         <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
           <div className="xl:col-span-2">
             <BrandWebsiteCard expanded={expanded} />
           </div>
-          <div ref={productRef} className="[&>*]:h-full" style={!expanded && restMinHeight ? { minHeight: restMinHeight } : undefined}>
-            <ProductDesignCard expanded={expanded} />
-          </div>
-          <div ref={partnerRef} className="[&>*]:h-full" style={!expanded && restMinHeight ? { minHeight: restMinHeight } : undefined}>
-            <DesignPartnerCard expanded={expanded} />
-          </div>
+          <ProductDesignCard expanded={expanded} />
+          <DesignPartnerCard expanded={expanded} />
         </div>
 
-        {/* ── Design Audit strip ─────────────────────────────────────────
-            A low-friction entry point. Sits below the 3 main tiers as a
-            horizontal strip with the same rounded surface treatment, but
-            visually quieter (border-only, no fill) so it reads as a
-            secondary, easier "try us first" path. */}
-        <div className="mt-6 rounded-[12px] border border-base-border bg-white px-6 sm:px-8 md:px-12 py-8 md:py-10">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-10">
-            <div className="flex-1 max-w-2xl">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="font-mono text-xs uppercase tracking-wider text-gray-500 bg-base-light px-3 py-1 rounded-full">Design audit</span>
-                <span className="font-mono text-[11px] uppercase tracking-wider text-gray-500">Not ready for a full engagement?</span>
-              </div>
-              <h3 className="font-display text-2xl md:text-3xl font-bold text-base-dark mb-3 leading-tight">
-                Start with a 2-week audit.
-              </h3>
-              <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                A paid review of your current brand, product, or website. You get a written diagnosis, prioritized fixes, and a clear recommendation on what to do next. Credit applied if you book a full engagement within 30 days.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row md:flex-col gap-6 md:gap-3 md:items-end shrink-0">
-              <div>
-                <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">One-time</p>
-                <p className="text-3xl font-medium text-base-dark">$500</p>
-              </div>
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
-              >
-                Book the audit
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

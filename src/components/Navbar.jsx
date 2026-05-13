@@ -9,10 +9,15 @@ import {
   prefetchShowcasePriority,
   prefetchShowcaseAll,
 } from '../utils/showcasePrefetch'
-const logoImg = `${import.meta.env.BASE_URL}Logo for website.svg`
-const logoMark = `${import.meta.env.BASE_URL}Button%20nav%20logo%20for%20website.webp`
+import Logo from './Logo'
 
-export default function Navbar({ forceFloating = false }) {
+// v2 flag: home-page hero iteration. When true:
+//   - the "Soni Labs." wordmark next to the logo is hidden
+//   - the bottom border line under the navbar is removed
+//   - menu items + CTA are grouped together on the right (instead of
+//     menu centered, CTA right)
+// To revert: pass v2={false} from App.jsx (or remove the prop).
+export default function Navbar({ forceFloating = false, v2 = false }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   // Top-nav direction-aware visibility. Hidden when scrolling down past
@@ -220,13 +225,56 @@ export default function Navbar({ forceFloating = false }) {
     { label: 'About', href: '/about', type: 'route' },
   ]
 
+  // Reusable menu items block. Used in v1 as a standalone middle-aligned
+  // block, and in v2 inside the right-hand group alongside the CTA.
+  const renderMenuItems = () => (
+    <div className="hidden md:flex items-center gap-8 text-sm font-medium text-subtle">
+      {menuItems.map(item => {
+        const isActive = item.type === 'route' && location.pathname === item.href
+        const isShowcase = item.href === '/showcase'
+        const showcaseIntent = isShowcase
+          ? () => { prefetchShowcaseChunk(); prefetchShowcasePriority(); prefetchShowcaseAll() }
+          : undefined
+        return (
+          <a
+            key={item.label}
+            href={item.href}
+            onClick={(e) => handleNavClick(e, item)}
+            onMouseEnter={showcaseIntent}
+            onFocus={showcaseIntent}
+            onTouchStart={showcaseIntent}
+            aria-current={isActive ? 'page' : undefined}
+            className={`nav-link relative group transition-colors ${
+              isActive ? 'text-base-dark' : 'text-subtle hover:text-base-dark'
+            }`}
+            style={{ opacity: 0 }}
+          >
+            <span>{item.label}</span>
+            {!isActive && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 right-0 -bottom-1 h-px bg-base-dark scale-x-0 origin-center transition-transform duration-200 ease-out group-hover:scale-x-100"
+              />
+            )}
+            {isActive && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-1 h-1 rounded-full bg-base-dark"
+              />
+            )}
+          </a>
+        )
+      })}
+    </div>
+  )
+
   return (
     <>
       {/* ── Top navbar (visible before scroll) ── */}
       <nav
         ref={topNavRef}
         aria-label="Main navigation"
-        className={`fixed top-0 left-0 w-full z-50 bg-white border-b border-base-border transition-all duration-300 ease-out ${isTopHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
+        className={`fixed top-0 left-0 w-full z-50 bg-base-pure ${v2 ? '' : 'border-b border-base-border'} transition-all duration-300 ease-out ${isTopHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
       >
         <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
           <a
@@ -235,57 +283,21 @@ export default function Navbar({ forceFloating = false }) {
             className="nav-logo flex items-center gap-2"
             style={{ opacity: 0 }}
           >
-            <img src={logoImg} alt="Soni Labs Studio" className="w-6 h-6 object-contain" />
-            <span className="font-display font-bold text-xl tracking-tight">Soni Labs.</span>
+            <Logo className="w-6 h-6 text-base-dark" />
+            {!v2 && <span className="font-display font-bold text-xl tracking-tight">Soni Labs.</span>}
           </a>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            {menuItems.map(item => {
-              // Active only for routes whose href matches the current path.
-              // Anchor items (e.g. FAQ → #faq) don't get the dot.
-              const isActive = item.type === 'route' && location.pathname === item.href
-              const isShowcase = item.href === '/showcase'
-              const showcaseIntent = isShowcase
-                ? () => { prefetchShowcaseChunk(); prefetchShowcasePriority(); prefetchShowcaseAll() }
-                : undefined
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item)}
-                  onMouseEnter={showcaseIntent}
-                  onFocus={showcaseIntent}
-                  onTouchStart={showcaseIntent}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`nav-link relative group transition-colors ${
-                    isActive ? 'text-base-dark' : 'text-gray-600 hover:text-base-dark'
-                  }`}
-                  style={{ opacity: 0 }}
-                >
-                  <span>{item.label}</span>
+          {/* v1: menu sits centered between logo (left) and CTA (right) via
+              the parent's `justify-between`. v2: menu is hidden here and
+              rendered inside the right-hand group below so it groups with
+              the CTA on the right edge. */}
+          {!v2 && renderMenuItems()}
 
-                  {/* Hover underline — center-out grow, non-active only */}
-                  {!isActive && (
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute left-0 right-0 -bottom-1 h-px bg-base-dark scale-x-0 origin-center transition-transform duration-200 ease-out group-hover:scale-x-100"
-                    />
-                  )}
+          <div className={`flex items-center ${v2 ? 'gap-4 md:gap-8' : 'gap-4'}`}>
+            {/* v2: menu items live here, grouped with the CTA on the right. */}
+            {v2 && renderMenuItems()}
 
-                  {/* Active dot — current page indicator */}
-                  {isActive && (
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-1 h-1 rounded-full bg-base-dark"
-                    />
-                  )}
-                </a>
-              )
-            })}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <a href="https://calendly.com/madebysoni/30min" target="_blank" rel="noopener noreferrer" className="nav-cta cta-press hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium bg-base-dark text-white rounded-full hover:bg-base-dark-soft" style={{ opacity: 0 }}>
+            <a href="https://calendly.com/madebysoni/30min" target="_blank" rel="noopener noreferrer" className="nav-cta cta-press hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium bg-base-dark text-base-pure rounded-full hover:bg-base-dark-soft" style={{ opacity: 0 }}>
               Book a call
             </a>
             <button className="md:hidden text-base-dark" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile menu" aria-expanded={mobileMenuOpen}>
@@ -322,11 +334,11 @@ export default function Navbar({ forceFloating = false }) {
             onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigate('/'); window.scrollTo(0, 0) }}
             className="flex items-center gap-2"
           >
-            <img src={logoImg} alt="Soni Labs Studio" className="w-8 h-8 object-contain" />
-            <span className="font-display font-bold text-xl tracking-tight text-white">Soni Labs.</span>
+            <Logo className="w-8 h-8 text-base-pure" />
+            {!v2 && <span className="font-display font-bold text-xl tracking-tight text-white">Soni Labs.</span>}
           </a>
-          <button className="text-white" onClick={() => setMobileMenuOpen(false)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button type="button" aria-label="Close menu" className="text-white" onClick={() => setMobileMenuOpen(false)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -371,7 +383,7 @@ export default function Navbar({ forceFloating = false }) {
             href="https://calendly.com/madebysoni/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-6 py-4 text-sm font-medium bg-white text-base-dark rounded-full hover:bg-base-light transition-colors mb-8"
+            className="inline-flex items-center justify-center px-6 py-4 text-sm font-medium bg-base-pure text-base-dark rounded-full hover:bg-base-light transition-colors mb-8"
             onClick={() => setMobileMenuOpen(false)}
           >
             Book a call
@@ -455,7 +467,7 @@ export default function Navbar({ forceFloating = false }) {
         </div>
 
         {/* Bottom pill — always visible */}
-        <div className="flex items-center gap-2 px-3 py-2.5 rounded-full bg-white border border-base-border w-full justify-between">
+        <div className="flex items-center gap-2 px-3 py-2.5 rounded-full bg-base-pure border border-base-border w-full justify-between">
           {/* Logo + Menu button grouped together */}
           <div className="flex items-center gap-1.5">
             {/* Logo */}
@@ -468,7 +480,7 @@ export default function Navbar({ forceFloating = false }) {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
             >
-              <img src={logoMark} alt="Soni Labs Studio" className="w-10 h-10 rounded-full object-cover" />
+              <Logo className="w-8 h-8 text-base-dark" />
             </a>
 
             {/* Menu pill button — ghost style, secondary to the solid Book-a-call CTA */}
@@ -492,7 +504,7 @@ export default function Navbar({ forceFloating = false }) {
             href="https://calendly.com/madebysoni/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-5 py-2.5 text-sm font-medium bg-base-dark text-white rounded-full hover:bg-base-dark-soft transition-colors shrink-0 whitespace-nowrap"
+            className="px-5 py-2.5 text-sm font-medium bg-base-dark text-base-pure rounded-full hover:bg-base-dark-soft transition-colors shrink-0 whitespace-nowrap"
           >
             Book a call
           </a>
