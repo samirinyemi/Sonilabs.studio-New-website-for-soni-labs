@@ -324,7 +324,7 @@ export default function Navbar({ forceFloating = false, v2 = false }) {
       {/* ── Mobile menu overlay (dark panel, matches floating nav style) ── */}
       <div
         ref={mobileMenuRef}
-        className="md:hidden fixed inset-0 z-[60] flex flex-col bg-base-dark origin-top"
+        className="nav-popup md:hidden fixed inset-0 z-[60] flex flex-col bg-base-dark origin-top"
         style={{ display: 'none', transform: 'scaleY(0)', opacity: 0 }}
       >
         {/* Top bar with logo and close button */}
@@ -416,7 +416,7 @@ export default function Navbar({ forceFloating = false, v2 = false }) {
         {/* Menu panel — expands upward above the pill */}
         <div
           ref={menuPanelRef}
-          className="w-full flex flex-col px-6 py-6 rounded-2xl bg-base-dark border border-white/15 origin-bottom"
+          className="nav-popup w-full flex flex-col px-6 py-6 rounded-2xl bg-base-dark border border-white/15 origin-bottom"
           style={{ display: 'none', transform: 'scaleY(0)', opacity: 0 }}
         >
           {/* Tagline */}

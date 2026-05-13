@@ -167,6 +167,28 @@
   color: #DA241C;
 }
 
+/* Red theme — nav menu popup specifically: the popup uses bg-base-dark
+   (= brand red in red theme), and white text doesn't contrast strongly
+   enough against that red. Force ALL menu text to black so it reads
+   clearly. Scoped to .nav-popup so the flagship pricing card (also
+   bg-base-dark) keeps its white-on-red text. */
+:root[data-theme="red"] .nav-popup [class*="text-gray-"],
+:root[data-theme="red"] .nav-popup [class*="text-white"],
+:root[data-theme="red"] .nav-popup .text-black,
+:root[data-theme="red"] .nav-popup .text-base-pure,
+:root[data-theme="red"] .nav-popup .text-base-dark,
+:root[data-theme="red"] .nav-popup .text-muted,
+:root[data-theme="red"] .nav-popup .text-subtle {
+  color: #0A0A0A;
+}
+
+/* Red theme — re-inversion for the CTA inside .nav-popup: it sits on a
+   cream (bg-base-pure) pill, so its label should be brand red, not the
+   black forced by the rule above. */
+:root[data-theme="red"] .nav-popup .bg-base-pure .text-base-dark {
+  color: #DA241C;
+}
+
 /* Kinetic louver bars in red theme — the default 40% opacity reads as
    washed-out red on the warm cream bg. Force full opacity so each bar
    is unmistakably the brand red. JS still controls element-level
