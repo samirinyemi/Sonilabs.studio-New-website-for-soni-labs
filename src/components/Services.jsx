@@ -359,7 +359,7 @@ function ProcessContent({ rows, title, variant, noDividers = false }) {
 function BrandWebsiteCard({ expanded = false }) {
   const [tier, setTier] = useState('essential')
   const priceRef = useRef(null)
-  const priceValueRef = useRef(2500)
+  const priceValueRef = useRef(5000)
 
   // Sliding pill background for the tier toggle. The highlight is an
   // absolutely-positioned span; its x and width animate to match the
@@ -385,7 +385,7 @@ function BrandWebsiteCard({ expanded = false }) {
   }, [tier])
 
   useEffect(() => {
-    const target = tier === 'essential' ? 2500 : 4500
+    const target = tier === 'essential' ? 5000 : 8000
     const node = priceRef.current
     if (!node) return
 
@@ -417,7 +417,7 @@ function BrandWebsiteCard({ expanded = false }) {
         'Logo, type, and colour systems',
         'Brand guidelines document',
         'Web design for up to 10 pages',
-        'No-code build in Framer or Wix Studio, AI-assisted',
+        'No-code build in Framer or Wix Studio',
         'Copywriting and content structure',
         'CMS, analytics, SEO basics, deployment',
         '2 rounds of revisions',
@@ -433,22 +433,24 @@ function BrandWebsiteCard({ expanded = false }) {
     enterprise: {
       timeline: '6 weeks',
       includes: [
+        'Founder positioning workshop (full-day strategy intensive)',
         'Brand strategy + verbal identity',
         'Logo, type, and colour systems',
         'Brand guidelines document',
+        'Custom illustration suite (3–5 bespoke marks or icons)',
+        'Motion design system for the brand',
         'Web design for up to 25 pages',
-        'No-code build in Framer, Webflow, or Wix Studio, AI-assisted',
+        'No-code build in Framer, Webflow, or Wix Studio',
         'Copywriting and content structure',
         'CMS, analytics, SEO basics, deployment',
-        'AI-assisted custom interactions and motion accents',
         '3 rounds of revisions',
         '2-week post-launch support',
       ],
       process: [
-        ['Week 1',     'Discovery: strategy, audience, site map, content plan across 25 pages.'],
+        ['Week 1',     'Positioning workshop + discovery: strategy, audience, site map, content plan across 25 pages.'],
         ['Week 2',     'Direction: visual concepts, logo, type and colour. Locked.'],
-        ['Weeks\n3–4', 'System build: final identity and full web design.'],
-        ['Week 5',     'Build: Framer / Webflow / Wix Studio, CMS, AI-assisted custom interactions and motion.'],
+        ['Weeks\n3–4', 'System build: final identity, illustration suite, motion system, and full web design.'],
+        ['Week 5',     'Build: Framer / Webflow / Wix Studio, CMS, custom interactions, motion accents.'],
         ['Week 6',     'Launch: QA, deployment, 2-week post-launch support.'],
       ],
     },
@@ -474,12 +476,16 @@ function BrandWebsiteCard({ expanded = false }) {
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">01</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
 
-      <p className="text-gray-400 text-base md:text-lg mb-3 leading-relaxed">
-        For founders launching or rebranding a business who need identity and a live marketing site.
+      <p className="text-gray-300 text-base md:text-lg mb-3 leading-relaxed">
+        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 4 weeks.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+        Brand design &middot; Web design &middot; No-code development
       </p>
 
       <p className="text-gray-500 text-sm mb-8 leading-relaxed">
-        Brand design &middot; Web design &middot; No-code development &middot; AI-assisted development
+        Latest: <a href="/work/julian-mercier" className="underline underline-offset-4 decoration-gray-700 hover:decoration-accent-red hover:text-white transition-colors">Julian Mercier</a> &middot; concept brand identity + Framer build
       </p>
     </>
   )
@@ -519,7 +525,7 @@ function BrandWebsiteCard({ expanded = false }) {
   const PriceBlock = (
     <div>
       <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Starting from</p>
-      <p ref={priceRef} className="text-3xl font-medium tabular-nums">$2,500</p>
+      <p ref={priceRef} className="text-3xl font-medium tabular-nums">$5,000</p>
     </div>
   )
 
@@ -642,12 +648,16 @@ function ProductDesignCard({ expanded = false }) {
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
 
-      <p className="text-gray-600 text-base md:text-lg mb-3 leading-relaxed">
-        Ship a specific product or surface, dashboard, web app, or mobile UI, with scope locked at kickoff and a fixed timeline.
+      <p className="text-gray-700 text-base md:text-lg mb-3 leading-relaxed">
+        A focused engagement to design one product surface — dashboard, web app, or mobile UI — with locked scope and engineering-ready handoff. 5 weeks.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+        Product design &middot; design system &middot; engineering handoff
       </p>
 
       <p className="text-gray-500 text-sm mb-8 leading-relaxed">
-        Project engagement &middot; end-to-end UI/UX, design system, engineering handoff.
+        Latest: <a href="/work/mecash" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">meCash</a> &middot; cross-border fintech, mobile + web (16+ countries)
       </p>
     </>
   )
@@ -655,7 +665,7 @@ function ProductDesignCard({ expanded = false }) {
   const PriceBlock = (
     <div>
       <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Starting from</p>
-      <p className="text-3xl font-medium text-base-dark">$3,500</p>
+      <p className="text-3xl font-medium text-base-dark">$7,000</p>
     </div>
   )
 
@@ -745,7 +755,7 @@ function DesignPartnerCard({ expanded = false }) {
   const includes = [
     'A dedicated senior designer embedded in your team',
     'Weekly delivery: features, marketing pages, brand assets',
-    'Full studio capability set (brand, web, product, AI dev)',
+    'Full studio capability set (brand, web, product)',
     'Slack-first communication, your tools, your rituals',
     'Standups up to twice a week',
     'Weekly strategy review',
@@ -771,12 +781,16 @@ function DesignPartnerCard({ expanded = false }) {
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
 
-      <p className="text-gray-600 text-base md:text-lg mb-3 leading-relaxed">
-        Ongoing capacity, not a project. A senior designer embedded in your standups, Slack, and Figma, designing whatever ships that month.
+      <p className="text-gray-700 text-base md:text-lg mb-3 leading-relaxed">
+        Ongoing capacity, not a project. A senior designer embedded in your team — designing brand, product, and marketing work week after week.
+      </p>
+
+      <p className="text-gray-500 text-sm mb-3 leading-relaxed">
+        Monthly retainer &middot; senior design seat, no hiring overhead
       </p>
 
       <p className="text-gray-500 text-sm mb-8 leading-relaxed">
-        Monthly retainer &middot; senior design seat on your team, no hiring overhead.
+        Trusted by: <a href="/work/australia-medical-association-victoria" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">AMA Victoria</a>, <a href="/work/time-bmx" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">Time BMX</a> &middot; via Roadhouse (Australia)
       </p>
     </>
   )
@@ -784,8 +798,8 @@ function DesignPartnerCard({ expanded = false }) {
   const PriceBlock = (
     <div>
       <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">Monthly rate</p>
-      <p className="text-3xl font-medium text-base-dark">$3,000<span className="text-gray-500">/mo</span></p>
-      <p className="text-xs text-gray-500 mt-2 leading-snug">3+ month commitment: $2,800/mo</p>
+      <p className="text-3xl font-medium text-base-dark">$5,000<span className="text-gray-500">/mo</span></p>
+      <p className="text-xs text-gray-500 mt-2 leading-snug">3+ month commitment: $4,500/mo</p>
     </div>
   )
 
@@ -949,6 +963,46 @@ export default function Services({ expanded = false }) {
           </div>
           <div ref={partnerRef} className="[&>*]:h-full" style={!expanded && restMinHeight ? { minHeight: restMinHeight } : undefined}>
             <DesignPartnerCard expanded={expanded} />
+          </div>
+        </div>
+
+        {/* ── Design Audit strip ─────────────────────────────────────────
+            A low-friction entry point. Sits below the 3 main tiers as a
+            horizontal strip with the same rounded surface treatment, but
+            visually quieter (border-only, no fill) so it reads as a
+            secondary, easier "try us first" path. */}
+        <div className="mt-6 rounded-[12px] border border-base-border bg-white px-6 sm:px-8 md:px-12 py-8 md:py-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-10">
+            <div className="flex-1 max-w-2xl">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="font-mono text-xs uppercase tracking-wider text-gray-500 bg-base-light px-3 py-1 rounded-full">Design audit</span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-gray-500">Not ready for a full engagement?</span>
+              </div>
+              <h3 className="font-display text-2xl md:text-3xl font-bold text-base-dark mb-3 leading-tight">
+                Start with a 2-week audit.
+              </h3>
+              <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                A paid review of your current brand, product, or website. You get a written diagnosis, prioritized fixes, and a clear recommendation on what to do next. Credit applied if you book a full engagement within 30 days.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row md:flex-col gap-6 md:gap-3 md:items-end shrink-0">
+              <div>
+                <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1">One-time</p>
+                <p className="text-3xl font-medium text-base-dark">$500</p>
+              </div>
+              <a
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3 bg-base-dark text-white rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+              >
+                Book the audit
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>
