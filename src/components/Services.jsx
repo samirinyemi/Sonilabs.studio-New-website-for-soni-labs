@@ -546,12 +546,12 @@ function BrandWebsiteCard({ expanded = false }) {
     </div>
   )
 
-  const BookCallButton = (
+  const BookCallButton = ({ accent = false } = {}) => (
     <a
       href={CALENDLY_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-pure text-base-dark rounded-full font-medium text-sm hover:bg-base-light w-fit"
+      className={`cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-pure rounded-full font-medium text-sm hover:bg-base-light w-fit ${accent ? 'text-accent-red' : 'text-base-dark'}`}
     >
       Book a call
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -587,7 +587,7 @@ function BrandWebsiteCard({ expanded = false }) {
             {PriceBlock}
             {TimelineBlock}
           </div>
-          {BookCallButton}
+          <BookCallButton />
         </div>
       </div>
     )
@@ -612,7 +612,7 @@ function BrandWebsiteCard({ expanded = false }) {
             {PriceBlock}
             {TimelineBlock}
           </div>
-          {BookCallButton}
+          <BookCallButton />
         </div>
       </div>
 
