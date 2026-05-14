@@ -98,13 +98,13 @@
   color: #0A0A0A;
 }
 
-/* Dark theme: accent-red elements on the flagship card (includes-list
-   check icons + week labels in the process timeline) flip to black to
-   match the rest of the card text on the inverted white surface. The
-   "01" eyebrow falls through here too. */
+/* Dark theme: accent-red elements stay brand-red on the flagship card
+   (the "01" eyebrow, includes-list check icons, week labels in the
+   process timeline) — they're the accent layer the rest of the card
+   text plays off against on the inverted white surface. */
 :root[data-theme="dark"] .flagship-card .text-accent-red,
 :root[data-theme="dark"] .flagship-card [class*="text-accent-red"] {
-  color: #0A0A0A;
+  color: #DA241C;
 }
 
 /* Re-inversion: nested .bg-base-pure pills inside .flagship-card (the
