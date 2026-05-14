@@ -101,7 +101,7 @@
 :root[data-theme="dark"] .flagship-card [class*="text-white"],
 :root[data-theme="dark"] .flagship-card .text-black,
 :root[data-theme="dark"] .flagship-card .text-base-pure,
-:root[data-theme="dark"] .flagship-card .text-base-dark:not([aria-selected="true"]),
+:root[data-theme="dark"] .flagship-card .text-base-dark:not([aria-selected="true"]):not(.bg-base-pure),
 :root[data-theme="dark"] .flagship-card .text-muted,
 :root[data-theme="dark"] .flagship-card .text-subtle {
   color: #0A0A0A;
@@ -179,7 +179,7 @@
 :root[data-theme="red"] .flagship-card [class*="text-white"],
 :root[data-theme="red"] .flagship-card .text-black,
 :root[data-theme="red"] .flagship-card .text-base-pure,
-:root[data-theme="red"] .flagship-card .text-base-dark:not([aria-selected="true"]),
+:root[data-theme="red"] .flagship-card .text-base-dark:not([aria-selected="true"]):not(.bg-base-pure),
 :root[data-theme="red"] .flagship-card .text-muted,
 :root[data-theme="red"] .flagship-card .text-subtle,
 :root[data-theme="red"] .flagship-card .text-accent-red,
