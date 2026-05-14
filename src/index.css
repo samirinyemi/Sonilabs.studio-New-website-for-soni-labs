@@ -88,20 +88,29 @@
 
 /* Scope-exception: inside .flagship-card (the Brand + Website pricing
    card whose surface inverts via bg-base-dark), descendant text needs
-   to be DARK in dark theme. We can't write .bg-base-dark .text-X here
-   because Tailwind v4's compiler drops rules that compose two utility
-   classes in their own selectors. The .flagship-card marker class is
-   non-utility, so it survives. The trailing universal selector catches
-   children that inherit color (e.g. <li>, <span> without explicit color). */
-:root[data-theme="dark"] .flagship-card,
-:root[data-theme="dark"] .flagship-card * {
+   to be DARK in dark theme. Target each Tailwind text-* utility class
+   individually rather than `.flagship-card *` — a universal selector
+   would also hit <path> children of the checkmark SVG (whose stroke
+   uses currentColor) and the inner <span> that holds week label text,
+   breaking the accent-red inheritance from their parent. Inheritance
+   carries the right color down to un-classed descendants. */
+:root[data-theme="dark"] .flagship-card {
+  color: #0A0A0A;
+}
+:root[data-theme="dark"] .flagship-card [class*="text-gray-"],
+:root[data-theme="dark"] .flagship-card [class*="text-white"],
+:root[data-theme="dark"] .flagship-card .text-black,
+:root[data-theme="dark"] .flagship-card .text-base-pure,
+:root[data-theme="dark"] .flagship-card .text-base-dark:not([aria-selected="true"]),
+:root[data-theme="dark"] .flagship-card .text-muted,
+:root[data-theme="dark"] .flagship-card .text-subtle {
   color: #0A0A0A;
 }
 
 /* Dark theme: accent-red elements stay brand-red on the flagship card
    (the "01" eyebrow, includes-list check icons, week labels in the
-   process timeline) — they're the accent layer the rest of the card
-   text plays off against on the inverted white surface. */
+   process timeline). Children inherit so SVG <path> strokes and the
+   inner <span> in week labels pick up the same red. */
 :root[data-theme="dark"] .flagship-card .text-accent-red,
 :root[data-theme="dark"] .flagship-card [class*="text-accent-red"] {
   color: #DA241C;
@@ -159,10 +168,22 @@
 
 /* Scope-exception for red theme: inside .flagship-card (the Brand +
    Website pricing card whose surface becomes brand red), descendant
-   text needs to be WHITE so it reads on the red surface. Marker-class
-   based for the same Tailwind v4 reason as the dark scope-exception above. */
-:root[data-theme="red"] .flagship-card,
-:root[data-theme="red"] .flagship-card * {
+   text needs to be WHITE so it reads on the red surface. Same
+   class-by-class approach as the dark scope-exception above so the
+   accent-red elements (which we now want white in red theme) inherit
+   correctly down to their SVG paths / inner spans. */
+:root[data-theme="red"] .flagship-card {
+  color: #FFFFFF;
+}
+:root[data-theme="red"] .flagship-card [class*="text-gray-"],
+:root[data-theme="red"] .flagship-card [class*="text-white"],
+:root[data-theme="red"] .flagship-card .text-black,
+:root[data-theme="red"] .flagship-card .text-base-pure,
+:root[data-theme="red"] .flagship-card .text-base-dark:not([aria-selected="true"]),
+:root[data-theme="red"] .flagship-card .text-muted,
+:root[data-theme="red"] .flagship-card .text-subtle,
+:root[data-theme="red"] .flagship-card .text-accent-red,
+:root[data-theme="red"] .flagship-card [class*="text-accent-red"] {
   color: #FFFFFF;
 }
 
