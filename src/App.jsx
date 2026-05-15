@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from './components/Navbar'
@@ -14,7 +14,7 @@ import { LoaderContext } from './contexts/LoaderContext'
 // `/` is the default landing route, so keep it in the main bundle.
 // Other routes are lazy-loaded so each route's components only download
 // when the user actually navigates there.
-const ServicesPage  = lazy(() => import('./pages/Services'))
+const PackagesPage  = lazy(() => import('./pages/Packages'))
 const AboutPage     = lazy(() => import('./pages/About'))
 const ShowcasePage = lazy(() => import('./pages/Showcase'))
 const ApproachPage  = lazy(() => import('./pages/Approach'))
@@ -100,7 +100,11 @@ function AppLayout() {
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/services" element={<ServicesPage />} />
+              {/* /packages is the canonical route. /services 301s to it
+                  so any indexed inbound link (Google, backlinks) lands on
+                  the renamed page without a 404. */}
+              <Route path="/packages" element={<PackagesPage />} />
+              <Route path="/services" element={<Navigate to="/packages" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/showcase" element={<ShowcasePage />} />
               <Route path="/approach" element={<ApproachPage />} />

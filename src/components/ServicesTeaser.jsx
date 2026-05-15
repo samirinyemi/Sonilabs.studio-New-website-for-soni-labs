@@ -4,10 +4,10 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { prefersReducedMotion } from '../utils/motion'
 
-// Stripped-down pricing/services section for the home page. The full
-// engagement breakdown (cards, accordions, audit, etc.) lives on the
-// dedicated /services page; this teaser surfaces just enough to spark
-// interest and route visitors there.
+// Stripped-down packages section for the home page. The full engagement
+// breakdown (cards, accordions, audit, etc.) lives on the dedicated
+// /packages page; this teaser surfaces just enough to spark interest
+// and route visitors there.
 export default function ServicesTeaser() {
   const containerRef = useRef(null)
 
@@ -30,26 +30,38 @@ export default function ServicesTeaser() {
     })
   }, { scope: containerRef })
 
+  // Five packages in render order. Prices are intentionally not shown —
+  // the conversation is the negotiation entry point; the cadence column
+  // is the only concrete fact each row needs.
   const tiers = [
     {
       num: '01',
-      name: 'Brand + Website',
-      tag: 'Project · Flagship',
-      starting: 'from $5,000',
-      cadence: '4–6 weeks',
+      name: 'Websites',
+      tag: 'Project · Website',
+      cadence: '2–3 weeks',
     },
     {
       num: '02',
-      name: 'Product Design',
-      tag: 'Project · UI / UX',
-      starting: 'from $7,000',
-      cadence: '5 weeks',
+      name: 'Branding',
+      tag: 'Project · Brand',
+      cadence: '~2 weeks',
     },
     {
       num: '03',
+      name: 'Brand + Website',
+      tag: 'Project · Flagship',
+      cadence: '4–6 weeks',
+    },
+    {
+      num: '04',
+      name: 'Product Design',
+      tag: 'Project · UI / UX',
+      cadence: '5 weeks',
+    },
+    {
+      num: '05',
       name: 'Design Partner',
       tag: 'Monthly retainer',
-      starting: 'from $5,000/mo',
       cadence: '3-month min',
     },
   ]
@@ -64,13 +76,13 @@ export default function ServicesTeaser() {
         {/* ── Header ──────────────────────────────────────────────────── */}
         <div className="svt-header flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Pricing &amp; Engagements</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-tight max-w-xl">
-              Three ways to work together.
+              Five ways to work together.
             </h2>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: launching, scaling a product, or shipping continuously with a partner embedded in your team.
+            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, or an ongoing partner embedded in your team.
           </p>
         </div>
 
@@ -79,7 +91,7 @@ export default function ServicesTeaser() {
           {tiers.map((tier) => (
             <li key={tier.num} className="svt-tier border-b border-base-border group">
               <Link
-                to="/services"
+                to="/packages"
                 className="block py-6 md:py-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-8 hover:bg-base-light/40 transition-colors -mx-4 sm:-mx-6 px-4 sm:px-6 rounded-md"
               >
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red shrink-0 w-8">
@@ -94,9 +106,6 @@ export default function ServicesTeaser() {
                   </span>
                 </div>
                 <div className="flex items-baseline gap-4 sm:gap-6 shrink-0">
-                  <span className="text-base md:text-lg font-medium text-base-dark">
-                    {tier.starting}
-                  </span>
                   <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
                     {tier.cadence}
                   </span>
@@ -117,13 +126,13 @@ export default function ServicesTeaser() {
         {/* ── Footer CTA — leads to the full breakdown ─────────────────── */}
         <div className="svt-cta mt-10 md:mt-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <p className="text-subtle text-base md:text-lg leading-relaxed max-w-2xl">
-            What's included, the process week-by-week, and the lighter-touch 2-week design audit — all on the full pricing page.
+            What's included, the process week-by-week, and the lighter-touch 2-week design audit — all on the full packages page.
           </p>
           <Link
-            to="/services"
+            to="/packages"
             className="cta-press inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm sm:text-base hover:bg-base-dark-soft w-fit shrink-0"
           >
-            See full pricing
+            See all packages
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />

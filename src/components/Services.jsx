@@ -361,8 +361,6 @@ function ProcessContent({ rows, title, variant, noDividers = false }) {
 // ── DARK CARD — Brand + Website (Essential / Enterprise toggle) ────────
 function BrandWebsiteCard({ expanded = false }) {
   const [tier, setTier] = useState('essential')
-  const priceRef = useRef(null)
-  const priceValueRef = useRef(5000)
 
   // Sliding pill background for the tier toggle. The highlight is an
   // absolutely-positioned span; its x and width animate to match the
@@ -385,31 +383,6 @@ function BrandWebsiteCard({ expanded = false }) {
       return
     }
     gsap.to(highlight, { ...params, duration: 0.4, ease: 'power3.out' })
-  }, [tier])
-
-  useEffect(() => {
-    const target = tier === 'essential' ? 5000 : 8000
-    const node = priceRef.current
-    if (!node) return
-
-    if (prefersReducedMotion()) {
-      priceValueRef.current = target
-      node.textContent = `$${target.toLocaleString()}`
-      return
-    }
-
-    const obj = { val: priceValueRef.current }
-    const tween = gsap.to(obj, {
-      val: target,
-      duration: 0.6,
-      ease: 'power2.out',
-      onUpdate: () => {
-        const v = Math.round(obj.val)
-        priceValueRef.current = v
-        node.textContent = `$${v.toLocaleString()}`
-      },
-    })
-    return () => tween.kill()
   }, [tier])
 
   const tiers = {
@@ -476,7 +449,7 @@ function BrandWebsiteCard({ expanded = false }) {
         <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">Project &middot; Flagship</span>
       </div>
 
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">01</span>
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
 
       <p className="text-gray-300 text-base md:text-lg mb-3 leading-relaxed">
@@ -532,13 +505,6 @@ function BrandWebsiteCard({ expanded = false }) {
     </div>
   )
 
-  const PriceBlock = (
-    <div>
-      <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Starting from</p>
-      <p ref={priceRef} className="text-3xl font-medium tabular-nums">$5,000</p>
-    </div>
-  )
-
   const TimelineBlock = (
     <div>
       <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Timeline</p>
@@ -580,11 +546,12 @@ function BrandWebsiteCard({ expanded = false }) {
           </div>
         </div>
 
-        {/* Price strip — full-width horizontal row beneath the includes/process */}
+        {/* Footer strip — tier toggle + timeline on one side, CTA on the
+            other. Prices were stripped intentionally; conversation is the
+            negotiation entry point now. */}
         <div className="border-t border-white/10 pt-8 md:pt-10 mt-10 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
             {TierToggle}
-            {PriceBlock}
             {TimelineBlock}
           </div>
           <BookCallButton />
@@ -595,7 +562,7 @@ function BrandWebsiteCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
         {/* Left: pitch */}
         <div className="lg:col-span-7">
@@ -605,11 +572,10 @@ function BrandWebsiteCard({ expanded = false }) {
           </CardPopover>
         </div>
 
-        {/* Right: tier toggle + price + CTA */}
+        {/* Right: tier toggle + timeline + CTA */}
         <div className="lg:col-span-5 flex flex-col justify-between gap-8 lg:border-l lg:border-white/10 lg:pl-12">
           <div className="space-y-6">
             {TierToggle}
-            {PriceBlock}
             {TimelineBlock}
           </div>
           <BookCallButton />
@@ -655,7 +621,7 @@ function ProductDesignCard({ expanded = false }) {
         <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; UI / UX</span>
       </div>
 
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">04</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
@@ -677,13 +643,6 @@ function ProductDesignCard({ expanded = false }) {
         </p>
       </div>
     </>
-  )
-
-  const PriceBlock = (
-    <div>
-      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Starting from</p>
-      <p className="text-3xl font-medium text-base-dark">$7,000</p>
-    </div>
   )
 
   const TimelineBlock = (
@@ -723,13 +682,10 @@ function ProductDesignCard({ expanded = false }) {
           </div>
         </div>
 
-        {/* Price strip pinned to the bottom (mt-auto). When this card sits
-            beside Design Partner in a 2-column grid, the outer grid's
-            stretch alignment + h-full + mt-auto put both strips at the
-            same vertical position. */}
+        {/* Footer strip pinned to the bottom (mt-auto) — timeline + CTA.
+            Prices were stripped intentionally; book a call to discuss. */}
         <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
-            {PriceBlock}
+          <div className="flex-1">
             {TimelineBlock}
           </div>
           {BookCallButton}
@@ -748,11 +704,10 @@ function ProductDesignCard({ expanded = false }) {
         </CardPopover>
       </div>
 
-      {/* Price strip — full-width horizontal row beneath the pitch. Same
-          shape as the pricing page so both surfaces read consistently. */}
+      {/* Footer strip — timeline + CTA on the same horizontal rhythm as
+          the /packages expanded layout. */}
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-        <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
-          {PriceBlock}
+        <div className="flex-1">
           {TimelineBlock}
         </div>
         {BookCallButton}
@@ -795,7 +750,7 @@ function DesignPartnerCard({ expanded = false }) {
         <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full">Monthly retainer</span>
       </div>
 
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">05</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
@@ -819,11 +774,12 @@ function DesignPartnerCard({ expanded = false }) {
     </>
   )
 
-  const PriceBlock = (
+  // Equivalent of TimelineBlock on the project cards. Retainers don't
+  // have a fixed duration, so we show the minimum commitment instead.
+  const CommitmentBlock = (
     <div>
-      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Monthly rate</p>
-      <p className="text-3xl font-medium text-base-dark">$5,000<span className="text-muted">/mo</span></p>
-      <p className="text-xs text-muted mt-2 leading-snug">3+ month commitment: $4,500/mo</p>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Commitment</p>
+      <p className="text-2xl font-medium text-base-dark">3-month minimum</p>
     </div>
   )
 
@@ -856,13 +812,13 @@ function DesignPartnerCard({ expanded = false }) {
             Start with a 2-week design audit.
           </p>
           <p className="text-subtle text-sm leading-relaxed">
-            Paid review of your brand, product, or website. Written diagnosis + prioritized fixes. <span className="text-base-dark">$500 credit applied</span> if you book a full engagement within 30 days.
+            Paid review of your brand, product, or website. Written diagnosis + prioritized fixes. Credit applied if you book a full engagement within 30 days.
           </p>
         </div>
         <div className="flex items-end gap-5 shrink-0">
           <div>
-            <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">One-time</p>
-            <p className="text-2xl font-medium text-base-dark leading-none">$500</p>
+            <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
+            <p className="text-2xl font-medium text-base-dark leading-none">2 weeks</p>
           </div>
           <a
             href={CALENDLY_URL}
@@ -897,7 +853,7 @@ function DesignPartnerCard({ expanded = false }) {
             cards sit side-by-side in the 2-column outer grid. */}
         <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="flex-1">
-            {PriceBlock}
+            {CommitmentBlock}
           </div>
           {BookCallButton}
         </div>
@@ -917,11 +873,11 @@ function DesignPartnerCard({ expanded = false }) {
         </CardPopover>
       </div>
 
-      {/* Price strip — full-width horizontal row beneath the pitch. Same
-          shape as the pricing page so both surfaces read consistently. */}
+      {/* Footer strip — commitment + CTA on the same horizontal rhythm
+          as the /packages expanded layout. */}
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
         <div className="flex-1">
-          {PriceBlock}
+          {CommitmentBlock}
         </div>
         {BookCallButton}
       </div>
@@ -931,6 +887,246 @@ function DesignPartnerCard({ expanded = false }) {
       <div className="mt-8 md:mt-10">
         <CardAccordion triggerLabel="A typical month" openLabel="Hide month" triggerIcon={ClockIcon} variant="light">
           <ProcessContent rows={process} title="A typical month" variant="card-light" />
+        </CardAccordion>
+      </div>
+    </div>
+  )
+}
+
+// ── WEBSITES — bg-card-soft ─────────────────────────────────────────────
+// Single-discipline engagement for clients who already have a brand and
+// just need a production marketing site. Same visual family as Product
+// Design (bg-card-soft) so the four non-flagship cards read as one cluster.
+function WebsitesAloneCard({ expanded = false }) {
+  const includes = [
+    'Site map + content plan',
+    'Page design (up to 8 pages)',
+    'No-code build in Framer, Webflow, or Wix Studio',
+    'CMS setup',
+    'Analytics + SEO basics',
+    'Deployment',
+    '1 round of revisions',
+    '1-week post-launch support',
+  ]
+  const process = [
+    ['Week 1', 'Discovery + IA: site map, content plan, references locked.'],
+    ['Week 2', 'Design: page-by-page design across the selected surfaces.'],
+    ['Week 3', 'Build & launch: no-code build, CMS, QA, deploy, hand over the keys.'],
+  ]
+
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; Website</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">01</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Websites</h3>
+
+      <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
+        A production marketing site built on top of an existing brand. No-code execution, deployed and handed over. Live in 2–3 weeks.
+      </p>
+
+      <p className="text-muted text-sm mb-6 leading-relaxed">
+        Web design &middot; No-code development &middot; CMS
+      </p>
+
+      <div className="border-t border-base-dark/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-subtle text-sm md:text-base leading-relaxed">
+          A live marketing site you can update on your own, with analytics and SEO basics already in place — no follow-up engagement needed to ship the first version.
+        </p>
+      </div>
+    </>
+  )
+
+  const TimelineBlock = (
+    <div>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium text-base-dark">2–3 weeks</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+    >
+      Book a call
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  if (expanded) {
+    return (
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
+          <div>
+            <IncludesContent items={includes} variant="light" />
+          </div>
+          <div>
+            <ProcessContent rows={process} title="Websites process" variant="card-light" noDividers />
+          </div>
+        </div>
+
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex-1">{TimelineBlock}</div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div>
+        {Pitch}
+        <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
+          <IncludesContent items={includes} variant="light" />
+        </CardPopover>
+      </div>
+
+      <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex-1">{TimelineBlock}</div>
+        {BookCallButton}
+      </div>
+
+      <div className="mt-8 md:mt-10">
+        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
+          <ProcessContent rows={process} title="Websites process" variant="card-light" />
+        </CardAccordion>
+      </div>
+    </div>
+  )
+}
+
+// ── BRANDING — bg-card-soft ─────────────────────────────────────────────
+// Identity-only engagement: strategy, logo, type, colour, and a
+// guidelines document. Sibling to Websites in the "single-discipline"
+// cluster, same visual surface.
+function BrandingAloneCard({ expanded = false }) {
+  const includes = [
+    'Brand strategy + verbal identity',
+    'Logo design',
+    'Type system',
+    'Colour system',
+    'Brand guidelines document',
+    'Asset pack (logo lockups, favicon, social avatars)',
+    '2 rounds of revisions',
+  ]
+  const process = [
+    ['Week 1', 'Discovery: positioning, audience, market scan, mood direction.'],
+    ['Week 2', 'Direction: 2 visual concepts → pick one → lock logo, type, colour.'],
+    ['Week 3', 'System build: final logo, system, guidelines document, asset pack.'],
+  ]
+
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; Brand</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Branding</h3>
+
+      <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
+        A complete identity system — strategy, logo, type, and colour — built to scale across every surface your business uses. Live in ~2 weeks.
+      </p>
+
+      <p className="text-muted text-sm mb-6 leading-relaxed">
+        Brand strategy &middot; Logo &middot; Type &middot; Colour &middot; Guidelines
+      </p>
+
+      <div className="border-t border-base-dark/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-subtle text-sm md:text-base leading-relaxed">
+          A brand system your team can apply to anything — decks, website, social, packaging — without coming back to us every time the brand shows up somewhere new.
+        </p>
+      </div>
+    </>
+  )
+
+  const TimelineBlock = (
+    <div>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium text-base-dark">~2 weeks</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+    >
+      Book a call
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  if (expanded) {
+    return (
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
+          <div>
+            <IncludesContent items={includes} variant="light" />
+          </div>
+          <div>
+            <ProcessContent rows={process} title="Branding process" variant="card-light" noDividers />
+          </div>
+        </div>
+
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex-1">{TimelineBlock}</div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div>
+        {Pitch}
+        <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
+          <IncludesContent items={includes} variant="light" />
+        </CardPopover>
+      </div>
+
+      <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex-1">{TimelineBlock}</div>
+        {BookCallButton}
+      </div>
+
+      <div className="mt-8 md:mt-10">
+        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
+          <ProcessContent rows={process} title="Branding process" variant="card-light" />
         </CardAccordion>
       </div>
     </div>
@@ -961,25 +1157,28 @@ export default function Services({ expanded = false }) {
       <div className="max-w-[1600px] w-full mx-auto">
         <div className="svc-header mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Pricing &amp; Engagements</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
-              Three ways to work together.
+              Five ways to work together.
             </h2>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-4">
-              Two project engagements &middot; one monthly retainer.
+              Four project engagements &middot; one monthly retainer.
             </p>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: launching, scaling a product, or shipping continuously with a partner embedded in your team.
+            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, or an ongoing partner embedded in your team.
           </p>
         </div>
 
-        {/* Card 1 (flagship Brand + Website) spans both columns at xl;
-            Cards 2 + 3 sit side-by-side below it. items-start lets each
-            card rest at its natural height so accordion toggles don't
-            tug the sibling card up or down. Pricing page (expanded)
-            uses default grid stretch so the inline price strips align. */}
+        {/* Render order: Websites + Branding side-by-side (row 1), flagship
+            Brand + Website spans both columns (row 2), then Product Design +
+            Design Partner side-by-side (row 3). items-start on the homepage
+            lets each card rest at its natural height so accordion toggles
+            don't tug siblings. /packages (expanded) uses default stretch so
+            the inline timeline strips line up across cards. */}
         <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
+          <WebsitesAloneCard expanded={expanded} />
+          <BrandingAloneCard expanded={expanded} />
           <div className="xl:col-span-2">
             <BrandWebsiteCard expanded={expanded} />
           </div>

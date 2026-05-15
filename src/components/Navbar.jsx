@@ -219,7 +219,7 @@ export default function Navbar({ forceFloating = false, v2 = false }) {
 
   const menuItems = [
     { label: 'Projects', href: '/projects', type: 'route' },
-    { label: 'Pricing', href: '/services', type: 'route' },
+    { label: 'Packages', href: '/packages', type: 'route' },
     { label: 'Showcase', href: '/showcase', type: 'route' },
     { label: 'Approach', href: '/approach', type: 'route' },
     { label: 'About', href: '/about', type: 'route' },

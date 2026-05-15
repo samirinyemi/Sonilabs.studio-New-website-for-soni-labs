@@ -33,11 +33,13 @@ export default function Footer() {
 
           <div className="lg:col-span-8 flex flex-wrap justify-start lg:justify-end gap-x-12 lg:gap-x-16 gap-y-10">
             <div>
-              <h4 className="font-mono text-xs text-muted uppercase tracking-widest mb-4">Pricing &amp; Engagements</h4>
+              <h4 className="font-mono text-xs text-muted uppercase tracking-widest mb-4">Packages</h4>
               <ul className="space-y-3">
-                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Brand + Website</Link></li>
-                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Product Design (UI/UX)</Link></li>
-                <li><Link to="/#services" className="text-subtle text-sm hover:text-base-dark transition-colors">Design Partner</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Websites</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Branding</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Brand + Website</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Product Design (UI/UX)</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Design Partner</Link></li>
               </ul>
             </div>
             <div>

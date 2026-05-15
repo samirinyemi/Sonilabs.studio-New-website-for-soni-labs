@@ -42,7 +42,7 @@ const howWeDoIt = [
   },
 ]
 
-export default function ServicesPage() {
+export default function PackagesPage() {
   const containerRef = useRef(null)
   const autoplay = !isSlowOrMeteredConnection()
 
@@ -81,10 +81,28 @@ export default function ServicesPage() {
   return (
     <div ref={containerRef}>
       <SEO
-        title="Services & pricing"
-        path="/services"
-        description="Three ways to work with Soni Labs: Brand + Website, Product Design, and the Design Partner retainer. Pricing, timelines, and what's included."
+        title="Packages"
+        path="/packages"
+        description="Five ways to work with Soni Labs: Branding, Websites, Brand + Website, Product Design, and the Design Partner retainer. Timelines, scope, and what's included — book a call to discuss."
         jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Branding',
+            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
+            description: 'Identity-only engagement: brand strategy, logo, type, colour, and a guidelines document. Typically 2 weeks.',
+            serviceType: 'Brand design',
+            areaServed: 'Worldwide',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: 'Websites',
+            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
+            description: 'Production marketing site built on an existing brand. No-code execution in Framer, Webflow, or Wix Studio. Typically 2–3 weeks.',
+            serviceType: 'Web design',
+            areaServed: 'Worldwide',
+          },
           {
             '@context': 'https://schema.org',
             '@type': 'Service',
@@ -92,12 +110,6 @@ export default function ServicesPage() {
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
             description: 'Brand identity + production website for founders launching or rebranding. Typically 4–6 weeks.',
             serviceType: 'Brand and web design',
-            offers: {
-              '@type': 'Offer',
-              priceCurrency: 'USD',
-              price: '5000',
-              description: 'Essential tier starts at $5,000. Enterprise tier $8,000.',
-            },
             areaServed: 'Worldwide',
           },
           {
@@ -107,12 +119,6 @@ export default function ServicesPage() {
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
             description: 'UI/UX design for startups scaling a digital product. Hand-off to your engineering team. Typically 5 weeks.',
             serviceType: 'Product design',
-            offers: {
-              '@type': 'Offer',
-              priceCurrency: 'USD',
-              price: '7000',
-              description: 'Starting from $7,000, depending on scope.',
-            },
             areaServed: 'Worldwide',
           },
           {
@@ -122,13 +128,6 @@ export default function ServicesPage() {
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
             description: 'A dedicated senior designer embedded in your team across brand, web, and product. 3-month minimum.',
             serviceType: 'Design partnership',
-            offers: {
-              '@type': 'Offer',
-              priceCurrency: 'USD',
-              price: '5000',
-              priceSpecification: { '@type': 'UnitPriceSpecification', price: '5000', priceCurrency: 'USD', billingDuration: 'P1M' },
-              description: 'From $5,000/month, or $4,500/month with a 3+ month commitment.',
-            },
             areaServed: 'Worldwide',
           },
           {
@@ -138,19 +137,13 @@ export default function ServicesPage() {
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
             description: 'A 2-week paid review of an existing brand, product, or website. Written diagnosis and prioritized recommendations.',
             serviceType: 'Design consulting',
-            offers: {
-              '@type': 'Offer',
-              priceCurrency: 'USD',
-              price: '500',
-              description: '$500 one-time. Credit applied to a full engagement booked within 30 days.',
-            },
             areaServed: 'Worldwide',
           },
         ]}
       />
       {/* ── Page hero with brand guideline video — native aspect 3654×2160 ─ */}
       <section className="w-full pt-2 md:pt-4 pb-0 px-4 md:px-6">
-        <h1 className="sr-only">Pricing &amp; Engagements — Soni Labs Studio</h1>
+        <h1 className="sr-only">Packages — Soni Labs Studio</h1>
         <div className="max-w-[1600px] mx-auto">
           <div className="relative w-full aspect-[3654/2160] overflow-hidden bg-base-dark">
             <video
@@ -204,7 +197,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Pricing & Engagements — packaged engagements (expanded view
+      {/* ── Packages — engagements (expanded view
           shows includes + process inline on this dedicated page). ───── */}
       <ServicesSection expanded />
 
