@@ -296,12 +296,16 @@ function BrandWebsiteCard({ expanded = false }) {
   if (expanded) {
     return (
       <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
-        {Pitch}
-
-        {/* Includes — single column now that the process column moved to
-            /approach. Card max-width keeps the line measure comfortable. */}
-        <div className="max-w-2xl">
-          <IncludesContent items={includes} variant="dark" />
+        {/* Pitch (left) + Includes (right) — side-by-side at md+ so the
+            flagship doesn't stack two tall blocks vertically. The card
+            already spans 2 outer grid columns at xl, so there's room for
+            two readable internal columns. Footer strip stays full-width
+            below, holding the anchor link + timeline + CTA together. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+          <div>{Pitch}</div>
+          <div>
+            <IncludesContent items={includes} variant="dark" />
+          </div>
         </div>
 
         {/* Footer strip — timeline on one side, CTA on the other, with the

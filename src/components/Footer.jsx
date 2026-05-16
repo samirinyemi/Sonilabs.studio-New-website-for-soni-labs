@@ -15,15 +15,18 @@ const showcaseIntent = () => {
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-base-pure text-base-dark overflow-hidden" role="contentinfo">
-      {/* Top divider — full-width black line that respects the site's
-          horizontal padding (max-w-[1600px] + px-6 md:px-10), the same container
-          every other footer row uses. */}
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+    <footer className="relative w-full bg-base-pure text-base-dark overflow-hidden px-4 md:px-6" role="contentinfo">
+      {/* Horizontal padding moved to the <footer> wrapper so the inner
+          max-w-[1600px] containers can extend the full 1600px at wide
+          viewports — matching every other section on the site (Approach,
+          Packages, About, etc.). Previous pattern (max-w-[1600px] +
+          internal px-6/px-10) capped effective content at 1520px and
+          made the footer visually narrower than the body. */}
+      <div className="max-w-[1600px] mx-auto">
         <div className="h-px bg-base-dark" />
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10 pt-16 md:pt-20 pb-32 md:pb-48">
+      <div className="max-w-[1600px] mx-auto pt-16 md:pt-20 pb-32 md:pb-48">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-10">
           <div className="lg:col-span-4">
             <p className="font-display font-bold text-2xl md:text-3xl tracking-tighter leading-[1.1] text-base-dark max-w-xs">
@@ -72,7 +75,7 @@ export default function Footer() {
           footer so both respect the site's margins. The oversized "Soni
           Labs" wordmark sits below this row and is cropped at the page
           edge so its bottom third peeks below the footer. */}
-      <div className="max-w-[1600px] mx-auto px-6 md:px-10">
+      <div className="max-w-[1600px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-0">
           <span className="font-mono text-xs text-muted leading-snug">
             &copy; 2026 Soni labs Studio.<br />All rights reserved.

@@ -8,16 +8,6 @@ import SEO from '../components/SEO'
 // deep-link straight into the matching section here.
 const processes = [
   {
-    id: 'branding',
-    eyebrow: '// Branding',
-    title: 'A focused identity in 2 weeks.',
-    body: 'For founders who already have product clarity but need the brand to catch up. Strategy, logo, and a system built to scale.',
-    steps: [
-      { num: '01', week: 'Week 1', title: 'Discovery + Direction', body: 'Positioning, audience, and mood references locked. Two visual concepts presented; you pick one and we lock the direction. No surprises later.' },
-      { num: '02', week: 'Week 2', title: 'System build',           body: 'Final logo, type system, colour system, brand guidelines document, and the asset pack your team can apply from day one.' },
-    ],
-  },
-  {
     id: 'websites',
     eyebrow: '// Websites',
     title: 'A production site live in 2–3 weeks.',
@@ -26,6 +16,16 @@ const processes = [
       { num: '01', week: 'Week 1', title: 'Discovery + IA',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
       { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces — desktop and mobile, ready for content.' },
       { num: '03', week: 'Week 3', title: 'Build & launch',  body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
+    ],
+  },
+  {
+    id: 'branding',
+    eyebrow: '// Branding',
+    title: 'A focused identity in 2 weeks.',
+    body: 'For founders who already have product clarity but need the brand to catch up. Strategy, logo, and a system built to scale.',
+    steps: [
+      { num: '01', week: 'Week 1', title: 'Discovery + Direction', body: 'Positioning, audience, and mood references locked. Two visual concepts presented; you pick one and we lock the direction. No surprises later.' },
+      { num: '02', week: 'Week 2', title: 'System build',           body: 'Final logo, type system, colour system, brand guidelines document, and the asset pack your team can apply from day one.' },
     ],
   },
   {
@@ -169,7 +169,7 @@ export default function ApproachPage() {
       <SEO
         title="Our approach"
         path="/approach"
-        description="How Soni Labs runs Branding, Websites, Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
+        description="How Soni Labs runs Websites, Branding, Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
@@ -198,7 +198,7 @@ export default function ApproachPage() {
             Five engagements.
           </h2>
           <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-3xl">
-            Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Branding, Websites, Brand + Website, Product Design, and Design Partner each move from brief to final product.
+            Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Websites, Branding, Brand + Website, Product Design, and Design Partner each move from brief to final product.
           </p>
         </div>
       </section>
