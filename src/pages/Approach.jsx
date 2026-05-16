@@ -13,7 +13,7 @@ const processes = [
     title: 'A production site live in 2–3 weeks.',
     body: 'For teams who already have a brand and need a marketing site that matches it. No-code execution, deployed and handed over.',
     steps: [
-      { num: '01', week: 'Week 1', title: 'Discovery',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
+      { num: '01', week: 'Week 1', title: 'Discovery + Information Architecture',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
       { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces — desktop and mobile, ready for content.' },
       { num: '03', week: 'Week 3', title: 'Build & launch',  body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
     ],
