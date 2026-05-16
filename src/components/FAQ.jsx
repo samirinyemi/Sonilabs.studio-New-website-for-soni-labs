@@ -57,12 +57,17 @@ export default function FAQ() {
 
   // Open the first item's panel on mount so it matches the default
   // active state (without this the height stays 0 from the inline style).
+  // Also sets transformOrigin on every vertical bar so scaleY pivots from
+  // the line's center, not the SVG's top-left coordinate.
   useEffect(() => {
+    iconRefs.current.forEach((el) => {
+      if (el) gsap.set(el, { transformOrigin: 'center center' })
+    })
     if (activeIndex == null) return
     const el = contentRefs.current[activeIndex]
     const icon = iconRefs.current[activeIndex]
     if (el) gsap.set(el, { height: 'auto', opacity: 1 })
-    if (icon) gsap.set(icon, { rotation: 180 })
+    if (icon) gsap.set(icon, { scaleY: 0 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -80,7 +85,7 @@ export default function FAQ() {
         const prevContent = contentRefs.current[activeIndex]
         const prevIcon = iconRefs.current[activeIndex]
         gsap.to(prevContent, { height: 0, opacity: 0, duration: 0.4, ease: 'power3.inOut' })
-        gsap.to(prevIcon, { rotation: 0, duration: 0.3, ease: 'power2.inOut' })
+        gsap.to(prevIcon, { scaleY: 1, duration: 0.3, ease: 'power2.inOut' })
       }
 
       gsap.set(contentEl, { height: 'auto', opacity: 1 })
@@ -95,14 +100,14 @@ export default function FAQ() {
           },
         }
       )
-      gsap.to(iconEl, { rotation: 180, duration: 0.4, ease: 'power2.out' })
+      gsap.to(iconEl, { scaleY: 0, duration: 0.3, ease: 'power2.inOut' })
       setActiveIndex(i)
     } else {
       gsap.to(contentEl, {
         height: 0, opacity: 0, duration: 0.4, ease: 'power3.inOut',
         onComplete: () => { isAnimating.current = false },
       })
-      gsap.to(iconEl, { rotation: 0, duration: 0.3, ease: 'power2.inOut' })
+      gsap.to(iconEl, { scaleY: 1, duration: 0.3, ease: 'power2.inOut' })
       setActiveIndex(null)
     }
   }, [activeIndex])
@@ -153,12 +158,17 @@ export default function FAQ() {
                       {item.question}
                     </span>
                     <span
-                      ref={(el) => (iconRefs.current[i] = el)}
                       className="shrink-0 inline-flex items-center justify-center"
                       aria-hidden="true"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
+                        {/* Horizontal bar — always visible */}
+                        <line x1="4" y1="12" x2="20" y2="12" />
+                        {/* Vertical bar — scaleY from 1 (plus) to 0 (minus) on open */}
+                        <line
+                          ref={(el) => (iconRefs.current[i] = el)}
+                          x1="12" y1="4" x2="12" y2="20"
+                        />
                       </svg>
                     </span>
                   </button>
