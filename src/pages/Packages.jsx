@@ -1,4 +1,5 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ServicesSection from '../components/Services'
@@ -21,6 +22,18 @@ const whatWeDo = [
 export default function PackagesPage() {
   const containerRef = useRef(null)
   const autoplay = !isSlowOrMeteredConnection()
+  const { hash } = useLocation()
+
+  // Deep-link via fragment: /packages#websites scrolls to that card after
+  // layout settles. Same pattern Home.jsx and Approach.jsx use, so anchor
+  // behaviour stays consistent across routes that consume hash anchors.
+  useEffect(() => {
+    if (!hash) return
+    const el = document.querySelector(hash)
+    if (!el) return
+    const t = setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 120)
+    return () => clearTimeout(t)
+  }, [hash])
 
   useGSAP(() => {
     if (prefersReducedMotion()) {

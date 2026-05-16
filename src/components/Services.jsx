@@ -883,15 +883,28 @@ export default function Services({ expanded = false }) {
             Design Partner side-by-side (row 3). items-start on the homepage
             lets each card rest at its natural height so accordion toggles
             don't tug siblings. /packages (expanded) uses default stretch so
-            the inline timeline strips line up across cards. */}
+            the inline timeline strips line up across cards.
+
+            Each card is wrapped in a div with a slug id so the home-page
+            teaser links can deep-link to a specific card via /packages#slug.
+            scroll-mt-24 offsets the scroll target so the sticky top nav
+            doesn't clip the card edge on jump. */}
         <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
-          <WebsitesAloneCard expanded={expanded} />
-          <BrandingAloneCard expanded={expanded} />
-          <div className="xl:col-span-2">
+          <div id="websites" className="scroll-mt-24">
+            <WebsitesAloneCard expanded={expanded} />
+          </div>
+          <div id="branding" className="scroll-mt-24">
+            <BrandingAloneCard expanded={expanded} />
+          </div>
+          <div id="brand-website" className="xl:col-span-2 scroll-mt-24">
             <BrandWebsiteCard expanded={expanded} />
           </div>
-          <ProductDesignCard expanded={expanded} />
-          <DesignPartnerCard expanded={expanded} />
+          <div id="product-design" className="scroll-mt-24">
+            <ProductDesignCard expanded={expanded} />
+          </div>
+          <div id="design-partner" className="scroll-mt-24">
+            <DesignPartnerCard expanded={expanded} />
+          </div>
         </div>
 
       </div>

@@ -39,30 +39,35 @@ export default function ServicesTeaser() {
       name: 'Websites',
       tag: 'Project · Website',
       cadence: '2–3 weeks',
+      slug: 'websites',
     },
     {
       num: '02',
       name: 'Branding',
       tag: 'Project · Brand',
       cadence: '~2 weeks',
+      slug: 'branding',
     },
     {
       num: '03',
       name: 'Brand + Website',
       tag: 'Project · Flagship',
       cadence: '4–6 weeks',
+      slug: 'brand-website',
     },
     {
       num: '04',
       name: 'Product Design',
       tag: 'Project · UI / UX',
       cadence: '5 weeks',
+      slug: 'product-design',
     },
     {
       num: '05',
       name: 'Design Partner',
       tag: 'Monthly retainer',
       cadence: '3-month min',
+      slug: 'design-partner',
     },
   ]
 
@@ -91,7 +96,7 @@ export default function ServicesTeaser() {
           {tiers.map((tier) => (
             <li key={tier.num} className="svt-tier border-b border-base-border group">
               <Link
-                to="/packages"
+                to={`/packages#${tier.slug}`}
                 className="block py-6 md:py-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-8 hover:bg-base-light/40 transition-colors -mx-4 sm:-mx-6 px-4 sm:px-6 rounded-md"
               >
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red shrink-0 w-8">
