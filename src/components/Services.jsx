@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useLayoutEffect, useId } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -139,164 +139,12 @@ function CardPopover({ triggerLabel, triggerIcon, children, variant }) {
   )
 }
 
-// ── Inline accordion (full-width row at the bottom of each card) ───────
-// Sits inside the card's content padding — the divider, click target, and
-// expanded content all align with the rest of the card's content.
-//
-// While hovered with a mouse, the native cursor is hidden and a small
-// "Show" / "Hide" label follows the pointer. Touch devices skip this and
-// fall back to the default pointer cursor.
-function CardAccordion({ triggerLabel, openLabel, triggerIcon, children, variant }) {
-  const [open, setOpen] = useState(false)
-  const [hovered, setHovered] = useState(false)
-  const contentRef = useRef(null)
-  const labelRef = useRef(null)
-  const isAnimating = useRef(false)
-  // Stable id ties the trigger to the panel via aria-controls / id so
-  // assistive tech can navigate between them.
-  const panelId = useId()
-
-  // Track mouse position only while hovered. Updates the label's transform
-  // imperatively (no re-render). The trailing translate(-50%, -50%) centers
-  // the label on the cursor position so it feels like the label *is* the
-  // cursor rather than something tagging along beside it.
-  useEffect(() => {
-    if (!hovered) return
-    const handle = (e) => {
-      if (!labelRef.current) return
-      labelRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`
-    }
-    window.addEventListener('mousemove', handle)
-    return () => window.removeEventListener('mousemove', handle)
-  }, [hovered])
-
-  const toggle = () => {
-    if (isAnimating.current) return
-    const el = contentRef.current
-    if (!el) return
-    isAnimating.current = true
-
-    if (!open) {
-      gsap.set(el, { height: 'auto', opacity: 1 })
-      const fullHeight = el.scrollHeight
-      gsap.fromTo(el,
-        { height: 0, opacity: 0 },
-        {
-          height: fullHeight, opacity: 1,
-          duration: 0.5, ease: 'power3.out',
-          onComplete: () => {
-            gsap.set(el, { height: 'auto' })
-            isAnimating.current = false
-          },
-        }
-      )
-    } else {
-      gsap.to(el, {
-        height: 0, opacity: 0,
-        duration: 0.4, ease: 'power3.inOut',
-        onComplete: () => {
-          // Keep height: 0 explicitly. clearProps would remove the inline
-          // height, snapping the element back to its natural content height
-          // and re-occupying layout space — the bug we hit when toggling
-          // closed used to look like "the accordion can't be closed."
-          // Fresh scrollHeight is still re-measured on next open because
-          // the open branch sets height to 'auto' before reading it.
-          isAnimating.current = false
-        },
-      })
-    }
-    setOpen(!open)
-  }
-
-  const styles = {
-    dark:  {
-      border:     'border-white/10',
-      text:       'text-white',
-      labelBg:    'bg-base-pure',
-      labelText:  'text-base-dark',
-    },
-    light: {
-      border:     'border-base-dark/10',
-      text:       'text-base-dark',
-      labelBg:    'bg-base-dark',
-      labelText:  'text-white',
-    },
-  }[variant]
-
-  return (
-    <div className={`border-t ${styles.border}`}>
-      <button
-        type="button"
-        onClick={toggle}
-        onPointerEnter={(e) => {
-          if (e.pointerType === 'touch') return
-          // Snap the label to the entry point before fading in so it never
-          // appears in a stale position from the previous hover.
-          if (labelRef.current) {
-            labelRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`
-          }
-          setHovered(true)
-        }}
-        onPointerLeave={() => setHovered(false)}
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={`w-full flex items-center justify-between py-5 md:py-6 text-left ${styles.text}`}
-      >
-        <span className="flex items-center gap-3">
-          <span className="opacity-60">{triggerIcon}</span>
-          <span className="font-mono text-xs uppercase tracking-wider">
-            {open ? (openLabel ?? 'Hide process') : triggerLabel}
-          </span>
-        </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18" height="18" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s ease' }}
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
-
-      {/* Cursor-following label — portal so it floats above all stacking contexts */}
-      {createPortal(
-        <div
-          ref={labelRef}
-          aria-hidden="true"
-          className={`fixed top-0 left-0 pointer-events-none z-[100] px-4 py-2 rounded-full ${styles.labelBg} ${styles.labelText} text-[11px] font-mono uppercase tracking-wider whitespace-nowrap transition-opacity duration-150 ${hovered ? 'opacity-100' : 'opacity-0'}`}
-          style={{ transform: 'translate3d(-9999px, -9999px, 0)' }}
-        >
-          {open ? 'Hide' : 'Show'}
-        </div>,
-        document.body
-      )}
-
-      <div
-        ref={contentRef}
-        id={panelId}
-        role="region"
-        aria-label={triggerLabel}
-        className="overflow-hidden"
-        style={{ height: 0, opacity: 0 }}
-      >
-        <div className="pb-6 md:pb-8">{children}</div>
-      </div>
-    </div>
-  )
-}
-
 // ── Trigger icons ───────────────────────────────────────────────────────
 const InfoIcon = (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <line x1="12" y1="16" x2="12" y2="12" />
     <line x1="12" y1="8" x2="12.01" y2="8" />
-  </svg>
-)
-const ClockIcon = (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
   </svg>
 )
 
@@ -320,120 +168,53 @@ function IncludesContent({ items, variant }) {
   )
 }
 
-// Two surfaces for ProcessContent:
-//  - 'card-dark' / 'card-light' — content sits on the card's own bg (accordion)
-//  - 'dark' / 'light' — content sits on an inverted surface (popover, legacy)
-function ProcessContent({ rows, title, variant, noDividers = false }) {
-  const styles = {
-    'card-dark':  { labelColor: 'text-white/50',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
-    'card-light': { labelColor: 'text-muted',   textColor: 'text-subtle', borderColor: 'border-base-border' },
-    dark:         { labelColor: 'text-muted',   textColor: 'text-subtle', borderColor: 'border-base-border' },
-    light:        { labelColor: 'text-gray-400',   textColor: 'text-gray-300', borderColor: 'border-white/10' },
-  }
-  const s = styles[variant] ?? styles['card-light']
-  // When dividers are off (expanded pricing-page layout), the phase label
-  // sits inline next to the description — same tight rhythm as the
-  // includes-list check + item. With dividers on (homepage accordion),
-  // the original 120px column keeps the week labels in a clean stack.
-  const liClass = noDividers
-    ? 'flex items-baseline gap-3 leading-relaxed'
-    : `grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-1 sm:gap-6 pb-3 border-b ${s.borderColor} last:border-b-0 last:pb-0`
 
+// ── "See the full process →" link — sits at the bottom of every card on
+// /packages now that per-card process timelines live on /approach. The
+// slug deep-links into the matching <section id="…"> on Approach.jsx.
+// text-accent-red works across all themes: the flagship-card override in
+// index.css handles theme inversion for accent-red on the dark surface;
+// the bg-card-soft and bg-base-pure surfaces it reads cleanly on by default.
+function SeeFullProcessLink({ slug }) {
   return (
-    <>
-      <p className={`font-mono text-xs uppercase tracking-wider mb-4 ${s.labelColor}`}>{title}</p>
-      <ul className={noDividers ? 'space-y-4' : 'space-y-3'}>
-        {rows.map(([phase, what]) => (
-          <li key={phase} className={liClass}>
-            <span className={`font-mono text-[11px] uppercase tracking-wider text-accent-red ${noDividers ? 'shrink-0' : ''}`}>
-              {phase.split('\n').map((line, i, arr) => (
-                <span key={i} className={i < arr.length - 1 ? 'block' : 'inline'}>{line}</span>
-              ))}
-            </span>
-            <span className={`text-sm leading-relaxed ${s.textColor}`}>{what}</span>
-          </li>
-        ))}
-      </ul>
-    </>
+    <a
+      href={`/approach#${slug}`}
+      className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red inline-flex items-center gap-2 hover:opacity-80 transition-opacity group"
+    >
+      See the full process
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="12" height="12" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        className="transition-transform group-hover:translate-x-1"
+      >
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
   )
 }
 
-// ── DARK CARD — Brand + Website (Essential / Enterprise toggle) ────────
+// ── DARK CARD — Brand + Website (flagship, single canonical scope) ─────
+// Previous Essential/Enterprise toggle was dropped: with Branding and
+// Websites now offered as standalone packages, this card is the bundled
+// 6-week engagement. The lighter version is a conversation, not a UI.
 function BrandWebsiteCard({ expanded = false }) {
-  const [tier, setTier] = useState('essential')
-
-  // Sliding pill background for the tier toggle. The highlight is an
-  // absolutely-positioned span; its x and width animate to match the
-  // active button on every tier change.
-  const essentialBtnRef = useRef(null)
-  const enterpriseBtnRef = useRef(null)
-  const highlightRef = useRef(null)
-  const isFirstToggleRender = useRef(true)
-
-  useLayoutEffect(() => {
-    const target = tier === 'essential' ? essentialBtnRef.current : enterpriseBtnRef.current
-    const highlight = highlightRef.current
-    if (!target || !highlight) return
-
-    const params = { x: target.offsetLeft, width: target.offsetWidth }
-
-    if (isFirstToggleRender.current || prefersReducedMotion()) {
-      isFirstToggleRender.current = false
-      gsap.set(highlight, params)
-      return
-    }
-    gsap.to(highlight, { ...params, duration: 0.4, ease: 'power3.out' })
-  }, [tier])
-
-  const tiers = {
-    essential: {
-      timeline: '4 weeks',
-      includes: [
-        'Brand strategy + verbal identity',
-        'Logo, type, and colour systems',
-        'Brand guidelines document',
-        'Web design for up to 10 pages',
-        'No-code build in Framer or Wix Studio',
-        'Copywriting and content structure',
-        'CMS, analytics, SEO basics, deployment',
-        '2 rounds of revisions',
-        '1-week post-launch support',
-      ],
-      process: [
-        ['Week 1', 'Discovery: strategy, audience, site map, content plan.'],
-        ['Week 2', 'Direction: visual concepts, logo, type and colour. Locked.'],
-        ['Week 3', 'System build: final identity and web design.'],
-        ['Week 4', 'Build & launch: Framer / Webflow / Wix Studio, CMS, SEO, go live.'],
-      ],
-    },
-    enterprise: {
-      timeline: '6 weeks',
-      includes: [
-        'Founder positioning workshop (full-day strategy intensive)',
-        'Brand strategy + verbal identity',
-        'Logo, type, and colour systems',
-        'Brand guidelines document',
-        'Custom illustration suite (3–5 bespoke marks or icons)',
-        'Motion design system for the brand',
-        'Web design for up to 25 pages',
-        'No-code build in Framer, Webflow, or Wix Studio',
-        'Copywriting and content structure',
-        'CMS, analytics, SEO basics, deployment',
-        '3 rounds of revisions',
-        '2-week post-launch support',
-      ],
-      process: [
-        ['Week 1',     'Positioning workshop + discovery: strategy, audience, site map, content plan across 25 pages.'],
-        ['Week 2',     'Direction: visual concepts, logo, type and colour. Locked.'],
-        ['Weeks\n3–4', 'System build: final identity, illustration suite, motion system, and full web design.'],
-        ['Week 5',     'Build: Framer / Webflow / Wix Studio, CMS, custom interactions, motion accents.'],
-        ['Week 6',     'Launch: QA, deployment, 2-week post-launch support.'],
-      ],
-    },
-  }
-
-  const current = tiers[tier]
-  const process = current.process
+  const includes = [
+    'Founder positioning workshop (full-day strategy intensive)',
+    'Brand strategy + verbal identity',
+    'Logo, type, and colour systems',
+    'Brand guidelines document',
+    'Custom illustration suite (3–5 bespoke marks or icons)',
+    'Motion design system for the brand',
+    'Web design for up to 25 pages',
+    'No-code build in Framer, Webflow, or Wix Studio',
+    'Copywriting and content structure',
+    'CMS, analytics, SEO basics, deployment',
+    '3 rounds of revisions',
+    '2-week post-launch support',
+  ]
+  const timeline = '6 weeks'
 
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
@@ -453,7 +234,7 @@ function BrandWebsiteCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
 
       <p className="text-gray-300 text-base md:text-lg mb-3 leading-relaxed">
-        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 4 weeks.
+        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 6 weeks.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -473,42 +254,10 @@ function BrandWebsiteCard({ expanded = false }) {
     </>
   )
 
-  // Tier toggle — used by both layouts.
-  const TierToggle = (
-    <div role="tablist" aria-label="Engagement tier" className="relative inline-flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-full">
-      <span
-        ref={highlightRef}
-        aria-hidden="true"
-        className="absolute top-1 bottom-1 left-0 rounded-full bg-base-pure pointer-events-none"
-        style={{ width: 0, willChange: 'transform, width' }}
-      />
-      <button
-        ref={essentialBtnRef}
-        type="button"
-        role="tab"
-        aria-selected={tier === 'essential'}
-        onClick={() => setTier('essential')}
-        className={`relative z-10 px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-colors duration-300 ${tier === 'essential' ? 'text-base-dark' : 'text-gray-400 hover:text-white'}`}
-      >
-        Essential
-      </button>
-      <button
-        ref={enterpriseBtnRef}
-        type="button"
-        role="tab"
-        aria-selected={tier === 'enterprise'}
-        onClick={() => setTier('enterprise')}
-        className={`relative z-10 px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-colors duration-300 ${tier === 'enterprise' ? 'text-base-dark' : 'text-gray-400 hover:text-white'}`}
-      >
-        Enterprise
-      </button>
-    </div>
-  )
-
   const TimelineBlock = (
     <div>
       <p className="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">Timeline</p>
-      <p className="text-2xl font-medium">{current.timeline}</p>
+      <p className="text-2xl font-medium">{timeline}</p>
     </div>
   )
 
@@ -527,34 +276,28 @@ function BrandWebsiteCard({ expanded = false }) {
     </a>
   )
 
-  // ── Expanded layout (pricing page) ───────────────────────────────────
+  // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
       <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
         {Pitch}
 
-        {/* Includes (left) + Process (right) — side-by-side, equal columns.
-            Each component is wrapped in its own <div> because they return
-            fragments; without the wrappers their internal label and list
-            elements would flow into separate grid cells. */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-          <div>
-            <IncludesContent items={current.includes} variant="dark" />
-          </div>
-          <div>
-            <ProcessContent rows={process} title="Brand + Website process" variant="card-dark" noDividers />
-          </div>
+        {/* Includes — single column now that the process column moved to
+            /approach. Card max-width keeps the line measure comfortable. */}
+        <div className="max-w-2xl">
+          <IncludesContent items={includes} variant="dark" />
         </div>
 
-        {/* Footer strip — tier toggle + timeline on one side, CTA on the
-            other. Prices were stripped intentionally; conversation is the
-            negotiation entry point now. */}
-        <div className="border-t border-white/10 pt-8 md:pt-10 mt-10 md:mt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12 flex-1">
-            {TierToggle}
-            {TimelineBlock}
+        {/* Footer strip — timeline on one side, CTA on the other, with the
+            "See the full process →" link sitting above as a quiet anchor
+            into /approach. Prices were stripped; conversation is the
+            negotiation entry point. */}
+        <div className="border-t border-white/10 pt-8 md:pt-10 mt-10 md:mt-12 flex flex-col gap-6">
+          <SeeFullProcessLink slug="brand-website" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">{TimelineBlock}</div>
+            <BookCallButton />
           </div>
-          <BookCallButton />
         </div>
       </div>
     )
@@ -567,26 +310,21 @@ function BrandWebsiteCard({ expanded = false }) {
         {/* Left: pitch */}
         <div className="lg:col-span-7">
           {Pitch}
-          <CardPopover key={tier} triggerLabel="What's included" triggerIcon={InfoIcon} variant="dark">
-            <IncludesContent items={current.includes} variant="dark" />
+          <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="dark">
+            <IncludesContent items={includes} variant="dark" />
           </CardPopover>
         </div>
 
-        {/* Right: tier toggle + timeline + CTA */}
+        {/* Right: timeline + CTA */}
         <div className="lg:col-span-5 flex flex-col justify-between gap-8 lg:border-l lg:border-white/10 lg:pl-12">
-          <div className="space-y-6">
-            {TierToggle}
-            {TimelineBlock}
-          </div>
+          {TimelineBlock}
           <BookCallButton />
         </div>
       </div>
 
-      {/* Bottom: process accordion */}
-      <div className="mt-8 md:mt-10">
-        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="dark">
-          <ProcessContent rows={process} title="Brand + Website process" variant="card-dark" />
-        </CardAccordion>
+      {/* Bottom: link to /approach for the full process timeline */}
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-white/10">
+        <SeeFullProcessLink slug="brand-website" />
       </div>
     </div>
   )
@@ -600,11 +338,6 @@ function ProductDesignCard({ expanded = false }) {
     'Design system and component library',
     'Interactive prototypes and interaction specs',
     'Design QA and engineering handoff',
-  ]
-  const process = [
-    ['Weeks\n1–2', 'Discovery: product audit, user flows, IA, scope locked.'],
-    ['Weeks\n3–4', 'Design: end-to-end UI/UX, design system, prototype.'],
-    ['Week\n5',    'Polish & handoff: design QA, engineering documentation, walkthrough.'],
   ]
 
   const Pitch = (
@@ -667,28 +400,24 @@ function ProductDesignCard({ expanded = false }) {
     </a>
   )
 
-  // ── Expanded layout (pricing page) ───────────────────────────────────
+  // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
-          <div>
-            <IncludesContent items={includes} variant="light" />
-          </div>
-          <div>
-            <ProcessContent rows={process} title="Product Design process" variant="card-light" noDividers />
-          </div>
+        <div className="max-w-2xl mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" />
         </div>
 
-        {/* Footer strip pinned to the bottom (mt-auto) — timeline + CTA.
-            Prices were stripped intentionally; book a call to discuss. */}
-        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex-1">
-            {TimelineBlock}
+        {/* Footer strip pinned to the bottom (mt-auto) — link to /approach
+            sits above the timeline + CTA row. */}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
+          <SeeFullProcessLink slug="product-design" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">{TimelineBlock}</div>
+            {BookCallButton}
           </div>
-          {BookCallButton}
         </div>
       </div>
     )
@@ -704,19 +433,13 @@ function ProductDesignCard({ expanded = false }) {
         </CardPopover>
       </div>
 
-      {/* Footer strip — timeline + CTA on the same horizontal rhythm as
-          the /packages expanded layout. */}
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-        <div className="flex-1">
-          {TimelineBlock}
-        </div>
+        <div className="flex-1">{TimelineBlock}</div>
         {BookCallButton}
       </div>
 
-      <div className="mt-8 md:mt-10">
-        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
-          <ProcessContent rows={process} title="Product Design process" variant="card-light" />
-        </CardAccordion>
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-base-dark/10">
+        <SeeFullProcessLink slug="product-design" />
       </div>
     </div>
   )
@@ -731,12 +454,6 @@ function DesignPartnerCard({ expanded = false }) {
     'Slack-first communication, your tools, your rituals',
     'Standups up to twice a week',
     'Weekly strategy review',
-  ]
-  const process = [
-    ['Week 1', 'Sprint planning, priority lock, first deliverables shipped.'],
-    ['Week 2', 'Active design and iteration in your tools and standups.'],
-    ['Week 3', 'Ship and refine: features, pages, assets, whatever ships next.'],
-    ['Week 4', 'Strategy review, next-month roadmap, retro.'],
   ]
 
   const Pitch = (
@@ -833,29 +550,24 @@ function DesignPartnerCard({ expanded = false }) {
     </div>
   )
 
-  // ── Expanded layout (pricing page) ───────────────────────────────────
+  // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
       <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
-          <div>
-            <IncludesContent items={includes} variant="light" />
-          </div>
-          <div>
-            <ProcessContent rows={process} title="A typical month" variant="card-light" noDividers />
-          </div>
+        <div className="max-w-2xl mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" />
         </div>
 
-        {/* Price strip pinned to the bottom (mt-auto) so its divider line
-            aligns with the equivalent strip in Product Design when the two
-            cards sit side-by-side in the 2-column outer grid. */}
-        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex-1">
-            {CommitmentBlock}
+        {/* Commitment strip pinned to the bottom (mt-auto) — anchor link to
+            /approach above the commitment + CTA row. */}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
+          <SeeFullProcessLink slug="design-partner" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">{CommitmentBlock}</div>
+            {BookCallButton}
           </div>
-          {BookCallButton}
         </div>
 
         {AuditBlock}
@@ -873,21 +585,15 @@ function DesignPartnerCard({ expanded = false }) {
         </CardPopover>
       </div>
 
-      {/* Footer strip — commitment + CTA on the same horizontal rhythm
-          as the /packages expanded layout. */}
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-        <div className="flex-1">
-          {CommitmentBlock}
-        </div>
+        <div className="flex-1">{CommitmentBlock}</div>
         {BookCallButton}
       </div>
 
       {AuditBlock}
 
-      <div className="mt-8 md:mt-10">
-        <CardAccordion triggerLabel="A typical month" openLabel="Hide month" triggerIcon={ClockIcon} variant="light">
-          <ProcessContent rows={process} title="A typical month" variant="card-light" />
-        </CardAccordion>
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-base-dark/10">
+        <SeeFullProcessLink slug="design-partner" />
       </div>
     </div>
   )
@@ -907,11 +613,6 @@ function WebsitesAloneCard({ expanded = false }) {
     'Deployment',
     '1 round of revisions',
     '1-week post-launch support',
-  ]
-  const process = [
-    ['Week 1', 'Discovery + IA: site map, content plan, references locked.'],
-    ['Week 2', 'Design: page-by-page design across the selected surfaces.'],
-    ['Week 3', 'Build & launch: no-code build, CMS, QA, deploy, hand over the keys.'],
   ]
 
   const Pitch = (
@@ -974,18 +675,16 @@ function WebsitesAloneCard({ expanded = false }) {
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
-          <div>
-            <IncludesContent items={includes} variant="light" />
-          </div>
-          <div>
-            <ProcessContent rows={process} title="Websites process" variant="card-light" noDividers />
-          </div>
+        <div className="max-w-2xl mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" />
         </div>
 
-        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex-1">{TimelineBlock}</div>
-          {BookCallButton}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
+          <SeeFullProcessLink slug="websites" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">{TimelineBlock}</div>
+            {BookCallButton}
+          </div>
         </div>
       </div>
     )
@@ -1005,10 +704,8 @@ function WebsitesAloneCard({ expanded = false }) {
         {BookCallButton}
       </div>
 
-      <div className="mt-8 md:mt-10">
-        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
-          <ProcessContent rows={process} title="Websites process" variant="card-light" />
-        </CardAccordion>
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-base-dark/10">
+        <SeeFullProcessLink slug="websites" />
       </div>
     </div>
   )
@@ -1027,11 +724,6 @@ function BrandingAloneCard({ expanded = false }) {
     'Brand guidelines document',
     'Asset pack (logo lockups, favicon, social avatars)',
     '2 rounds of revisions',
-  ]
-  const process = [
-    ['Week 1', 'Discovery: positioning, audience, market scan, mood direction.'],
-    ['Week 2', 'Direction: 2 visual concepts → pick one → lock logo, type, colour.'],
-    ['Week 3', 'System build: final logo, system, guidelines document, asset pack.'],
   ]
 
   const Pitch = (
@@ -1093,18 +785,16 @@ function BrandingAloneCard({ expanded = false }) {
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10 md:mb-14">
-          <div>
-            <IncludesContent items={includes} variant="light" />
-          </div>
-          <div>
-            <ProcessContent rows={process} title="Branding process" variant="card-light" noDividers />
-          </div>
+        <div className="max-w-2xl mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" />
         </div>
 
-        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex-1">{TimelineBlock}</div>
-          {BookCallButton}
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
+          <SeeFullProcessLink slug="branding" />
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+            <div className="flex-1">{TimelineBlock}</div>
+            {BookCallButton}
+          </div>
         </div>
       </div>
     )
@@ -1124,10 +814,8 @@ function BrandingAloneCard({ expanded = false }) {
         {BookCallButton}
       </div>
 
-      <div className="mt-8 md:mt-10">
-        <CardAccordion triggerLabel="See the process" triggerIcon={ClockIcon} variant="light">
-          <ProcessContent rows={process} title="Branding process" variant="card-light" />
-        </CardAccordion>
+      <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-base-dark/10">
+        <SeeFullProcessLink slug="branding" />
       </div>
     </div>
   )

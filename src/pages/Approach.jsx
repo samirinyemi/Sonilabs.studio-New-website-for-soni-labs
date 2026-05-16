@@ -1,49 +1,77 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { prefersReducedMotion } from '../utils/motion'
 import SEO from '../components/SEO'
 
-// Each engagement type has its own cadence. The home page renders only the
-// Brand + Website timeline (via <ProcessAlt />); the dedicated /process page
-// shows all three so visitors comparing engagement options can see the full
-// rhythm of each.
+// Each engagement has its own cadence. The `id` slug on each entry doubles
+// as the HTML anchor (`<section id="…">`) so card links on /packages can
+// deep-link straight into the matching section here.
 const processes = [
   {
-    eyebrow: '// Brand + Website',
-    title: 'From first call to launch in 4 weeks.',
-    body: 'How our flagship service moves from brief to live site.',
+    id: 'branding',
+    eyebrow: '// Branding',
+    title: 'A focused identity in 2 weeks.',
+    body: 'For founders who already have product clarity but need the brand to catch up. Strategy, logo, and a system built to scale.',
     steps: [
-      { num: '01', week: 'Week 1', title: 'Discovery',      body: 'Brand strategy session, market scan, audience definition, site map and content plan. We define what success looks like before any visuals start.' },
-      { num: '02', week: 'Week 2', title: 'Direction',      body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it. No surprises later.' },
-      { num: '03', week: 'Week 3', title: 'System build',   body: 'Final logo, type system, colour system, brand guidelines, and web design across the selected pages. Identity and site grow together.' },
-      { num: '04', week: 'Week 4', title: 'Build & launch', body: 'No-code build in Framer, Webflow, or Wix Studio, accelerated by AI-assisted development. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
+      { num: '01', week: 'Week 1', title: 'Discovery + Direction', body: 'Positioning, audience, and mood references locked. Two visual concepts presented; you pick one and we lock the direction. No surprises later.' },
+      { num: '02', week: 'Week 2', title: 'System build',           body: 'Final logo, type system, colour system, brand guidelines document, and the asset pack your team can apply from day one.' },
     ],
   },
   {
+    id: 'websites',
+    eyebrow: '// Websites',
+    title: 'A production site live in 2–3 weeks.',
+    body: 'For teams who already have a brand and need a marketing site that matches it. No-code execution, deployed and handed over.',
+    steps: [
+      { num: '01', week: 'Week 1', title: 'Discovery + IA',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
+      { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces — desktop and mobile, ready for content.' },
+      { num: '03', week: 'Week 3', title: 'Build & launch',  body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
+    ],
+  },
+  {
+    id: 'brand-website',
+    eyebrow: '// Brand + Website',
+    title: 'From first call to launch in 6 weeks.',
+    body: 'Our flagship engagement — brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
+    steps: [
+      { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
+      { num: '02', week: 'Week 2',     title: 'Direction',                         body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it.' },
+      { num: '03', week: 'Weeks 3–4',  title: 'System build',                      body: 'Final identity, custom illustration suite, motion system, and full web design across the selected pages. Identity and site grow together.' },
+      { num: '04', week: 'Week 5',     title: 'Build',                             body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, custom interactions, motion accents, accelerated by AI-assisted development.' },
+      { num: '05', week: 'Week 6',     title: 'Launch',                            body: 'QA on staging, deployment, and 2 weeks of post-launch support to bed everything in.' },
+    ],
+  },
+  {
+    id: 'product-design',
     eyebrow: '// Product Design',
     title: 'UI/UX in 4–6 weeks. Polished and ready for handoff.',
     body: 'For startups shaping a digital product, designed for your engineering team to build.',
     steps: [
-      { num: '01', week: 'Weeks 1–2', title: 'Discovery',          body: 'Product audit, user flow mapping, information architecture, and scope lock. We agree on the surfaces we\'re shipping before anything is drawn.' },
-      { num: '02', week: 'Weeks 3–5', title: 'Design',             body: 'End-to-end UI/UX across the chosen surfaces, plus a working design system and an interactive prototype your team can test internally.' },
-      { num: '03', week: 'Week 6',    title: 'Polish & handoff',   body: 'Design QA, engineering documentation, component-level annotations, and a walkthrough with your build team. We stay reachable through implementation.' },
+      { num: '01', week: 'Weeks 1–2', title: 'Discovery',        body: 'Product audit, user flow mapping, information architecture, and scope lock. We agree on the surfaces we\'re shipping before anything is drawn.' },
+      { num: '02', week: 'Weeks 3–5', title: 'Design',           body: 'End-to-end UI/UX across the chosen surfaces, plus a working design system and an interactive prototype your team can test internally.' },
+      { num: '03', week: 'Week 6',    title: 'Polish & handoff', body: 'Design QA, engineering documentation, component-level annotations, and a walkthrough with your build team. We stay reachable through implementation.' },
     ],
   },
   {
+    id: 'design-partner',
     eyebrow: '// Design Partner',
     title: 'A typical month with the studio embedded in your team.',
     body: 'Ongoing engagement. Sprint planning to retro, every month.',
     steps: [
       { num: '01', week: 'Week 1', title: 'Sprint planning',  body: 'Priority lock against your roadmap. First deliverables shipped by end of week so the rhythm starts immediately.' },
-      { num: '02', week: 'Week 2', title: 'Active design',     body: 'Daily iteration inside your tools (Figma, Slack, your standups). The studio works as part of the team, not a vendor.' },
-      { num: '03', week: 'Week 3', title: 'Ship and refine',   body: 'Whatever ships next that month: features, pages, assets, brand expressions. Continuous review with your product and engineering leads.' },
-      { num: '04', week: 'Week 4', title: 'Strategy review',   body: 'Retro on the month. Wins, lessons, what\'s carrying into next month\'s priorities. Roadmap refresh together.' },
+      { num: '02', week: 'Week 2', title: 'Active design',    body: 'Daily iteration inside your tools (Figma, Slack, your standups). The studio works as part of the team, not a vendor.' },
+      { num: '03', week: 'Week 3', title: 'Ship and refine',  body: 'Whatever ships next that month: features, pages, assets, brand expressions. Continuous review with your product and engineering leads.' },
+      { num: '04', week: 'Week 4', title: 'Strategy review',  body: 'Retro on the month. Wins, lessons, what\'s carrying into next month\'s priorities. Roadmap refresh together.' },
     ],
   },
 ]
 
 function ProcessSection({ process }) {
   return (
-    <section className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure border-t border-base-border">
+    <section
+      id={process.id}
+      className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure border-t border-base-border scroll-mt-24"
+    >
       <div className="max-w-[1600px] mx-auto">
         {/* Section header */}
         <div className="proj-reveal proc-section-header text-center mb-12 md:mb-20">
@@ -93,6 +121,18 @@ function ProcessSection({ process }) {
 
 export default function ApproachPage() {
   const containerRef = useRef(null)
+  const { hash } = useLocation()
+
+  // Deep-link via fragment: /approach#brand-website scrolls to that section
+  // after layout settles. Same pattern used on Home.jsx so behaviour stays
+  // consistent across routes that consume hash anchors.
+  useEffect(() => {
+    if (!hash) return
+    const el = document.querySelector(hash)
+    if (!el) return
+    const t = setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 120)
+    return () => clearTimeout(t)
+  }, [hash])
 
   // Reveal-on-scroll via IntersectionObserver — bypasses GSAP/ScrollTrigger
   // so reveals aren't thrown off by Lenis smooth-scroll or the route fade-in.
@@ -126,7 +166,7 @@ export default function ApproachPage() {
       <SEO
         title="Our approach"
         path="/approach"
-        description="How Soni Labs runs Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
+        description="How Soni Labs runs Branding, Websites, Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
@@ -152,16 +192,16 @@ export default function ApproachPage() {
         <div className="proj-reveal proc-page-hero max-w-[1600px] mx-auto">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Approach</p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark mb-8 md:mb-10">
-            Three engagements.
+            Five engagements.
           </h2>
           <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-3xl">
-            Each engagement follows its own process, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Brand + Website, Product Design, and Design Partner each move from brief to final product.
+            Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Branding, Websites, Brand + Website, Product Design, and Design Partner each move from brief to final product.
           </p>
         </div>
       </section>
 
-      {processes.map((p, i) => (
-        <ProcessSection key={i} process={p} />
+      {processes.map((p) => (
+        <ProcessSection key={p.id} process={p} />
       ))}
     </div>
   )

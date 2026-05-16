@@ -19,63 +19,33 @@ const whatWeDo = [
   'Motion & micro-interactions',
 ]
 
-const howWeDoIt = [
-  {
-    num: '01',
-    title: 'Brand',
-    body: 'Identity, strategy, logo, type, and colour. Built as a system that scales across every surface, not a deck that gets shelved.',
-  },
-  {
-    num: '02',
-    title: 'Web',
-    body: 'Marketing sites with no-code execution in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, deployed and handed over.',
-  },
-  {
-    num: '03',
-    title: 'Product',
-    body: 'UI/UX for digital products your engineering team will build. End-to-end flows, design systems, interactive prototypes, and engineering handoff.',
-  },
-  {
-    num: '04',
-    title: 'AI-assisted production',
-    body: 'Modern tooling that compresses timelines without compromising taste. An accelerator across every engagement, not a separate service line.',
-  },
-]
-
 export default function PackagesPage() {
   const containerRef = useRef(null)
   const autoplay = !isSlowOrMeteredConnection()
 
   useGSAP(() => {
     if (prefersReducedMotion()) {
-      gsap.set(['.sp-wd-header', '.sp-item', '.sp-header-h', '.sp-row'], { opacity: 1, y: 0 })
+      gsap.set(['.sp-intro', '.sp-wd-header', '.sp-item'], { opacity: 1, y: 0 })
       return
     }
-    // Hero + "What we do" — single timeline since both are above the fold
-    // on initial load and should reveal as one cohesive sequence. The hero
-    // overlay text was removed; only the "What we do" header and items
-    // animate on mount now.
+    // Hero copy → "What we do" — single timeline since both are above the
+    // fold on initial load and should reveal as one cohesive sequence.
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    tl.fromTo('.sp-intro',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7 },
+      0.1
+    )
     tl.fromTo('.sp-wd-header',
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.7 },
-      0.2
+      0.3
     )
     tl.fromTo('.sp-item',
       { y: 20, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.5, stagger: 0.05 },
-      0.4
+      0.5
     )
-
-    // How we do it — header + timeline rows (stays on scroll, below the fold)
-    gsap.from('.sp-header-h', {
-      y: 30, opacity: 0, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '.sp-header-h', start: 'top 85%', toggleActions: 'play none none reverse' },
-    })
-    gsap.from('.sp-row', {
-      y: 30, opacity: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out',
-      scrollTrigger: { trigger: '.sp-rows', start: 'top 80%', toggleActions: 'play none none reverse' },
-    })
   }, { scope: containerRef })
 
   return (
@@ -162,6 +132,20 @@ export default function PackagesPage() {
         </div>
       </section>
 
+      {/* ── Page intro paragraph — sets the tone for the page above the
+          "What we do" capability strip. No section header / no eyebrow:
+          it reads as a calm opening line, not a section. */}
+      <section className="w-full pt-10 md:pt-14 pb-2 md:pb-4 px-4 md:px-6 bg-base-pure">
+        <div className="max-w-[1600px] mx-auto">
+          <p
+            className="sp-intro text-subtle text-lg md:text-xl leading-relaxed max-w-3xl"
+            style={{ opacity: 0 }}
+          >
+            Soni Labs designs and builds the surfaces that decide whether someone takes you seriously — brand, product, and websites, made under one roof. Pick the engagement that matches what you&rsquo;re shipping. The price follows the conversation, not the page.
+          </p>
+        </div>
+      </section>
+
       {/* ── What we do — part of the hero load (no scroll trigger) ────── */}
       <section className="w-full pt-10 md:pt-14 pb-12 md:pb-20 px-4 md:px-6 bg-base-pure">
         <div className="max-w-[1600px] mx-auto">
@@ -197,46 +181,10 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* ── Packages — engagements (expanded view
-          shows includes + process inline on this dedicated page). ───── */}
+      {/* ── Packages — five engagements, no inline process timelines.
+          Each card carries a "See the full process →" link into /approach
+          where the week-by-week cadence lives. */}
       <ServicesSection expanded />
-
-      {/* ── How we do it ──────────────────────────────────────────────── */}
-      <section className="w-full py-20 md:py-32 px-4 md:px-6 bg-base-pure">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="sp-header-h mb-12 md:mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// How we do it</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight max-w-3xl">
-              Four practices, applied to whatever your engagement needs.
-            </h2>
-          </div>
-
-          <div className="sp-rows border-t border-base-border">
-            {howWeDoIt.map((d) => (
-              <div
-                key={d.num}
-                className="sp-row grid grid-cols-12 gap-x-6 md:gap-x-8 gap-y-3 py-10 md:py-14 border-b border-base-border"
-              >
-                <div className="col-span-12 md:col-span-2">
-                  <span className="font-mono text-4xl md:text-5xl font-normal text-base-dark leading-none">
-                    {d.num}
-                  </span>
-                </div>
-                <div className="col-span-12 md:col-span-3">
-                  <h4 className="font-display text-2xl md:text-3xl font-bold text-base-dark leading-tight">
-                    {d.title}
-                  </h4>
-                </div>
-                <div className="col-span-12 md:col-span-7">
-                  <p className="text-subtle text-base md:text-lg leading-relaxed">
-                    {d.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
