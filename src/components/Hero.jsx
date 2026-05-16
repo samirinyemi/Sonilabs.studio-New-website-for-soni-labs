@@ -13,7 +13,7 @@ const pillars = [
   {
     num: '02',
     title: 'You launch faster.',
-    body: 'One studio for brand, design, and build, paired with an AI-accelerated production pipeline. No vendor coordination, no handoffs, no waiting for the next agency to start.',
+    body: 'One studio for brand, design, and build. No vendor coordination, no handoffs, no waiting for the next agency to start.',
   },
   {
     num: '03',

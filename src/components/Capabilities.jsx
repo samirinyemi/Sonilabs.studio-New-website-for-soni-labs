@@ -13,7 +13,6 @@ const whatWeDo = [
   'Product design (UI/UX)',
   'Design systems',
   'No-code development',
-  'AI-assisted development',
   'Motion & micro-interactions',
 ]
 
@@ -32,11 +31,6 @@ const howWeDoIt = [
     num: '03',
     title: 'Product',
     body: 'UI/UX for digital products your engineering team will build. End-to-end flows, design systems, interactive prototypes, and engineering handoff.',
-  },
-  {
-    num: '04',
-    title: 'AI-assisted production',
-    body: 'Modern tooling that compresses timelines without compromising taste. An accelerator across every engagement, not a separate service line.',
   },
 ]
 

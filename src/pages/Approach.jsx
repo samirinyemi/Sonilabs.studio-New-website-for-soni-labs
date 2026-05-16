@@ -13,7 +13,7 @@ const processes = [
     title: 'A production site live in 2–3 weeks.',
     body: 'For teams who already have a brand and need a marketing site that matches it. No-code execution, deployed and handed over.',
     steps: [
-      { num: '01', week: 'Week 1', title: 'Discovery + IA',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
+      { num: '01', week: 'Week 1', title: 'Discovery',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
       { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces — desktop and mobile, ready for content.' },
       { num: '03', week: 'Week 3', title: 'Build & launch',  body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
     ],
@@ -37,7 +37,7 @@ const processes = [
       { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
       { num: '02', week: 'Week 2',     title: 'Direction',                         body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it.' },
       { num: '03', week: 'Weeks 3–4',  title: 'System build',                      body: 'Final identity, custom illustration suite, motion system, and full web design across the selected pages. Identity and site grow together.' },
-      { num: '04', week: 'Week 5',     title: 'Build',                             body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, custom interactions, motion accents, accelerated by AI-assisted development.' },
+      { num: '04', week: 'Week 5',     title: 'Build',                             body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, custom interactions, motion accents.' },
       { num: '05', week: 'Week 6',     title: 'Launch',                            body: 'QA on staging, deployment, and 2 weeks of post-launch support to bed everything in.' },
     ],
   },

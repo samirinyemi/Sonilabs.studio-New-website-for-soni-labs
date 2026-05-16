@@ -14,7 +14,6 @@ const whatWeDo = [
   'Product design (UI/UX)',
   'Design systems',
   'No-code development',
-  'AI-assisted development',
   'Motion & micro-interactions',
 ]
 

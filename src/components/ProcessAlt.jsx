@@ -26,7 +26,7 @@ const steps = [
     num: '04',
     week: 'Week 4',
     title: 'Build & launch',
-    body: 'No-code build in Framer, Webflow, or Wix Studio, accelerated by AI-assisted development. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.',
+    body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.',
   },
 ]
 

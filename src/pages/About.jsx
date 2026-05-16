@@ -48,11 +48,6 @@ const principles = [
     title: 'Embedded in your team.',
     body: 'Slack-first, your tools, your standup, your roadmap. We work in your rhythm.',
   },
-  {
-    num: '04',
-    title: 'Modern tooling, classic craft.',
-    body: 'AI-assisted production keeps timelines tight without compromising the work.',
-  },
 ]
 
 const clients = [
