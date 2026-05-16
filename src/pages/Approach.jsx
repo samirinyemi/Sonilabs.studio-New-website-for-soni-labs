@@ -73,15 +73,18 @@ function ProcessSection({ process }) {
       className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure border-t border-base-border scroll-mt-24"
     >
       <div className="max-w-[1600px] mx-auto">
-        {/* Section header */}
-        <div className="proj-reveal proc-section-header text-center mb-12 md:mb-20">
+        {/* Section header — left-aligned to match the About page's
+            "Who we work with" rhythm. Eyebrow + h2 + body stack on the
+            left edge of the content column, then the numbered timeline
+            sits below with the same 12-column grid. */}
+        <div className="proj-reveal proc-section-header mb-12 md:mb-20">
           <p className="font-mono text-accent-red text-sm font-bold uppercase tracking-widest mb-4">
             {process.eyebrow}
           </p>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-base-dark max-w-2xl mx-auto leading-tight">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-base-dark max-w-3xl leading-tight">
             {process.title}
           </h2>
-          <p className="text-subtle text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
+          <p className="text-subtle text-base md:text-lg max-w-2xl mt-6 leading-relaxed">
             {process.body}
           </p>
         </div>

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { prefersReducedMotion } from '../utils/motion'
@@ -149,14 +150,26 @@ const InfoIcon = (
 )
 
 // ── Popover content blocks ──────────────────────────────────────────────
-function IncludesContent({ items, variant }) {
+// `columns` controls list layout: 1 = single column (default, used by
+// flagship Brand + Website and by the home-page popovers); 2 = balanced
+// two-column flow at md+ breakpoints. Two-column shortens vertical card
+// height when items are short — applied to Branding, Websites, Product
+// Design, and Design Partner on the /packages page. break-inside-avoid
+// keeps each item intact across the column break.
+function IncludesContent({ items, variant, columns = 1 }) {
   const labelColor = variant === 'dark' ? 'text-muted' : 'text-gray-400'
+  const ulClass = columns === 2
+    ? 'space-y-3 md:columns-2 md:gap-x-10'
+    : 'space-y-3'
+  const liClass = columns === 2
+    ? 'flex items-start gap-3 text-sm leading-relaxed break-inside-avoid'
+    : 'flex items-start gap-3 text-sm leading-relaxed'
   return (
     <>
       <p className={`font-mono text-xs uppercase tracking-wider mb-4 ${labelColor}`}>Includes</p>
-      <ul className="space-y-3">
+      <ul className={ulClass}>
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-3 text-sm leading-relaxed">
+          <li key={item} className={liClass}>
             <svg className="text-accent-red w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
             </svg>
@@ -172,13 +185,16 @@ function IncludesContent({ items, variant }) {
 // ── "See the full process →" link — sits at the bottom of every card on
 // /packages now that per-card process timelines live on /approach. The
 // slug deep-links into the matching <section id="…"> on Approach.jsx.
-// text-accent-red works across all themes: the flagship-card override in
-// index.css handles theme inversion for accent-red on the dark surface;
-// the bg-card-soft and bg-base-pure surfaces it reads cleanly on by default.
+// Uses react-router <Link> rather than <a> so navigation stays
+// client-side — otherwise the route loader flashes briefly between
+// /packages and /approach. text-accent-red works across all themes: the
+// flagship-card override in index.css handles theme inversion on the
+// dark surface; bg-card-soft and bg-base-pure surfaces show it cleanly
+// by default.
 function SeeFullProcessLink({ slug }) {
   return (
-    <a
-      href={`/approach#${slug}`}
+    <Link
+      to={`/approach#${slug}`}
       className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red inline-flex items-center gap-2 hover:opacity-80 transition-opacity group"
     >
       See the full process
@@ -191,7 +207,7 @@ function SeeFullProcessLink({ slug }) {
         <line x1="5" y1="12" x2="19" y2="12" />
         <polyline points="12 5 19 12 12 19" />
       </svg>
-    </a>
+    </Link>
   )
 }
 
@@ -406,8 +422,8 @@ function ProductDesignCard({ expanded = false }) {
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="max-w-2xl mb-10 md:mb-14">
-          <IncludesContent items={includes} variant="light" />
+        <div className="mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" columns={2} />
         </div>
 
         {/* Footer strip pinned to the bottom (mt-auto) — link to /approach
@@ -556,8 +572,8 @@ function DesignPartnerCard({ expanded = false }) {
       <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="max-w-2xl mb-10 md:mb-14">
-          <IncludesContent items={includes} variant="light" />
+        <div className="mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" columns={2} />
         </div>
 
         {/* Commitment strip pinned to the bottom (mt-auto) — anchor link to
@@ -675,8 +691,8 @@ function WebsitesAloneCard({ expanded = false }) {
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="max-w-2xl mb-10 md:mb-14">
-          <IncludesContent items={includes} variant="light" />
+        <div className="mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" columns={2} />
         </div>
 
         <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
@@ -785,8 +801,8 @@ function BrandingAloneCard({ expanded = false }) {
       <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
-        <div className="max-w-2xl mb-10 md:mb-14">
-          <IncludesContent items={includes} variant="light" />
+        <div className="mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="light" columns={2} />
         </div>
 
         <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
