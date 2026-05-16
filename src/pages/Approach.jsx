@@ -192,14 +192,14 @@ export default function ApproachPage() {
         </div>
       </section>
 
-      {/* Hero image — Processes.webp. Container aspect (40:11) matches the
-          source's native 1200×330 so the image fills the frame without
-          cropping or letterboxing. */}
+      {/* Hero image — Processes image.png. Container aspect (1744/830)
+          matches the source's native dimensions so the image fills the
+          frame without cropping or letterboxing. */}
       <section className="w-full pb-4 md:pb-8 px-4 md:px-6">
         <div className="proj-reveal max-w-[1600px] mx-auto">
-          <div className="relative w-full aspect-[40/11] overflow-hidden bg-base-dark">
+          <div className="relative w-full aspect-[1744/830] overflow-hidden bg-base-dark">
             <img
-              src={`${import.meta.env.BASE_URL}Processes.webp`}
+              src={`${import.meta.env.BASE_URL}Processes image.png`}
               alt="Soni Labs process diagram"
               loading="eager"
               decoding="async"
