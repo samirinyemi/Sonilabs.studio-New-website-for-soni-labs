@@ -70,7 +70,7 @@ function ProcessSection({ process }) {
   return (
     <section
       id={process.id}
-      className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure border-t border-base-border scroll-mt-24"
+      className="proc-block w-full py-20 md:py-28 px-4 md:px-6 bg-base-pure scroll-mt-24"
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Section header — left-aligned to match the About page's
@@ -173,10 +173,29 @@ export default function ApproachPage() {
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
-      {/* Hero image — Processes.png. Container aspect (40:11) matches the
+      {/* Page hero copy — sits above the cover image. Left/right split
+          mirrors the Project.jsx title row: eyebrow + heading on the
+          left, body on the right, bottom-aligned at lg+. */}
+      <section className="w-full pt-10 md:pt-16 pb-12 md:pb-16 px-4 md:px-6 bg-base-pure">
+        <div className="proj-reveal proc-page-hero max-w-[1600px] mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-12">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Approach</p>
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark">
+                Five engagements.
+              </h2>
+            </div>
+            <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-2xl">
+              Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Websites, Branding, Brand + Website, Product Design, and Design Partner each move from brief to final product.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero image — Processes.webp. Container aspect (40:11) matches the
           source's native 1200×330 so the image fills the frame without
           cropping or letterboxing. */}
-      <section className="w-full pt-2 md:pt-4 pb-0 px-4 md:px-6">
+      <section className="w-full pb-4 md:pb-8 px-4 md:px-6">
         <div className="proj-reveal max-w-[1600px] mx-auto">
           <div className="relative w-full aspect-[40/11] overflow-hidden bg-base-dark">
             <img
@@ -187,19 +206,6 @@ export default function ApproachPage() {
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Page hero copy */}
-      <section className="w-full pt-12 md:pt-16 pb-16 md:pb-24 px-4 md:px-6 bg-base-pure">
-        <div className="proj-reveal proc-page-hero max-w-[1600px] mx-auto">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Approach</p>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark mb-8 md:mb-10">
-            Five engagements.
-          </h2>
-          <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-3xl">
-            Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Websites, Branding, Brand + Website, Product Design, and Design Partner each move from brief to final product.
-          </p>
         </div>
       </section>
 
