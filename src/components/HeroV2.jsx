@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import KineticLouvers from './KineticLouvers'
 import { VideoSources } from '../utils/videoSources'
 import { prefersReducedMotion } from '../utils/motion'
+import { useLoaderDone } from '../contexts/LoaderContext'
 
 // Module-level flag — flips to true on the first HeroV2 mount in the
 // current browser session and stays there. Used to decide whether to
@@ -62,7 +63,17 @@ export default function HeroV2() {
   // Capture the first-mount status at the start of this render, then
   // mark the flag so subsequent renders/mounts know to skip the wait.
   const isFirstMount = !didFirstHeroMount
-  const louversEntryDelay = isFirstMount ? LOADER_DURATION + 0.5 : 0.5
+  // Whether the Loader overlay is still running. On hard refresh of /,
+  // this is false until the Loader finishes (~4.5s). On hard refresh of
+  // any other route, the Loader runs immediately on that route and is
+  // already done by the time the user navigates back to / — so loaderDone
+  // is true on HeroV2's "first" mount, and the entrance should start
+  // right away rather than waiting for a loader that's no longer there.
+  const loaderDone = useLoaderDone()
+  // Delay applied to the entrance timeline. Only wait when the Loader is
+  // genuinely still on screen.
+  const heroDelay = loaderDone ? 0 : LOADER_DURATION
+  const louversEntryDelay = isFirstMount && !loaderDone ? LOADER_DURATION + 0.5 : 0.5
 
   useGSAP(() => {
     if (prefersReducedMotion()) {
@@ -96,7 +107,7 @@ export default function HeroV2() {
     // the effect so render stays pure.
     didFirstHeroMount = true
 
-    const tl = gsap.timeline({ delay: LOADER_DURATION, defaults: { ease: 'power3.out' } })
+    const tl = gsap.timeline({ delay: heroDelay, defaults: { ease: 'power3.out' } })
 
     // Eyebrow
     tl.fromTo('.hv2-eyebrow', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0.05)
