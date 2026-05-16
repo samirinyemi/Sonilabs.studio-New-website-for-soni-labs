@@ -109,7 +109,7 @@ const projects = {
     },
     paragraphs: {
       introPractice: 'Australia Medical Association Victoria champions a united medical community, advancing a healthcare system in Victoria that empowers doctors and enriches patient care.',
-      introBrief: 'A medical association sits at the intersection of policy, education, and practitioner support — and its digital surfaces have to read as authoritative without feeling stiff. The work spans a multi-site web platform, a member-facing portal, and the internal admin system staff use day-to-day. One system, one tone, one place every audience knows where to look.',
+      introBrief: 'A medical association sits at the intersection of policy, education, and practitioner support, and its digital surfaces have to read as authoritative without feeling stiff. The work spans a multi-site web platform, a member-facing portal, and the internal admin system staff use day-to-day. One system, one tone, one place every audience knows where to look.',
     },
     pageBg: 'bg-canvas',
     nextSlug: 'time-bmx',
@@ -527,7 +527,7 @@ export default function ProjectPage() {
       <SEO
         title={project.name}
         path={`/work/${slug}`}
-        description={project.paragraphs?.introPractice || `${project.name} — a Soni Labs case study covering ${(project.services || []).join(', ').toLowerCase()}.`}
+        description={project.paragraphs?.introPractice || `${project.name}: a Soni Labs case study covering ${(project.services || []).join(', ').toLowerCase()}.`}
         ogType="article"
         ogImage={project.assets?.cover || project.assets?.hero1}
         jsonLd={[

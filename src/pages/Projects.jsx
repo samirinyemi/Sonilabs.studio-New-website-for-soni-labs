@@ -10,7 +10,7 @@ export default function ProjectsPage() {
       <SEO
         title="Projects"
         path="/projects"
-        description="Selected client and concept work from Soni Labs — brand, product, and web for founders and product teams."
+        description="Selected client and concept work from Soni Labs. Brand, product, and web for founders and product teams."
       />
       <h1 className="sr-only">Projects — Soni Labs Studio</h1>
       <WorkShowcase />

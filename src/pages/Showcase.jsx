@@ -838,7 +838,7 @@ export default function ShowcasePage() {
       <SEO
         title="Showcase"
         path="/showcase"
-        description="Brand and product design from Soni Labs — case work and concept explorations across editorial, fintech, hospitality, and sport."
+        description="Brand and product design from Soni Labs. Case work and concept explorations across editorial, fintech, hospitality, and sport."
       />
       <h1 className="sr-only">Showcase — Soni Labs Studio</h1>
 

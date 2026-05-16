@@ -14,7 +14,7 @@ const processes = [
     body: 'For teams who already have a brand and need a marketing site that matches it. No-code execution, deployed and handed over.',
     steps: [
       { num: '01', week: 'Week 1', title: 'Discovery + Information Architecture',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
-      { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces — desktop and mobile, ready for content.' },
+      { num: '02', week: 'Week 2', title: 'Design',          body: 'Page-by-page design across the selected surfaces, desktop and mobile, ready for content.' },
       { num: '03', week: 'Week 3', title: 'Build & launch',  body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, then we deploy and hand you the keys.' },
     ],
   },
@@ -32,7 +32,7 @@ const processes = [
     id: 'brand-website',
     eyebrow: '// Brand + Website',
     title: 'From first call to launch in 6 weeks.',
-    body: 'Our flagship engagement — brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
+    body: 'Our flagship engagement: brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
     steps: [
       { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
       { num: '02', week: 'Week 2',     title: 'Direction',                         body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it.' },
@@ -169,7 +169,7 @@ export default function ApproachPage() {
       <SEO
         title="Our approach"
         path="/approach"
-        description="How Soni Labs runs Websites, Branding, Brand + Website, Product Design, and Design Partner engagements — week-by-week cadence and what to expect."
+        description="How Soni Labs runs Websites, Branding, Brand + Website, Product Design, and Design Partner engagements. Week-by-week cadence and what to expect."
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 

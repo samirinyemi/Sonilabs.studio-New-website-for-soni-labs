@@ -126,7 +126,7 @@ export default function ServicesTeaser() {
         {/* ── Footer CTA — leads to the full breakdown ─────────────────── */}
         <div className="svt-cta mt-10 md:mt-14 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <p className="text-subtle text-base md:text-lg leading-relaxed max-w-2xl">
-            What's included, the process week-by-week, and the lighter-touch 2-week design audit — all on the full packages page.
+            What's included, the process week-by-week, and the lighter-touch 2-week design audit. All on the full packages page.
           </p>
           <Link
             to="/packages"

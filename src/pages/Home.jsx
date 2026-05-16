@@ -55,7 +55,7 @@ export default function Home() {
     <>
       <SEO
         path="/"
-        description="Senior design studio for founders, startups, and product teams. Brand, product, and websites from one studio — no fragmented handoffs."
+        description="Senior design studio for founders, startups, and product teams. Brand, product, and websites from one studio. No fragmented handoffs."
       />
       {USE_V2_HERO ? (
         <HeroV2 />

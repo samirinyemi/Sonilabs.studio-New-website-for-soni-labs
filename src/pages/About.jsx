@@ -366,7 +366,7 @@ export default function AboutPage() {
           <div className="ap-section-h mb-12 md:mb-16">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// How we work</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight max-w-3xl">
-              Four principles. No exceptions.
+              Three principles. No exceptions.
             </h2>
           </div>
 

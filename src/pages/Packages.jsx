@@ -52,7 +52,7 @@ export default function PackagesPage() {
       <SEO
         title="Packages"
         path="/packages"
-        description="Five ways to work with Soni Labs: Websites, Branding, Brand + Website, Product Design, and the Design Partner retainer. Timelines, scope, and what's included — book a call to discuss."
+        description="Five ways to work with Soni Labs: Websites, Branding, Brand + Website, Product Design, and the Design Partner retainer. Timelines, scope, and what's included. Book a call to discuss."
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -140,7 +140,7 @@ export default function PackagesPage() {
             className="sp-intro text-subtle text-lg md:text-xl leading-relaxed max-w-3xl"
             style={{ opacity: 0 }}
           >
-            Soni Labs designs and builds the surfaces that decide whether someone takes you seriously — brand, product, and websites, made under one roof. Pick the engagement that matches what you&rsquo;re shipping. The price follows the conversation, not the page.
+            Soni Labs designs and builds the surfaces that decide whether someone takes you seriously: brand, product, and websites, made under one roof. Pick the engagement that matches what you&rsquo;re shipping. The price follows the conversation, not the page.
           </p>
         </div>
       </section>

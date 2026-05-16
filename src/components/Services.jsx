@@ -264,7 +264,7 @@ function BrandWebsiteCard({ expanded = false }) {
       <div className="border-l-0 border-t border-white/10 pt-5 mb-8">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-          A brand and live website that hold up to investor scrutiny — plus a system your team can extend on its own, without coming back to us.
+          A brand and live website that hold up to investor scrutiny, plus a system your team can extend on its own, without coming back to us.
         </p>
       </div>
     </>
@@ -378,7 +378,7 @@ function ProductDesignCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A focused engagement to design one product surface — dashboard, web app, or mobile UI — with locked scope and engineering-ready handoff. 5 weeks.
+        A focused engagement to design one product surface (dashboard, web app, or mobile UI) with locked scope and engineering-ready handoff. 5 weeks.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -491,7 +491,7 @@ function DesignPartnerCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        Ongoing capacity, not a project. A senior designer embedded in your team — designing brand, product, and marketing work week after week.
+        Ongoing capacity, not a project. A senior designer embedded in your team, designing brand, product, and marketing work week after week.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -662,7 +662,7 @@ function WebsitesAloneCard({ expanded = false }) {
       <div className="border-t border-base-dark/10 pt-5 mb-8">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
-          A live marketing site you can update on your own, with analytics and SEO basics already in place — no follow-up engagement needed to ship the first version.
+          A live marketing site you can update on your own, with analytics and SEO basics already in place. No follow-up engagement needed to ship the first version.
         </p>
       </div>
     </>
@@ -762,7 +762,7 @@ function BrandingAloneCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Branding</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A complete identity system — strategy, logo, type, and colour — built to scale across every surface your business uses. Live in ~2 weeks.
+        A complete identity system (strategy, logo, type, and colour) built to scale across every surface your business uses. Live in ~2 weeks.
       </p>
 
       <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -772,7 +772,7 @@ function BrandingAloneCard({ expanded = false }) {
       <div className="border-t border-base-dark/10 pt-5 mb-8">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
-          A brand system your team can apply to anything — decks, website, social, packaging — without coming back to us every time the brand shows up somewhere new.
+          A brand system your team can apply to anything (decks, website, social, packaging) without coming back to us every time the brand shows up somewhere new.
         </p>
       </div>
     </>
