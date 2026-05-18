@@ -230,7 +230,7 @@ function BrandWebsiteCard({ expanded = false }) {
     '3 rounds of revisions',
     '2-week post-launch support',
   ]
-  const timeline = '6 weeks'
+  const timeline = '4–6 weeks'
 
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
@@ -250,7 +250,7 @@ function BrandWebsiteCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
 
       <p className="text-gray-300 text-base md:text-lg mb-3 leading-relaxed">
-        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 6 weeks.
+        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 4–6 weeks.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -378,7 +378,7 @@ function ProductDesignCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Product Design</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A focused engagement to design one product surface (dashboard, web app, or mobile UI) with locked scope and engineering-ready handoff. 5 weeks.
+        A focused engagement to design one product surface (dashboard, web app, or mobile UI) with locked scope and engineering-ready handoff. Scoped per engagement.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -401,7 +401,7 @@ function ProductDesignCard({ expanded = false }) {
   const TimelineBlock = (
     <div>
       <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
-      <p className="text-2xl font-medium text-base-dark">5 weeks</p>
+      <p className="text-2xl font-medium text-base-dark">By scope</p>
     </div>
   )
 
@@ -626,7 +626,7 @@ function DesignPartnerCard({ expanded = false }) {
 function WebsitesAloneCard({ expanded = false }) {
   const includes = [
     'Site map + content plan',
-    'Page design (up to 8 pages)',
+    'Page design',
     'No-code build in Framer, Webflow, or Wix Studio',
     'CMS setup',
     'Analytics + SEO basics',
@@ -762,7 +762,7 @@ function BrandingAloneCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Branding</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A complete identity system (strategy, logo, type, and colour) built to scale across every surface your business uses. Live in ~2 weeks.
+        A complete identity system (strategy, logo, type, and colour) built to scale across every surface your business uses. Live in 2–3 weeks.
       </p>
 
       <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -781,7 +781,7 @@ function BrandingAloneCard({ expanded = false }) {
   const TimelineBlock = (
     <div>
       <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
-      <p className="text-2xl font-medium text-base-dark">~2 weeks</p>
+      <p className="text-2xl font-medium text-base-dark">2–3 weeks</p>
     </div>
   )
 

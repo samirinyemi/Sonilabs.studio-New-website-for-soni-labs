@@ -21,17 +21,18 @@ const processes = [
   {
     id: 'branding',
     eyebrow: '// Branding',
-    title: 'A focused identity in 2 weeks.',
+    title: 'A focused identity in 2–3 weeks.',
     body: 'For founders who already have product clarity but need the brand to catch up. Strategy, logo, and a system built to scale.',
     steps: [
-      { num: '01', week: 'Week 1', title: 'Discovery + Direction', body: 'Positioning, audience, and mood references locked. Two visual concepts presented; you pick one and we lock the direction. No surprises later.' },
-      { num: '02', week: 'Week 2', title: 'System build',           body: 'Final logo, type system, colour system, brand guidelines document, and the asset pack your team can apply from day one.' },
+      { num: '01', week: 'Week 1', title: 'Discovery',    body: 'Positioning, audience, and mood references locked. We agree on what the brand needs to do before any visual exploration starts.' },
+      { num: '02', week: 'Week 2', title: 'Direction',    body: 'Two visual concepts presented. You pick one and we lock the direction — logo, type, colour. No surprises later.' },
+      { num: '03', week: 'Week 3', title: 'System build', body: 'Final logo, type system, colour system, brand guidelines document, and the asset pack your team can apply from day one.' },
     ],
   },
   {
     id: 'brand-website',
     eyebrow: '// Brand + Website',
-    title: 'From first call to launch in 6 weeks.',
+    title: 'From first call to launch in 4–6 weeks.',
     body: 'Our flagship engagement: brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
     steps: [
       { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
@@ -44,7 +45,7 @@ const processes = [
   {
     id: 'product-design',
     eyebrow: '// Product Design',
-    title: 'UI/UX in 4–6 weeks. Polished and ready for handoff.',
+    title: 'Polished UI/UX, scoped per engagement.',
     body: 'For startups shaping a digital product, designed for your engineering team to build.',
     steps: [
       { num: '01', week: 'Weeks 1–2', title: 'Discovery',        body: 'Product audit, user flow mapping, information architecture, and scope lock. We agree on the surfaces we\'re shipping before anything is drawn.' },

@@ -45,7 +45,7 @@ export default function ServicesTeaser() {
       num: '02',
       name: 'Branding',
       tag: 'Project · Brand',
-      cadence: '~2 weeks',
+      cadence: '2–3 weeks',
       slug: 'branding',
     },
     {
@@ -59,7 +59,7 @@ export default function ServicesTeaser() {
       num: '04',
       name: 'Product Design',
       tag: 'Project · UI / UX',
-      cadence: '5 weeks',
+      cadence: 'By scope',
       slug: 'product-design',
     },
     {
