@@ -21,6 +21,13 @@ const ApproachPage  = lazy(() => import('./pages/Approach'))
 const EnquirePage   = lazy(() => import('./pages/Enquire'))
 const ProjectPage   = lazy(() => import('./pages/Project'))
 const ProjectsPage  = lazy(() => import('./pages/Projects'))
+// Internal ad-design pages — dev-only. `import.meta.env.DEV` is a Vite
+// compile-time constant: true in `npm run dev`, false in `vite build`.
+// Gating both the lazy import and the route registration lets Vite's
+// tree-shaker drop these chunks entirely from production bundles.
+const IS_DEV = import.meta.env.DEV
+const AdsPage         = IS_DEV ? lazy(() => import('./pages/Ads')) : null
+const AdsCarouselPage = IS_DEV ? lazy(() => import('./pages/AdsCarousel')) : null
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -29,6 +36,16 @@ gsap.registerPlugin(ScrollTrigger)
 //   - footer hidden so the page doesn't double-scroll
 //   - main padding stripped so the page can fill the viewport edge-to-edge
 const FULLSCREEN_ROUTES = new Set(['/showcase'])
+// Prefix-matched fullscreen routes — every /ads/* dev page should render
+// without top padding or footer so slides export cleanly.
+const FULLSCREEN_PREFIXES = ['/ads']
+
+function pathIsFullscreen(pathname) {
+  if (FULLSCREEN_ROUTES.has(pathname)) return true
+  return FULLSCREEN_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(p + '/')
+  )
+}
 
 // On every route change, jump to the top and refocus the main landmark
 // so keyboard / screen-reader users land at the start of the new page
@@ -53,7 +70,7 @@ function ScrollToTopOnNavigate() {
 // Layout consumes useLocation, so it has to live inside <BrowserRouter>.
 function AppLayout() {
   const { pathname } = useLocation()
-  const isFullscreen = FULLSCREEN_ROUTES.has(pathname)
+  const isFullscreen = pathIsFullscreen(pathname)
   const pageRef = useRef(null)
 
   // Page transition: fade-up the route content on every navigation. The
@@ -111,6 +128,16 @@ function AppLayout() {
               <Route path="/enquire" element={<EnquirePage />} />
             <Route path="/work/:slug" element={<ProjectPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            {/* Internal ad-design pages — dev-only (see IS_DEV above).
+                Production builds skip these routes entirely so /ads 404s
+                on the live site. Renders ad creative at exact pixel
+                dimensions for screenshot export. */}
+            {IS_DEV && (
+              <>
+                <Route path="/ads" element={<AdsPage />} />
+                <Route path="/ads/carousel" element={<AdsCarouselPage />} />
+              </>
+            )}
             </Routes>
           </Suspense>
         </div>

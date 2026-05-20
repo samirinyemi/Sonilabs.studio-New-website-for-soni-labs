@@ -1,5 +1,10 @@
 {
+  "redirects": [
+    { "source": "/ads", "destination": "/", "permanent": false },
+    { "source": "/ads/:path*", "destination": "/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
+
