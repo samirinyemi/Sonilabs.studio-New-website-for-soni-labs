@@ -10,7 +10,7 @@ const processes = [
   {
     id: 'websites',
     eyebrow: '// Websites',
-    title: 'A production site live in 2–3 weeks.',
+    title: 'A production site, typically 2–3 weeks.',
     body: 'For teams who already have a brand and need a marketing site that matches it. No-code execution, deployed and handed over.',
     steps: [
       { num: '01', week: 'Week 1', title: 'Discovery + Information Architecture',  body: 'Site map, content plan, and references locked. We agree on every page before any design starts.' },
@@ -21,7 +21,7 @@ const processes = [
   {
     id: 'branding',
     eyebrow: '// Branding',
-    title: 'A focused identity in 2–3 weeks.',
+    title: 'A focused identity, typically 2–3 weeks.',
     body: 'For founders who already have product clarity but need the brand to catch up. Strategy, logo, and a system built to scale.',
     steps: [
       { num: '01', week: 'Week 1', title: 'Discovery',    body: 'Positioning, audience, and mood references locked. We agree on what the brand needs to do before any visual exploration starts.' },
@@ -31,8 +31,8 @@ const processes = [
   },
   {
     id: 'brand-website',
-    eyebrow: '// Brand + Website',
-    title: 'From first call to launch in 4–6 weeks.',
+    eyebrow: '// Branding + Websites',
+    title: 'From first call to launch, typically 4–6 weeks.',
     body: 'Our flagship engagement: brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
     steps: [
       { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
@@ -170,7 +170,7 @@ export default function ApproachPage() {
       <SEO
         title="Our approach"
         path="/approach"
-        description="How Soni Labs runs Websites, Branding, Brand + Website, Product Design, and Design Partner engagements. Week-by-week cadence and what to expect."
+        description="How Soni Labs runs Websites, Branding, Branding + Websites, Product Design, and Design Partner engagements. Week-by-week cadence and what to expect."
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
@@ -187,7 +187,7 @@ export default function ApproachPage() {
               </h2>
             </div>
             <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-2xl">
-              Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Websites, Branding, Brand + Website, Product Design, and Design Partner each move from brief to final product.
+              Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Websites, Branding, Branding + Websites, Product Design, and Design Partner each move from brief to final product.
             </p>
           </div>
         </div>

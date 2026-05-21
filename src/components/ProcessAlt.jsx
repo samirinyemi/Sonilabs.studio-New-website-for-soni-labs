@@ -50,7 +50,7 @@ export default function ProcessAlt() {
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <div className="pa-header text-center mb-12 md:mb-20">
-          <p className="font-mono text-accent-red text-sm font-bold uppercase tracking-widest mb-4">// Brand + Website process</p>
+          <p className="font-mono text-accent-red text-sm font-bold uppercase tracking-widest mb-4">// Branding + Websites process</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark max-w-2xl mx-auto">From first call to launch in 4 weeks.</h2>
           <p className="text-subtle text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
             How our flagship service moves from brief to live site. Other engagements follow a similar shape. See each service for its specific timeline.

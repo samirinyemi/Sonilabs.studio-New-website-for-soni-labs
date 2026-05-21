@@ -50,7 +50,7 @@ export default function ServicesTeaser() {
     },
     {
       num: '03',
-      name: 'Brand + Website',
+      name: 'Branding + Websites',
       tag: 'Project · Flagship',
       cadence: '4–6 weeks',
       slug: 'brand-website',

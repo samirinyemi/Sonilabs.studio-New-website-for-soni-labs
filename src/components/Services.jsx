@@ -151,7 +151,7 @@ const InfoIcon = (
 
 // ── Popover content blocks ──────────────────────────────────────────────
 // `columns` controls list layout: 1 = single column (default, used by
-// flagship Brand + Website and by the home-page popovers); 2 = balanced
+// flagship Branding + Websites and by the home-page popovers); 2 = balanced
 // two-column flow at md+ breakpoints. Two-column shortens vertical card
 // height when items are short — applied to Branding, Websites, Product
 // Design, and Design Partner on the /packages page. break-inside-avoid
@@ -211,7 +211,7 @@ function SeeFullProcessLink({ slug }) {
   )
 }
 
-// ── DARK CARD — Brand + Website (flagship, single canonical scope) ─────
+// ── DARK CARD — Branding + Websites (flagship, single canonical scope) ─────
 // Previous Essential/Enterprise toggle was dropped: with Branding and
 // Websites now offered as standalone packages, this card is the bundled
 // 6-week engagement. The lighter version is a conversation, not a UI.
@@ -230,7 +230,7 @@ function BrandWebsiteCard({ expanded = false }) {
     '3 rounds of revisions',
     '2-week post-launch support',
   ]
-  const timeline = '4–6 weeks'
+  const timeline = 'Typically 4–6 weeks'
 
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
@@ -247,10 +247,10 @@ function BrandWebsiteCard({ expanded = false }) {
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
-      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Brand + Website</h3>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">Branding + Websites</h3>
 
       <p className="text-gray-300 text-base md:text-lg mb-3 leading-relaxed">
-        Launch a brand and marketing site that earn investor and customer trust on first contact. Live in 4–6 weeks.
+        Launch a brand and marketing site that earn investor and customer trust on first contact.
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
@@ -652,7 +652,7 @@ function WebsitesAloneCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Websites</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A production marketing site built on top of an existing brand. No-code execution, deployed and handed over. Live in 2–3 weeks.
+        A production marketing site built on top of an existing brand. No-code execution, deployed and handed over.
       </p>
 
       <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -671,7 +671,7 @@ function WebsitesAloneCard({ expanded = false }) {
   const TimelineBlock = (
     <div>
       <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
-      <p className="text-2xl font-medium text-base-dark">2–3 weeks</p>
+      <p className="text-2xl font-medium text-base-dark">Typically 2–3 weeks</p>
     </div>
   )
 
@@ -762,7 +762,7 @@ function BrandingAloneCard({ expanded = false }) {
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Branding</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
-        A complete identity system (strategy, logo, type, and colour) built to scale across every surface your business uses. Live in 2–3 weeks.
+        A complete identity system (strategy, logo, type, and colour) built to scale across every surface your business uses.
       </p>
 
       <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -781,7 +781,7 @@ function BrandingAloneCard({ expanded = false }) {
   const TimelineBlock = (
     <div>
       <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
-      <p className="text-2xl font-medium text-base-dark">2–3 weeks</p>
+      <p className="text-2xl font-medium text-base-dark">Typically 2–3 weeks</p>
     </div>
   )
 
@@ -879,7 +879,7 @@ export default function Services({ expanded = false }) {
         </div>
 
         {/* Render order: Websites + Branding side-by-side (row 1), flagship
-            Brand + Website spans both columns (row 2), then Product Design +
+            Branding + Websites spans both columns (row 2), then Product Design +
             Design Partner side-by-side (row 3). items-start on the homepage
             lets each card rest at its natural height so accordion toggles
             don't tug siblings. /packages (expanded) uses default stretch so

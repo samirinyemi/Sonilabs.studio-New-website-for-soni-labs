@@ -65,7 +65,7 @@ export default function PackagesPage() {
       <SEO
         title="Packages"
         path="/packages"
-        description="Five ways to work with Soni Labs: Websites, Branding, Brand + Website, Product Design, and the Design Partner retainer. Timelines, scope, and what's included. Book a call to discuss."
+        description="Five ways to work with Soni Labs: Websites, Branding, Branding + Websites, Product Design, and the Design Partner retainer. Timelines, scope, and what's included. Book a call to discuss."
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -88,7 +88,7 @@ export default function PackagesPage() {
           {
             '@context': 'https://schema.org',
             '@type': 'Service',
-            name: 'Brand + Website',
+            name: 'Branding + Websites',
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
             description: 'Brand identity + production website for founders launching or rebranding. Typically 4–6 weeks.',
             serviceType: 'Brand and web design',
