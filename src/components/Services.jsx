@@ -235,15 +235,8 @@ function BrandWebsiteCard({ expanded = false }) {
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-            <polygon points="12 2 2 7 12 12 22 7 12 2" />
-            <polyline points="2 17 12 22 22 17" />
-            <polyline points="2 12 12 17 22 12" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">Project &middot; Flagship</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10 inline-block">Project &middot; Flagship</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">03</span>
@@ -362,16 +355,8 @@ function ProductDesignCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; UI / UX</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; UI / UX</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">04</span>
@@ -478,13 +463,8 @@ function DesignPartnerCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-            <path d="M12 20v-6M6 20V10M18 20V4" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full">Monthly retainer</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full inline-block">Monthly retainer</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">05</span>
@@ -588,14 +568,8 @@ function DesignPartnerCard({ expanded = false }) {
 function DesignAuditCard({ expanded = false }) {
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Diagnostic &middot; 2 weeks</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Diagnostic &middot; 2 weeks</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">06</span>
@@ -641,13 +615,20 @@ function DesignAuditCard({ expanded = false }) {
   )
 
   if (expanded) {
+    // Spans 2 outer grid columns at xl, so the inner layout uses a 2-col
+    // grid: pitch + walk-away on the left, Timeline + CTA right-aligned
+    // on the right. Keeps line measure readable and uses the horizontal
+    // space rather than leaving a huge empty band.
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
-        {Pitch}
-
-        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div className="flex-1">{TimelineBlock}</div>
-          {BookCallButton}
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+          <div className="lg:col-span-8">
+            {Pitch}
+          </div>
+          <div className="lg:col-span-4 flex flex-col gap-6 lg:items-end lg:justify-end lg:border-l lg:border-base-dark/10 lg:pl-12 pt-6 lg:pt-0 border-t lg:border-t-0 border-base-dark/10">
+            {TimelineBlock}
+            {BookCallButton}
+          </div>
         </div>
       </div>
     )
@@ -685,15 +666,8 @@ function WebsitesAloneCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; Website</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; Website</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">01</span>
@@ -796,14 +770,8 @@ function BrandingAloneCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </div>
-        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Project &middot; Brand</span>
+      <div className="mb-8">
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; Brand</span>
       </div>
 
       <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
@@ -953,7 +921,7 @@ export default function Services({ expanded = false }) {
           <div id="design-partner" className="scroll-mt-24">
             <DesignPartnerCard expanded={expanded} />
           </div>
-          <div id="design-audit" className="scroll-mt-24">
+          <div id="design-audit" className="xl:col-span-2 scroll-mt-24">
             <DesignAuditCard expanded={expanded} />
           </div>
         </div>
