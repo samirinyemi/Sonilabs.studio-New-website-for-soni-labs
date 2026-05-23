@@ -235,7 +235,7 @@ function BrandWebsiteCard({ expanded = false }) {
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-gray-400 bg-white/5 px-3 py-1 rounded-full border border-white/10 inline-block">Project &middot; Flagship</span>
       </div>
 
@@ -254,7 +254,7 @@ function BrandWebsiteCard({ expanded = false }) {
         Latest: <a href="/work/julian-mercier" className="underline underline-offset-4 decoration-gray-700 hover:decoration-accent-red hover:text-white transition-colors">Julian Mercier</a> &middot; concept brand identity + Framer build
       </p>
 
-      <div className="border-l-0 border-t border-white/10 pt-5 mb-8">
+      <div className="border-l-0 border-t border-white/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-gray-300 text-sm md:text-base leading-relaxed">
           A brand and live website that hold up to investor scrutiny, plus a system your team can extend on its own, without coming back to us.
@@ -288,7 +288,7 @@ function BrandWebsiteCard({ expanded = false }) {
   // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
         {/* Pitch (left) + Includes (right) — side-by-side at md+ so the
             flagship doesn't stack two tall blocks vertically. The card
             already spans 2 outer grid columns at xl, so there's room for
@@ -305,7 +305,7 @@ function BrandWebsiteCard({ expanded = false }) {
             "See the full process →" link sitting above as a quiet anchor
             into /approach. Prices were stripped; conversation is the
             negotiation entry point. */}
-        <div className="border-t border-white/10 pt-8 md:pt-10 mt-10 md:mt-12 flex flex-col gap-6">
+        <div className="border-t border-white/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col gap-6">
           <SeeFullProcessLink slug="brand-website" />
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div className="flex-1">{TimelineBlock}</div>
@@ -318,7 +318,7 @@ function BrandWebsiteCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
         {/* Left: pitch */}
         <div className="lg:col-span-7">
@@ -355,7 +355,7 @@ function ProductDesignCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; UI / UX</span>
       </div>
 
@@ -374,7 +374,7 @@ function ProductDesignCard({ expanded = false }) {
         Latest: <a href="/work/mecash" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">meCash</a> &middot; cross-border fintech, mobile + web (16+ countries)
       </p>
 
-      <div className="border-t border-base-dark/10 pt-5 mb-8">
+      <div className="border-t border-base-dark/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
           A production-ready product surface, a design system that prevents drift as you scale, and a handoff package your engineers can build against without guessing at intent.
@@ -408,7 +408,7 @@ function ProductDesignCard({ expanded = false }) {
   // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="mb-10 md:mb-14">
@@ -430,7 +430,7 @@ function ProductDesignCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
@@ -463,7 +463,7 @@ function DesignPartnerCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full inline-block">Monthly retainer</span>
       </div>
 
@@ -482,7 +482,7 @@ function DesignPartnerCard({ expanded = false }) {
         Trusted by: <a href="/work/australia-medical-association-victoria" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">AMA Victoria</a>, <a href="/work/time-bmx" className="underline underline-offset-4 decoration-gray-300 hover:decoration-accent-red hover:text-base-dark transition-colors">Time BMX</a> &middot; via Roadhouse (Australia)
       </p>
 
-      <div className="border-t border-base-dark/10 pt-5 mb-8">
+      <div className="border-t border-base-dark/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
           Senior design output shipping on your roadmap, brand consistency across every touchpoint, and strategic input on the decisions that shape how the company is seen.
@@ -518,7 +518,7 @@ function DesignPartnerCard({ expanded = false }) {
   // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="mb-10 md:mb-14">
@@ -540,7 +540,7 @@ function DesignPartnerCard({ expanded = false }) {
 
   // ── Collapsed layout (homepage) ──────────────────────────────────────
   return (
-    <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
@@ -568,7 +568,7 @@ function DesignPartnerCard({ expanded = false }) {
 function DesignAuditCard({ expanded = false }) {
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Diagnostic &middot; 2 weeks</span>
       </div>
 
@@ -583,7 +583,7 @@ function DesignAuditCard({ expanded = false }) {
         Diagnostic &middot; prioritized recommendations
       </p>
 
-      <div className="border-t border-base-dark/10 pt-5 mb-8">
+      <div className="border-t border-base-dark/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
           A written diagnosis covering what&rsquo;s working and what isn&rsquo;t, with prioritized fixes ranked by impact. Credit applied if you book a full engagement within 30 days.
@@ -620,7 +620,7 @@ function DesignAuditCard({ expanded = false }) {
     // on the right. Keeps line measure readable and uses the horizontal
     // space rather than leaving a huge empty band.
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
           <div className="lg:col-span-8">
             {Pitch}
@@ -637,7 +637,7 @@ function DesignAuditCard({ expanded = false }) {
   // Collapsed (homepage) — same structure since there's no large
   // includes list to hide behind a popover.
   return (
-    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       {Pitch}
 
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
@@ -666,7 +666,7 @@ function WebsitesAloneCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; Website</span>
       </div>
 
@@ -681,7 +681,7 @@ function WebsitesAloneCard({ expanded = false }) {
         Web design &middot; No-code development &middot; CMS
       </p>
 
-      <div className="border-t border-base-dark/10 pt-5 mb-8">
+      <div className="border-t border-base-dark/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
           A live marketing site you can update on your own, with analytics and SEO basics already in place. No follow-up engagement needed to ship the first version.
@@ -714,7 +714,7 @@ function WebsitesAloneCard({ expanded = false }) {
 
   if (expanded) {
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="mb-10 md:mb-14">
@@ -733,7 +733,7 @@ function WebsitesAloneCard({ expanded = false }) {
   }
 
   return (
-    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
@@ -770,7 +770,7 @@ function BrandingAloneCard({ expanded = false }) {
 
   const Pitch = (
     <>
-      <div className="mb-8">
+      <div className="mb-6">
         <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; Brand</span>
       </div>
 
@@ -785,7 +785,7 @@ function BrandingAloneCard({ expanded = false }) {
         Brand strategy &middot; Logo &middot; Type &middot; Colour &middot; Guidelines
       </p>
 
-      <div className="border-t border-base-dark/10 pt-5 mb-8">
+      <div className="border-t border-base-dark/10 pt-5 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
         <p className="text-subtle text-sm md:text-base leading-relaxed">
           A brand system your team can apply to anything (decks, website, social, packaging) without coming back to us every time the brand shows up somewhere new.
@@ -818,7 +818,7 @@ function BrandingAloneCard({ expanded = false }) {
 
   if (expanded) {
     return (
-      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="mb-10 md:mb-14">
@@ -837,7 +837,7 @@ function BrandingAloneCard({ expanded = false }) {
   }
 
   return (
-    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
       <div>
         {Pitch}
         <CardPopover triggerLabel="What's included" triggerIcon={InfoIcon} variant="light">
