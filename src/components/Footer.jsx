@@ -43,6 +43,7 @@ export default function Footer() {
                 <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Branding + Websites</Link></li>
                 <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Product Design (UI/UX)</Link></li>
                 <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Design Partner</Link></li>
+                <li><Link to="/packages" className="text-subtle text-sm hover:text-base-dark transition-colors">Design Audit</Link></li>
               </ul>
             </div>
             <div>

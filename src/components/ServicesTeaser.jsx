@@ -69,6 +69,13 @@ export default function ServicesTeaser() {
       cadence: '3-month min',
       slug: 'design-partner',
     },
+    {
+      num: '06',
+      name: 'Design Audit',
+      tag: 'Diagnostic',
+      cadence: '2 weeks',
+      slug: 'design-audit',
+    },
   ]
 
   return (
@@ -83,11 +90,11 @@ export default function ServicesTeaser() {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-tight max-w-xl">
-              Five ways to work together.
+              Six ways to work together.
             </h2>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, or an ongoing partner embedded in your team.
+            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
           </p>
         </div>
 

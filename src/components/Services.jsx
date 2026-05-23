@@ -535,41 +535,6 @@ function DesignPartnerCard({ expanded = false }) {
     </a>
   )
 
-  // Lower-friction entry for visitors who aren't ready for a 3-month
-  // retainer. Sits inside Design Partner specifically because that's the
-  // engagement with the biggest commitment ask. Visually quieter than
-  // the main price strip — no card chrome, just a dotted-divider header
-  // and an inline price + ghost button.
-  const AuditBlock = (
-    <div className="border-t border-dashed border-base-dark/20 pt-6 md:pt-8 mt-8 md:mt-10">
-      <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-3">// Not ready for a retainer?</p>
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
-        <div className="flex-1 max-w-xl">
-          <p className="font-display text-lg md:text-xl font-bold text-base-dark mb-2 leading-tight">
-            Start with a 2-week design audit.
-          </p>
-          <p className="text-subtle text-sm leading-relaxed">
-            Paid review of your brand, product, or website. Written diagnosis + prioritized fixes. Credit applied if you book a full engagement within 30 days.
-          </p>
-        </div>
-        <div className="flex items-end gap-5 shrink-0">
-          <div>
-            <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
-            <p className="text-2xl font-medium text-base-dark leading-none">2 weeks</p>
-          </div>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-press inline-flex items-center gap-2 px-5 py-2.5 border border-base-dark text-base-dark rounded-full font-medium text-sm hover:bg-base-dark hover:text-base-pure transition-colors w-fit"
-          >
-            Book the audit
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-
   // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
@@ -589,8 +554,6 @@ function DesignPartnerCard({ expanded = false }) {
             {BookCallButton}
           </div>
         </div>
-
-        {AuditBlock}
       </div>
     )
   }
@@ -610,10 +573,95 @@ function DesignPartnerCard({ expanded = false }) {
         {BookCallButton}
       </div>
 
-      {AuditBlock}
-
       <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-base-dark/10">
         <SeeFullProcessLink slug="design-partner" />
+      </div>
+    </div>
+  )
+}
+
+// ── DESIGN AUDIT — bg-card-soft ────────────────────────────────────────
+// Lighter-touch entry point: a 2-week paid review of an existing brand,
+// product, or website. Previously embedded as a footer block inside the
+// Design Partner card; promoted to its own card so it reads as a real
+// bookable engagement rather than a retainer afterthought.
+function DesignAuditCard({ expanded = false }) {
+  const Pitch = (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-base-pure border border-base-dark/10 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-base-dark">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full">Diagnostic &middot; 2 weeks</span>
+      </div>
+
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">06</span>
+      <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Audit</h3>
+
+      <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
+        A paid review of your existing brand, product, or website. Written diagnosis with prioritized fixes you can apply yourself or hand to another studio.
+      </p>
+
+      <p className="text-muted text-sm mb-6 leading-relaxed">
+        Diagnostic &middot; prioritized recommendations
+      </p>
+
+      <div className="border-t border-base-dark/10 pt-5 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-wider text-muted mb-2">// What you walk away with</p>
+        <p className="text-subtle text-sm md:text-base leading-relaxed">
+          A written diagnosis covering what&rsquo;s working and what isn&rsquo;t, with prioritized fixes ranked by impact. Credit applied if you book a full engagement within 30 days.
+        </p>
+      </div>
+    </>
+  )
+
+  const TimelineBlock = (
+    <div>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium text-base-dark">2 weeks</p>
+    </div>
+  )
+
+  const BookCallButton = (
+    <a
+      href={CALENDLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cta-press inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-base-dark text-base-pure rounded-full font-medium text-sm hover:bg-base-dark-soft w-fit"
+    >
+      Book the audit
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12" />
+        <polyline points="12 5 19 12 12 19" />
+      </svg>
+    </a>
+  )
+
+  if (expanded) {
+    return (
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+          <div className="flex-1">{TimelineBlock}</div>
+          {BookCallButton}
+        </div>
+      </div>
+    )
+  }
+
+  // Collapsed (homepage) — same structure since there's no large
+  // includes list to hide behind a popover.
+  return (
+    <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-12 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
+      {Pitch}
+
+      <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div className="flex-1">{TimelineBlock}</div>
+        {BookCallButton}
       </div>
     </div>
   )
@@ -867,14 +915,14 @@ export default function Services({ expanded = false }) {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
-              Five ways to work together.
+              Six ways to work together.
             </h2>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-4">
-              Four project engagements &middot; one monthly retainer.
+              Four project engagements &middot; one monthly retainer &middot; one 2-week audit.
             </p>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, or an ongoing partner embedded in your team.
+            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
           </p>
         </div>
 
@@ -904,6 +952,9 @@ export default function Services({ expanded = false }) {
           </div>
           <div id="design-partner" className="scroll-mt-24">
             <DesignPartnerCard expanded={expanded} />
+          </div>
+          <div id="design-audit" className="scroll-mt-24">
+            <DesignAuditCard expanded={expanded} />
           </div>
         </div>
 

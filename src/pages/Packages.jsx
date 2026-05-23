@@ -65,7 +65,7 @@ export default function PackagesPage() {
       <SEO
         title="Packages"
         path="/packages"
-        description="Five ways to work with Soni Labs: Websites, Branding, Branding + Websites, Product Design, and the Design Partner retainer. Timelines, scope, and what's included. Book a call to discuss."
+        description="Six ways to work with Soni Labs: Websites, Branding, Branding + Websites, Product Design, the Design Partner retainer, and a 2-week Design Audit. Timelines, scope, and what's included. Book a call to discuss."
         jsonLd={[
           {
             '@context': 'https://schema.org',
