@@ -65,26 +65,8 @@ export default function PackagesPage() {
       <SEO
         title="Packages"
         path="/packages"
-        description="Six ways to work with Soni Labs: Websites, Branding, Branding + Websites, Product Design, the Design Partner retainer, and a 2-week Design Audit. Timelines, scope, and what's included. Book a call to discuss."
+        description="Four ways to work with Soni Labs: Branding + Websites, Product Design, the Design Partner retainer, and a 2-week Design Audit. Timelines, scope, and what's included. Book a call to discuss."
         jsonLd={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: 'Websites',
-            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'Production marketing site built on an existing brand. No-code execution in Framer, Webflow, or Wix Studio. Typically 2–3 weeks.',
-            serviceType: 'Web design',
-            areaServed: 'Worldwide',
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: 'Branding',
-            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'Identity-only engagement: brand strategy, logo, type, colour, and a guidelines document. Typically 2 weeks.',
-            serviceType: 'Brand design',
-            areaServed: 'Worldwide',
-          },
           {
             '@context': 'https://schema.org',
             '@type': 'Service',

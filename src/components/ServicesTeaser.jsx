@@ -36,41 +36,27 @@ export default function ServicesTeaser() {
   const tiers = [
     {
       num: '01',
-      name: 'Websites',
-      tag: 'Project · Website',
-      cadence: '2–3 weeks',
-      slug: 'websites',
-    },
-    {
-      num: '02',
-      name: 'Branding',
-      tag: 'Project · Brand',
-      cadence: '2–3 weeks',
-      slug: 'branding',
-    },
-    {
-      num: '03',
       name: 'Branding + Websites',
       tag: 'Project · Flagship',
       cadence: '4–6 weeks',
       slug: 'brand-website',
     },
     {
-      num: '04',
+      num: '02',
       name: 'Product Design',
       tag: 'Project · UI / UX',
       cadence: 'By scope',
       slug: 'product-design',
     },
     {
-      num: '05',
+      num: '03',
       name: 'Design Partner',
       tag: 'Monthly retainer',
       cadence: '3-month min',
       slug: 'design-partner',
     },
     {
-      num: '06',
+      num: '04',
       name: 'Design Audit',
       tag: 'Diagnostic',
       cadence: '2 weeks',
@@ -90,11 +76,11 @@ export default function ServicesTeaser() {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-tight max-w-xl">
-              Six ways to work together.
+              Four ways to work together.
             </h2>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
+            Pick the engagement that matches where you are: a launch-ready brand and site, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
           </p>
         </div>
 

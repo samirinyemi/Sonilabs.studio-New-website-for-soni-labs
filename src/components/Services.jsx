@@ -883,35 +883,34 @@ export default function Services({ expanded = false }) {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
-              Six ways to work together.
+              Four ways to work together.
             </h2>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-4">
-              Four project engagements &middot; one monthly retainer &middot; one 2-week audit.
+              Two project engagements &middot; one monthly retainer &middot; one 2-week audit.
             </p>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a single discipline, the full bundle, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
+            Pick the engagement that matches where you are: a launch-ready brand and site, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
           </p>
         </div>
 
-        {/* Render order: Websites + Branding side-by-side (row 1), flagship
-            Branding + Websites spans both columns (row 2), then Product Design +
-            Design Partner side-by-side (row 3). items-start on the homepage
-            lets each card rest at its natural height so accordion toggles
-            don't tug siblings. /packages (expanded) uses default stretch so
-            the inline timeline strips line up across cards.
+        {/* Render order: flagship Branding + Websites spans both columns
+            (row 1), then Product Design + Design Partner side-by-side
+            (row 2), then Design Audit spans both columns as a footer
+            card (row 3). items-start on the homepage lets each card rest
+            at its natural height so accordion toggles don't tug siblings.
+            /packages (expanded) uses default stretch so the inline
+            timeline strips line up across the paired cards in row 2.
+
+            WebsitesAloneCard and BrandingAloneCard function definitions
+            remain in this file but are no longer rendered — kept for
+            potential restoration if the standalones come back later.
 
             Each card is wrapped in a div with a slug id so the home-page
             teaser links can deep-link to a specific card via /packages#slug.
             scroll-mt-24 offsets the scroll target so the sticky top nav
             doesn't clip the card edge on jump. */}
         <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
-          <div id="websites" className="scroll-mt-24">
-            <WebsitesAloneCard expanded={expanded} />
-          </div>
-          <div id="branding" className="scroll-mt-24">
-            <BrandingAloneCard expanded={expanded} />
-          </div>
           <div id="brand-website" className="xl:col-span-2 scroll-mt-24">
             <BrandWebsiteCard expanded={expanded} />
           </div>
