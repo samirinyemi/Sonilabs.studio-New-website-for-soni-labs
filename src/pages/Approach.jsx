@@ -21,17 +21,6 @@ const processes = [
     ],
   },
   {
-    id: 'product-design',
-    eyebrow: '// Product Design',
-    title: 'Polished UI/UX, scoped per engagement.',
-    body: 'For startups shaping a digital product, designed for your engineering team to build.',
-    steps: [
-      { num: '01', week: 'Weeks 1–2', title: 'Discovery',        body: 'Product audit, user flow mapping, information architecture, and scope lock. We agree on the surfaces we\'re shipping before anything is drawn.' },
-      { num: '02', week: 'Weeks 3–5', title: 'Design',           body: 'End-to-end UI/UX across the chosen surfaces, plus a working design system and an interactive prototype your team can test internally.' },
-      { num: '03', week: 'Week 6',    title: 'Polish & handoff', body: 'Design QA, engineering documentation, component-level annotations, and a walkthrough with your build team. We stay reachable through implementation.' },
-    ],
-  },
-  {
     id: 'design-partner',
     eyebrow: '// Design Partner',
     title: 'A typical month with the studio embedded in your team.',
@@ -148,7 +137,7 @@ export default function ApproachPage() {
       <SEO
         title="Our approach"
         path="/approach"
-        description="How Soni Labs runs Branding + Websites, Product Design, and Design Partner engagements. Week-by-week cadence and what to expect."
+        description="How Soni Labs runs Branding + Websites and Design Partner engagements. Week-by-week cadence and what to expect."
       />
       <h1 className="sr-only">Approach — Soni Labs Studio</h1>
 
@@ -161,11 +150,11 @@ export default function ApproachPage() {
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">// Approach</p>
               <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-base-dark">
-                Three engagements.
+                Two engagements.
               </h2>
             </div>
             <p className="text-subtle text-lg md:text-xl leading-relaxed max-w-2xl">
-              Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Branding + Websites, Product Design, and Design Partner each move from brief to final product.
+              Each engagement follows its own cadence, tuned to what&rsquo;s being built and how the team works. Here&rsquo;s how Branding + Websites and Design Partner each move from brief to final product.
             </p>
           </div>
         </div>

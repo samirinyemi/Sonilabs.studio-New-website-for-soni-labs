@@ -58,7 +58,7 @@ export default function Contact() {
             </svg>
           </a>
           <a
-            href="mailto:hello@madebysoni.com"
+            href="mailto:heyitsamirinyemi@gmail.com"
             className="cta-press inline-flex items-center gap-3 px-10 py-5 bg-transparent text-base-dark border border-base-dark/20 rounded-full font-medium text-lg hover:bg-base-dark/5"
           >
             Or email instead

@@ -31,3 +31,7 @@ Changes/
 Video/
 .impeccable/
 **/.__capcut*
+
+# Local-only ads workspace — design tools for marketing creative.
+# Runs as a standalone Vite app on a separate port. Must never ship.
+_ads-studio/

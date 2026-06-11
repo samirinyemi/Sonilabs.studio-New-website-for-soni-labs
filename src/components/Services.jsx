@@ -464,10 +464,10 @@ function DesignPartnerCard({ expanded = false }) {
   const Pitch = (
     <>
       <div className="mb-6">
-        <span className="font-mono text-xs uppercase tracking-wider text-accent-red bg-accent-red/10 px-3 py-1 rounded-full inline-block">Monthly retainer</span>
+        <span className="font-mono text-xs uppercase tracking-wider text-subtle bg-base-pure px-3 py-1 rounded-full inline-block">Project &middot; Partnership</span>
       </div>
 
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">05</span>
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-red mb-3 block">02</span>
       <h3 className="font-display text-3xl md:text-4xl font-bold mb-4 text-base-dark">Design Partner</h3>
 
       <p className="text-subtle text-base md:text-lg mb-3 leading-relaxed">
@@ -475,7 +475,7 @@ function DesignPartnerCard({ expanded = false }) {
       </p>
 
       <p className="text-muted text-sm mb-3 leading-relaxed">
-        Monthly retainer &middot; senior design seat, no hiring overhead
+        Embedded design &middot; senior seat, no hiring overhead
       </p>
 
       <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -491,12 +491,10 @@ function DesignPartnerCard({ expanded = false }) {
     </>
   )
 
-  // Equivalent of TimelineBlock on the project cards. Retainers don't
-  // have a fixed duration, so we show the minimum commitment instead.
-  const CommitmentBlock = (
+  const TimelineBlock = (
     <div>
-      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Commitment</p>
-      <p className="text-2xl font-medium text-base-dark">3-month minimum</p>
+      <p className="text-xs text-muted font-mono uppercase tracking-wider mb-1">Timeline</p>
+      <p className="text-2xl font-medium text-base-dark">Ongoing</p>
     </div>
   )
 
@@ -518,7 +516,7 @@ function DesignPartnerCard({ expanded = false }) {
   // ── Expanded layout (packages page) ──────────────────────────────────
   if (expanded) {
     return (
-      <div className="svc-card bg-base-pure border border-base-dark pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+      <div className="svc-card bg-card-soft pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
         {Pitch}
 
         <div className="mb-10 md:mb-14">
@@ -530,7 +528,7 @@ function DesignPartnerCard({ expanded = false }) {
         <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
           <SeeFullProcessLink slug="design-partner" />
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-            <div className="flex-1">{CommitmentBlock}</div>
+            <div className="flex-1">{TimelineBlock}</div>
             {BookCallButton}
           </div>
         </div>
@@ -549,7 +547,7 @@ function DesignPartnerCard({ expanded = false }) {
       </div>
 
       <div className="border-t border-base-dark/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-        <div className="flex-1">{CommitmentBlock}</div>
+        <div className="flex-1">{TimelineBlock}</div>
         {BookCallButton}
       </div>
 
@@ -883,45 +881,38 @@ export default function Services({ expanded = false }) {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-base-dark leading-tight">
-              Four ways to work together.
+              Two ways to work together.
             </h2>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-4">
-              Two project engagements &middot; one monthly retainer &middot; one 2-week audit.
+              A launch-ready project &middot; an ongoing design partnership.
             </p>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a launch-ready brand and site, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
+            Pick the engagement that matches where you are: a launch-ready brand and site delivered as one project, or an ongoing senior design partner embedded in your team.
           </p>
         </div>
 
-        {/* Render order: flagship Branding + Websites spans both columns
-            (row 1), then Product Design + Design Partner side-by-side
-            (row 2), then Design Audit spans both columns as a footer
-            card (row 3). items-start on the homepage lets each card rest
-            at its natural height so accordion toggles don't tug siblings.
-            /packages (expanded) uses default stretch so the inline
-            timeline strips line up across the paired cards in row 2.
+        {/* Render order: two cards side-by-side at xl. Branding + Websites
+            on the left, Design Partner on the right. items-start on the
+            homepage lets each card rest at its natural height so accordion
+            toggles don't tug siblings; /packages (expanded) uses default
+            stretch so the timeline strips line up.
 
-            WebsitesAloneCard and BrandingAloneCard function definitions
-            remain in this file but are no longer rendered — kept for
-            potential restoration if the standalones come back later.
+            WebsitesAloneCard, BrandingAloneCard, ProductDesignCard, and
+            DesignAuditCard function definitions remain in this file but
+            are no longer rendered — kept for potential restoration if
+            the offering expands again later.
 
             Each card is wrapped in a div with a slug id so the home-page
             teaser links can deep-link to a specific card via /packages#slug.
             scroll-mt-24 offsets the scroll target so the sticky top nav
             doesn't clip the card edge on jump. */}
         <div className={`svc-grid grid grid-cols-1 xl:grid-cols-2 gap-6 ${expanded ? '' : 'items-start'}`}>
-          <div id="brand-website" className="xl:col-span-2 scroll-mt-24">
+          <div id="brand-website" className="scroll-mt-24">
             <BrandWebsiteCard expanded={expanded} />
-          </div>
-          <div id="product-design" className="scroll-mt-24">
-            <ProductDesignCard expanded={expanded} />
           </div>
           <div id="design-partner" className="scroll-mt-24">
             <DesignPartnerCard expanded={expanded} />
-          </div>
-          <div id="design-audit" className="xl:col-span-2 scroll-mt-24">
-            <DesignAuditCard expanded={expanded} />
           </div>
         </div>
 

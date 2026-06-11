@@ -65,7 +65,7 @@ export default function PackagesPage() {
       <SEO
         title="Packages"
         path="/packages"
-        description="Four ways to work with Soni Labs: Branding + Websites, Product Design, the Design Partner retainer, and a 2-week Design Audit. Timelines, scope, and what's included. Book a call to discuss."
+        description="Two ways to work with Soni Labs: Branding + Websites delivered as a single project, or Design Partner — an ongoing senior design seat embedded in your team. Timelines, scope, and what's included. Book a call to discuss."
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -79,28 +79,10 @@ export default function PackagesPage() {
           {
             '@context': 'https://schema.org',
             '@type': 'Service',
-            name: 'Product Design (UI/UX)',
+            name: 'Design Partner',
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'UI/UX design for startups scaling a digital product. Hand-off to your engineering team. Typically 5 weeks.',
-            serviceType: 'Product design',
-            areaServed: 'Worldwide',
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: 'Design Partner (retainer)',
-            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'A dedicated senior designer embedded in your team across brand, web, and product. 3-month minimum.',
+            description: 'A dedicated senior designer embedded in your team across brand, web, and product. Ongoing engagement, no fixed minimum.',
             serviceType: 'Design partnership',
-            areaServed: 'Worldwide',
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Service',
-            name: 'Design Audit',
-            provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'A 2-week paid review of an existing brand, product, or website. Written diagnosis and prioritized recommendations.',
-            serviceType: 'Design consulting',
             areaServed: 'Worldwide',
           },
         ]}

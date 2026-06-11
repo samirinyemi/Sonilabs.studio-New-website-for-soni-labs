@@ -43,24 +43,10 @@ export default function ServicesTeaser() {
     },
     {
       num: '02',
-      name: 'Product Design',
-      tag: 'Project · UI / UX',
-      cadence: 'By scope',
-      slug: 'product-design',
-    },
-    {
-      num: '03',
       name: 'Design Partner',
-      tag: 'Monthly retainer',
-      cadence: '3-month min',
+      tag: 'Project · Partnership',
+      cadence: 'Ongoing',
       slug: 'design-partner',
-    },
-    {
-      num: '04',
-      name: 'Design Audit',
-      tag: 'Diagnostic',
-      cadence: '2 weeks',
-      slug: 'design-audit',
     },
   ]
 
@@ -76,11 +62,11 @@ export default function ServicesTeaser() {
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">// Packages</p>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-base-dark leading-tight max-w-xl">
-              Four ways to work together.
+              Two ways to work together.
             </h2>
           </div>
           <p className="text-subtle text-base md:text-lg max-w-md leading-relaxed">
-            Pick the engagement that matches where you are: a launch-ready brand and site, a focused product surface, an ongoing partner embedded in your team, or a 2-week audit of what you already have.
+            Pick the engagement that matches where you are: a launch-ready brand and site delivered as one project, or an ongoing senior design partner embedded in your team.
           </p>
         </div>
 
