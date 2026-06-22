@@ -231,9 +231,17 @@ export default function HeroV2() {
                 href="https://www.figma.com/proto/G2xrMflXEVuDWjMLTEXMPF/Samuel-Irinyemi-Portfolio?page-id=0%3A1&node-id=419-14312&p=f&t=8g3FAs6YuhKaSvfE-0&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=35%3A25506"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hv2-cta cta-press flex-1 sm:flex-initial inline-flex items-center justify-center px-4 sm:px-7 py-3 sm:py-3.5 bg-transparent text-base-dark border border-base-dark/20 rounded-full font-medium text-sm sm:text-base hover:bg-base-dark/5 whitespace-nowrap"
+                aria-label="View Samuel Irinyemi's Figma portfolio prototype"
+                className="hv2-cta cta-press flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-7 py-3 sm:py-3.5 bg-transparent text-base-dark border border-base-dark/20 rounded-full font-medium text-sm sm:text-base hover:bg-base-dark/5 whitespace-nowrap"
                 style={{ opacity: 0 }}
               >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M8 24a4 4 0 0 0 4-4v-4H8a4 4 0 1 0 0 8z" fill="#0ACF83"/>
+                  <path d="M4 12a4 4 0 0 1 4-4h4v8H8a4 4 0 0 1-4-4z" fill="#A259FF"/>
+                  <path d="M4 4a4 4 0 0 1 4-4h4v8H8a4 4 0 0 1-4-4z" fill="#F24E1E"/>
+                  <path d="M12 0h4a4 4 0 0 1 0 8h-4z" fill="#FF7262"/>
+                  <path d="M20 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" fill="#1ABCFE"/>
+                </svg>
                 Figma
               </a>
             </div>
