@@ -72,7 +72,7 @@ export default function PackagesPage() {
             '@type': 'Service',
             name: 'Branding + Websites',
             provider: { '@type': 'Organization', name: 'Soni Labs', url: 'https://sonilabs.studio' },
-            description: 'Brand identity + production website for founders launching or rebranding. Typically 4–6 weeks.',
+            description: 'Brand identity + production website for founders launching or rebranding. Typically 4 weeks.',
             serviceType: 'Brand and web design',
             areaServed: 'Worldwide',
           },

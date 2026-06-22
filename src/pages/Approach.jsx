@@ -10,14 +10,13 @@ const processes = [
   {
     id: 'brand-website',
     eyebrow: '// Branding + Websites',
-    title: 'From first call to launch, typically 4–6 weeks.',
+    title: 'From first call to launch, typically 4 weeks.',
     body: 'Our flagship engagement: brand and marketing site built side by side, so the identity and the surface launch as one cohesive thing.',
     steps: [
-      { num: '01', week: 'Week 1',     title: 'Positioning workshop + discovery', body: 'Strategy, audience, market scan, site map, and content plan across up to 25 pages. We define what success looks like before any visuals start.' },
-      { num: '02', week: 'Week 2',     title: 'Direction',                         body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it.' },
-      { num: '03', week: 'Weeks 3–4',  title: 'System build',                      body: 'Final identity, custom illustration suite, motion system, and full web design across the selected pages. Identity and site grow together.' },
-      { num: '04', week: 'Week 5',     title: 'Build',                             body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, custom interactions, motion accents.' },
-      { num: '05', week: 'Week 6',     title: 'Launch',                            body: 'QA on staging, deployment, and 2 weeks of post-launch support to bed everything in.' },
+      { num: '01', week: 'Week 1', title: 'Discovery',     body: 'Positioning, strategy, audience, market scan, site map, and content plan. We define what success looks like before any visuals start.' },
+      { num: '02', week: 'Week 2', title: 'Direction',     body: 'Visual concepts, logo explorations, type and colour directions. You pick one direction, we lock it.' },
+      { num: '03', week: 'Week 3', title: 'System build',  body: 'Final identity (logo, type, colour, guidelines) and full web design. Identity and site grow together.' },
+      { num: '04', week: 'Week 4', title: 'Build & launch', body: 'No-code build in Framer, Webflow, or Wix Studio. CMS, analytics, SEO basics, QA on staging, and deploy.' },
     ],
   },
   {

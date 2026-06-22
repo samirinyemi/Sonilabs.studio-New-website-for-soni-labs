@@ -194,7 +194,7 @@ export default function HeroV2() {
               <span className="hv2-line block" style={{ opacity: 0 }}>Brands, products,</span>
             </span>
             <span className="overflow-hidden block">
-              <span className="hv2-line block" style={{ opacity: 0 }}>and websites — built</span>
+              <span className="hv2-line block" style={{ opacity: 0 }}>and websites. Built</span>
             </span>
             <span className="overflow-hidden block">
               <span className="hv2-line block" style={{ opacity: 0 }}>under one roof.</span>

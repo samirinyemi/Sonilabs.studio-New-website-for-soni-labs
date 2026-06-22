@@ -214,23 +214,23 @@ function SeeFullProcessLink({ slug }) {
 // ── DARK CARD — Branding + Websites (flagship, single canonical scope) ─────
 // Previous Essential/Enterprise toggle was dropped: with Branding and
 // Websites now offered as standalone packages, this card is the bundled
-// 6-week engagement. The lighter version is a conversation, not a UI.
+// 4-week engagement. Scope trimmed to what's realistic at that cadence —
+// illustration suite + motion system + founder workshop folded into the
+// retainer / conversation rather than the project includes. Page count
+// intentionally unspecified; we scope it on the call.
 function BrandWebsiteCard({ expanded = false }) {
   const includes = [
-    'Founder positioning workshop (full-day strategy intensive)',
     'Brand strategy + verbal identity',
     'Logo, type, and colour systems',
     'Brand guidelines document',
-    'Custom illustration suite (3–5 bespoke marks or icons)',
-    'Motion design system for the brand',
-    'Web design for up to 25 pages',
-    'No-code build in Framer, Webflow, or Wix Studio',
+    'Web design across the agreed pages',
     'Copywriting and content structure',
+    'No-code build in Framer, Webflow, or Wix Studio',
     'CMS, analytics, SEO basics, deployment',
-    '3 rounds of revisions',
-    '2-week post-launch support',
+    '2 rounds of revisions',
+    '1-week post-launch support',
   ]
-  const timeline = 'Typically 4–6 weeks'
+  const timeline = 'Typically 4 weeks'
 
   // Pitch block — used in both expanded and collapsed renders.
   const Pitch = (
@@ -286,26 +286,23 @@ function BrandWebsiteCard({ expanded = false }) {
   )
 
   // ── Expanded layout (packages page) ──────────────────────────────────
+  // Mirrors DesignPartnerCard's layout for visual parity now that the
+  // two cards sit side-by-side as the only offerings: Pitch on top,
+  // 2-column includes below, footer strip pinned to the bottom via
+  // mt-auto. `flex flex-col h-full` lets the parent grid stretch both
+  // cards to equal height regardless of which has the taller content.
   if (expanded) {
     return (
-      <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden">
-        {/* Pitch (left) + Includes (right) — side-by-side at md+ so the
-            flagship doesn't stack two tall blocks vertically. The card
-            already spans 2 outer grid columns at xl, so there's room for
-            two readable internal columns. Footer strip stays full-width
-            below, holding the anchor link + timeline + CTA together. */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-          <div>{Pitch}</div>
-          <div>
-            <IncludesContent items={includes} variant="dark" />
-          </div>
+      <div className="svc-card flagship-card bg-base-dark text-base-pure pt-6 sm:pt-8 md:pt-10 pb-4 sm:pb-5 md:pb-6 px-6 sm:px-8 md:px-12 rounded-[12px] overflow-hidden flex flex-col h-full">
+        {Pitch}
+
+        <div className="mb-10 md:mb-14">
+          <IncludesContent items={includes} variant="dark" columns={2} />
         </div>
 
-        {/* Footer strip — timeline on one side, CTA on the other, with the
-            "See the full process →" link sitting above as a quiet anchor
-            into /approach. Prices were stripped; conversation is the
-            negotiation entry point. */}
-        <div className="border-t border-white/10 pt-8 md:pt-10 mt-8 md:mt-10 flex flex-col gap-6">
+        {/* Footer strip pinned to bottom (mt-auto). Anchor link sits
+            above the timeline + CTA row. */}
+        <div className="border-t border-white/10 pt-8 md:pt-10 mt-auto flex flex-col gap-6">
           <SeeFullProcessLink slug="brand-website" />
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
             <div className="flex-1">{TimelineBlock}</div>

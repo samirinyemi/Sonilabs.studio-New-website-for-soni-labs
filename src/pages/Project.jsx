@@ -17,6 +17,7 @@ const BASE = import.meta.env.BASE_URL
 const ASSET_FILES = {
   cover:  'cover.webp',
   coverV: 'cover.mp4',
+  mobile: 'mobile.webp',
   image1: 'image1.webp',
   image7: 'image7.webp',
   image8: 'image8.webp',
@@ -80,17 +81,19 @@ const projects = {
     services: ['Product discovery', 'Strategy', 'Design system', 'Web platform', 'Websites', 'Admin system'],
     servicesColumns: 2,
     collaboration: 'Via Roadhouse, Australia',
+    links: [{ label: 'amavic.com.au', href: 'https://amavic.com.au/' }],
     assets: buildAssets(
       'australia-medical-association-victoria',
-      ['cover', 'coverV', 'image1', 'image7', 'image8', 'image9', 'hero2',
+      ['cover', 'coverV', 'mobile', 'image1', 'image7', 'image8', 'image9', 'hero2',
        'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'video1', 'video2', 'logo'],
-      { logo: 'logo.webp' }
+      { logo: 'logo.webp', cover: 'cover.png', mobile: 'Mobile.png' }
     ),
     // Per-asset container aspects. Each one matches the source file's
     // native dimensions so object-cover doesn't crop the image. Slots not
     // listed here fall back to the default aspect baked into the JSX.
     aspects: {
-      cover:  'aspect-[3/2]',     // cover.png 2218×1490
+      cover:  'aspect-[4/3]',     // cover.png 3000×2250
+      mobile: 'aspect-[3827/1786]', // Mobile.png 3827×1786
       coverV: 'aspect-[17/10]',   // cover.mp4 3668×2160
       image1: 'aspect-[7/5]',     // image1.png 2073×1490
       image7: 'aspect-[6/5]',     // image7.png 1755×1490
@@ -123,6 +126,10 @@ const projects = {
     nameLines: ['Time', 'BMX'],
     services: ['Design system', 'Mobile app', 'Web app'],
     collaboration: 'Via Roadhouse, Australia',
+    links: [
+      { label: 'iOS', href: 'https://apps.apple.com/us/app/timebmx/id6462980079' },
+      { label: 'Android', href: 'https://play.google.com/store/apps/details?id=com.fastflowbmx&hl=en-US&ah=de2KehM7GQ2uG40BOP--jlysEis&pli=1' },
+    ],
     assets: buildAssets(
       'time-bmx',
       ['cover', 'coverV', 'image1', 'image7', 'image8', 'image9', 'hero1', 'hero2',
@@ -605,6 +612,34 @@ export default function ProjectPage() {
                 </ul>
               )}
             </MetaBlock>
+            {project.links && project.links.length > 0 && (
+              <MetaBlock label={project.links.length > 1 ? 'Links' : 'Link'}>
+                <ul className="space-y-1">
+                  {project.links.map((l) => (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 underline underline-offset-4 decoration-base-dark/30 hover:decoration-base-dark transition-colors"
+                      >
+                        {l.label}
+                        <svg
+                          aria-hidden="true"
+                          width="11"
+                          height="11"
+                          viewBox="0 0 10 10"
+                          fill="none"
+                          className="translate-y-[1px]"
+                        >
+                          <path d="M2 8 L8 2 M8 2 H3.5 M8 2 V6.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </MetaBlock>
+            )}
             {project.collaboration && (
               <span className="self-start font-mono text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-base-dark bg-base-light px-3 py-1 rounded-full">
                 {project.collaboration}
@@ -721,6 +756,17 @@ export default function ProjectPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Optional: full-width Mobile companion image. Renders only
+          when the project supplies a `mobile` asset (e.g. AMA Victoria).
+          Same page-padded container as the cover for visual alignment. */}
+      {project.assets?.mobile && (
+        <section className="max-w-[1600px] mx-auto px-4 md:px-6 mb-20 md:mb-32">
+          <div className="proj-reveal">
+            <Media src={project.assets.mobile} alt={`${project.name} — mobile`} aspect={project.aspects?.mobile || 'aspect-[2/1]'} />
+          </div>
+        </section>
+      )}
 
       {/* ── Manifesto 1 ─────────────────────────────────────────────── */}
       <section className="w-full px-4 md:px-6 py-12 md:py-20">
