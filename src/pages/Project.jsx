@@ -86,14 +86,14 @@ const projects = {
       'australia-medical-association-victoria',
       ['cover', 'coverV', 'mobile', 'image1', 'image7', 'image8', 'image9', 'hero2',
        'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'video1', 'video2', 'logo'],
-      { logo: 'logo.webp', cover: 'cover.png', mobile: 'Mobile.png' }
+      { logo: 'logo.webp', mobile: 'Mobile.webp' }
     ),
     // Per-asset container aspects. Each one matches the source file's
     // native dimensions so object-cover doesn't crop the image. Slots not
     // listed here fall back to the default aspect baked into the JSX.
     aspects: {
-      cover:  'aspect-[4/3]',     // cover.png 3000×2250
-      mobile: 'aspect-[3827/1786]', // Mobile.png 3827×1786
+      cover:  'aspect-[4/3]',     // cover.webp 3000×2250
+      mobile: 'aspect-[3827/1786]', // Mobile.webp 3827×1786
       coverV: 'aspect-[17/10]',   // cover.mp4 3668×2160
       image1: 'aspect-[7/5]',     // image1.png 2073×1490
       image7: 'aspect-[6/5]',     // image7.png 1755×1490
